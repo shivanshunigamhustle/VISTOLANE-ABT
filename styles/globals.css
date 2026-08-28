@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+/*
+ * Tailwind theme wiring.
+ *
+ * Every value here is a reference to a custom property declared in
+ * styles/tokens.css. Nothing is defined in this file — it only teaches Tailwind
+ * which utilities to generate for the tokens that already exist.
+ *
+ * The token names collide with Tailwind's own --color-* / --font-* namespaces
+ * on purpose, so each entry below reads as self-referential. It resolves
+ * cleanly: Tailwind emits its copy inside @layer theme, while tokens.css is
+ * unlayered and therefore wins the cascade, leaving one live declaration per
+ * token. `inline` keeps the utilities pointing straight at that declaration
+ * rather than at a second hop, which is what lets the dark-appearance
+ * overrides in tokens.css apply.
+ *
+ * The two `initial` resets drop Tailwind's built-in colour palette and font
+ * stacks, so a class like `bg-red-500` or `font-sans` simply does not exist.
+ * The tokens are the only scale.
+ */
+@theme inline {
+  --color-*: initial;
+  --font-*: initial;
+
+  --font-ui: var(--font-ui);
+  --font-read: var(--font-read);
+  --font-data: var(--font-data);
+
+  --color-bg: var(--color-bg);
+  --color-bg-grouped: var(--color-bg-grouped);
+  --color-surface: var(--color-surface);
+  --color-label: var(--color-label);
+  --color-label-2: var(--color-label-2);
+  --color-label-3: var(--color-label-3);
+  --color-separator: var(--color-separator);
+  --color-fill: var(--color-fill);
+
+  --color-tint: var(--color-tint);
+  --color-brand: var(--color-brand);
+  --color-on-brand: var(--color-on-brand);
+
+  --color-success: var(--color-success);
+  --color-warning: var(--color-warning);
+  --color-danger: var(--color-danger);
+
+  --color-intent-visitor: var(--intent-visitor);
+  --color-intent-work: var(--intent-work);
+  --color-intent-study: var(--intent-study);
+  --color-intent-family: var(--intent-family);
+  --color-intent-investor: var(--intent-investor);
+  --color-intent-residence: var(--intent-residence);
+}
+
+/* Preflight defaults, pointed at the same token stacks. */
+@theme {
+  --default-font-family: var(--font-ui);
+  --default-mono-font-family: var(--font-data);
+}
+
+/* Tell the UA to render form controls and scrollbars for the active
+   appearance. No colour is declared here — the tokens carry the palette. */
+:root {
+  color-scheme: light dark;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}

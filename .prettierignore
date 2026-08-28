@@ -1,0 +1,9 @@
+.next
+node_modules
+out
+build
+package-lock.json
+
+# The design tokens are supplied verbatim and must stay byte-for-byte identical.
+# Prettier would lowercase the hex values and trim trailing zeros.
+styles/tokens.css
