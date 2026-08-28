@@ -1,0 +1,48 @@
+{
+  "slug": "canada",
+  "name": "Canada",
+  "iso2": "CA",
+  "region": "North America",
+  "summary": "Canada runs separate federal systems for temporary stays and for permanent residence. Work and study permits are temporary and tied to a specific employer or institution, while permanent residence is selected mainly through Express Entry and provincial nomination. The two systems connect: Canadian study and Canadian work experience both raise a candidate's standing for permanent residence, which is why the order in which someone applies matters as much as which route they choose.",
+  "currency": "CAD",
+  "languages": ["English", "French"],
+  "costBand": "high",
+  "atAGlance": {
+    "processingWindow": "Six months is the published service standard for 80% of complete permanent residence applications made through Express Entry. Temporary permits vary widely by route and by the country an application is made from. Verify before publish — confirm the current published processing time for each route and visa office rather than relying on this summary.",
+    "typicalCostRange": "Government fees only: a study permit is $150 CAD and a work permit $155 CAD per person, biometrics are $85 CAD per individual, and an Express Entry permanent residence application is $1,590 CAD including the right of permanent residence fee. Employers pay $1,000 CAD per position for a Labour Market Impact Assessment. Excludes language testing, credential assessment, medical examinations and translation.",
+    "visaFreeNote": "Verify before publish — confirm which nationalities require a temporary resident visa and which are eligible for an Electronic Travel Authorization, and whether a permit approval abroad also requires a separate travel document to enter."
+  },
+  "living": {
+    "costOfLiving": "Verify before publish — the \"high\" cost band on this record is an editorial classification, not an official figure, and Canada's regional variation is wide. The one official cost figure confirmed for this record is the study permit financial requirement: $22,895 CAD for a single applicant outside Quebec, which is updated every September and excludes tuition and travel.",
+    "healthcare": "Health insurance is administered by each province and territory rather than federally, so coverage and any waiting period for a newly arrived resident depend on where they settle. Verify before publish — confirm current waiting periods by province and which permit holders qualify for provincial coverage.",
+    "schooling": "Verify before publish — confirm the rules on minor children of temporary residents attending publicly funded schools without their own study permit, which vary by province.",
+    "bringingFamily": "Verify before publish — confirm current eligibility for spousal open work permits and for dependants accompanying study and work permit holders, both of which were narrowed by policy changes and should not be described from memory."
+  },
+  "commonDocuments": [
+    {
+      "name": "Valid passport",
+      "note": "Required for every route. Permit validity is normally limited by passport expiry."
+    },
+    {
+      "name": "Language test results",
+      "note": "Verify before publish — confirm which tests are currently designated for each route and how long results remain valid."
+    },
+    {
+      "name": "Educational Credential Assessment",
+      "note": "Verify before publish — confirm which routes require an assessment of foreign education and which organisations are designated to issue one."
+    },
+    {
+      "name": "Police certificates",
+      "note": "Verify before publish — confirm which routes require them, from which countries, and how recent they must be."
+    },
+    {
+      "name": "Immigration medical examination",
+      "note": "Verify before publish — confirm when a medical examination is required and whether it must be done by a panel physician before applying."
+    },
+    {
+      "name": "Proof of funds",
+      "note": "Amounts differ by route. For study permits the confirmed figure is $22,895 CAD for a single applicant outside Quebec as of September 2025, excluding tuition and travel."
+    }
+  ],
+  "relatedCountries": []
+}
