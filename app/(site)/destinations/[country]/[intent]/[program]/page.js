@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypeSlug from "rehype-slug";
@@ -123,12 +124,12 @@ export default async function ProgramPage({ params }) {
             },
           ].map((crumb) => (
             <li key={crumb.href} className="flex items-center gap-2">
-              <a
+              <Link
                 href={crumb.href}
                 className="underline underline-offset-2 hover:text-label focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
               >
                 {crumb.label}
-              </a>
+              </Link>
               <span aria-hidden="true" className="text-label-3">
                 /
               </span>
@@ -394,12 +395,12 @@ export default async function ProgramPage({ params }) {
               {related.map((entry) => (
                 <li key={entry.slug}>
                   {entry.record ? (
-                    <a
+                    <Link
                       href={`/destinations/${entry.record.countrySlug}/${entry.record.intent}/${entry.record.slug}`}
                       className="text-tint underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
                     >
                       {entry.record.name}
-                    </a>
+                    </Link>
                   ) : (
                     <span className="text-label-2">{entry.slug}</span>
                   )}

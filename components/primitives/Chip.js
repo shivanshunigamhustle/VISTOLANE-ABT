@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { Children, useState } from "react";
 
 /**
@@ -15,20 +17,58 @@ import { Children, useState } from "react";
  * } & Record<string, unknown>} props
  * @returns {JSX.Element}
  */
-export function Chip({ pressed = false, onToggle, children, ...rest }) {
-  return (
-    <button
-      type="button"
-      aria-pressed={pressed}
-      onClick={onToggle}
-      className={`inline-flex cursor-pointer items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm
+export function Chip({ pressed = false, onToggle, href, children, ...rest }) {
+  const className = `inline-flex cursor-pointer items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm no-underline
         transition-[background-color,border-color] duration-200 motion-reduce:transition-none
         focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint
         ${
           pressed
             ? "border-label-3 bg-fill font-medium text-label"
             : "border-separator bg-transparent text-label-2 hover:bg-fill"
-        }`}
+        }`;
+
+  const mark = pressed ? (
+    <svg
+      aria-hidden="true"
+      focusable="false"
+      viewBox="0 0 16 16"
+      width="12"
+      height="12"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="shrink-0"
+    >
+      <path d="M3.5 8.5 6.5 11.5 12.5 4.5" />
+    </svg>
+  ) : null;
+
+  // A chip that navigates is a link, not a button. Rendering a real anchor is
+  // what lets a filtered view work with JavaScript switched off, and aria-current
+  // rather than aria-pressed is the correct state for "this is the view you are
+  // looking at".
+  if (href) {
+    return (
+      <Link
+        href={href}
+        aria-current={pressed ? "page" : undefined}
+        className={className}
+        {...rest}
+      >
+        {mark}
+        {children}
+      </Link>
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      aria-pressed={pressed}
+      onClick={onToggle}
+      className={className}
       {...rest}
     >
       {pressed ? (

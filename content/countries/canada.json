@@ -10,13 +10,13 @@
   "atAGlance": {
     "processingWindow": "Six months is the published service standard for 80% of complete permanent residence applications made through Express Entry. Temporary permits vary widely by route and by the country an application is made from. Verify before publish — confirm the current published processing time for each route and visa office rather than relying on this summary.",
     "typicalCostRange": "Government fees only: a study permit is $150 CAD and a work permit $155 CAD per person, biometrics are $85 CAD per individual, and an Express Entry permanent residence application is $1,590 CAD including the right of permanent residence fee. Employers pay $1,000 CAD per position for a Labour Market Impact Assessment. Excludes language testing, credential assessment, medical examinations and translation.",
-    "visaFreeNote": "Verify before publish — confirm which nationalities require a temporary resident visa and which are eligible for an Electronic Travel Authorization, and whether a permit approval abroad also requires a separate travel document to enter."
+    "visaFreeNote": "Travellers need either a visitor visa or an electronic travel authorization, never both. An eTA costs $7 CAD and is the requirement for visa-exempt foreign nationals arriving by air; arriving by car, bus, train or boat needs no eTA, only a valid passport. Citizens of some visa-required countries may use an eTA instead of a visa when flying, but still need a visitor visa when arriving by land or sea."
   },
   "living": {
     "costOfLiving": "Verify before publish — the \"high\" cost band on this record is an editorial classification, not an official figure, and Canada's regional variation is wide. The one official cost figure confirmed for this record is the study permit financial requirement: $22,895 CAD for a single applicant outside Quebec, which is updated every September and excludes tuition and travel.",
-    "healthcare": "Health insurance is administered by each province and territory rather than federally, so coverage and any waiting period for a newly arrived resident depend on where they settle. Verify before publish — confirm current waiting periods by province and which permit holders qualify for provincial coverage.",
-    "schooling": "Verify before publish — confirm the rules on minor children of temporary residents attending publicly funded schools without their own study permit, which vary by province.",
-    "bringingFamily": "Verify before publish — confirm current eligibility for spousal open work permits and for dependants accompanying study and work permit holders, both of which were narrowed by policy changes and should not be described from memory."
+    "healthcare": "Health insurance is administered by each province and territory rather than federally, so what a newcomer is covered for depends on where they settle. Some provinces apply a waiting period of up to three months before public coverage begins and others apply none, so private insurance is normally needed to bridge the gap. Apply for provincial coverage on arrival rather than at the end of any waiting period, because the application itself takes time to process.",
+    "schooling": "A minor child already in Canada may attend primary or secondary school without their own study permit where a parent is authorised to work or study in Canada, provided the child holds valid status. On reaching the age of majority — 18 or 19 depending on the province or territory — they must apply for a study permit to continue studying.",
+    "bringingFamily": "Family open work permits were narrowed on 21 January 2025. They are now limited to the spouse or common-law partner of a worker employed in a management or professional occupation, or in a sector linked to government priorities, and to the spouse or partner of a student enrolled in a master's programme of 16 months or longer, a doctoral programme, or certain eligible professional programmes. Dependent children are no longer eligible under this measure."
   },
   "commonDocuments": [
     {
@@ -25,19 +25,19 @@
     },
     {
       "name": "Language test results",
-      "note": "Verify before publish — confirm which tests are currently designated for each route and how long results remain valid."
+      "note": "From a designated organisation: CELPIP-General, IELTS General Training or PTE Core for English, and TEF Canada or TCF Canada for French. Results must be less than two years old when the application is made."
     },
     {
       "name": "Educational Credential Assessment",
-      "note": "Verify before publish — confirm which routes require an assessment of foreign education and which organisations are designated to issue one."
+      "note": "An assessment of foreign education from an organisation designated by IRCC, showing what the credential is equal to in Canada. A report is accepted for five years from its issue date where it was issued on or after 17 April 2013."
     },
     {
       "name": "Police certificates",
-      "note": "Verify before publish — confirm which routes require them, from which countries, and how recent they must be."
+      "note": "For permanent residence, one from every country lived in for six consecutive months or longer in the past ten years since the age of 18. Time spent in Canada is excluded. An officer may ask for further certificates covering any period since the age of 18."
     },
     {
       "name": "Immigration medical examination",
-      "note": "Verify before publish — confirm when a medical examination is required and whether it must be done by a panel physician before applying."
+      "note": "Required for permanent residence applicants and their family members, including those not accompanying them. It must be done by a panel physician, and results are valid for twelve months."
     },
     {
       "name": "Proof of funds",
@@ -59,6 +59,56 @@
     {
       "label": "Immigrate through Express Entry — Immigration, Refugees and Citizenship Canada",
       "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry.html",
+      "retrieved": "2026-08-29"
+    },
+    {
+      "label": "Check if you need a visa or eTA to travel to Canada",
+      "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/visit-canada/check-visa-eta.html",
+      "retrieved": "2026-08-29"
+    },
+    {
+      "label": "Find out about electronic travel authorization (eTA)",
+      "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/visit-canada/eta/facts.html",
+      "retrieved": "2026-08-29"
+    },
+    {
+      "label": "Health care in Canada: Access our universal health care system",
+      "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/settle-canada/health-care/universal-system.html",
+      "retrieved": "2026-08-29"
+    },
+    {
+      "label": "Coverage wait period for the Medical Services Plan (MSP) — Province of British Columbia",
+      "url": "https://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents/eligibility-and-enrolment/how-to-enrol/coverage-wait-period",
+      "retrieved": "2026-08-29"
+    },
+    {
+      "label": "Studying in Canada as a minor",
+      "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/study-canada/study-permit/prepare/minor-children.html",
+      "retrieved": "2026-08-29"
+    },
+    {
+      "label": "Changes to open work permits for family members of temporary residents",
+      "url": "https://www.canada.ca/en/immigration-refugees-citizenship/news/notices/changes-open-work-permits-family-members-temporary-residents.html",
+      "retrieved": "2026-08-29"
+    },
+    {
+      "label": "Express Entry: Language test results",
+      "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/documents/language-test.html",
+      "retrieved": "2026-08-29"
+    },
+    {
+      "label": "Educational credential assessment",
+      "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/documents/education-assessment.html",
+      "retrieved": "2026-08-29"
+    },
+    {
+      "label": "Police certificate: Who needs a police certificate",
+      "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/application/medical-police/police-certificates/who.html",
+      "retrieved": "2026-08-29"
+    },
+    {
+      "label": "Medical examination for permanent residence applicants",
+      "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/application/medical-police/medical-exams/requirements-permanent-residents.html",
       "retrieved": "2026-08-29"
     }
   ],

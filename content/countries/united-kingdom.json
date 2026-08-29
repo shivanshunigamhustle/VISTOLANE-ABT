@@ -1,0 +1,36 @@
+{
+  "//": "Scaffold pending launch country list — OPN-02",
+  "slug": "united-kingdom",
+  "name": "United Kingdom",
+  "iso2": "GB",
+  "region": "Northern Europe",
+  "summary": "The United Kingdom comprises England, Scotland, Wales and Northern Ireland. English is the official language and the pound sterling is the national currency. Visas and immigration are administered by the Home Office, which publishes the requirements for each route on GOV.UK. No programme guides have been written for the United Kingdom yet, so this record carries only the facts that can be stated without research.",
+  "currency": "GBP",
+  "languages": ["English"],
+  "costBand": "medium",
+  "atAGlance": {
+    "processingWindow": "Verify before publish — no processing times have been researched for United Kingdom.",
+    "typicalCostRange": "Verify before publish — no official fee schedule has been read for United Kingdom.",
+    "visaFreeNote": "Verify before publish — visa-free and visa-on-arrival access to United Kingdom has not been researched."
+  },
+  "living": {
+    "costOfLiving": "Verify before publish — the cost band on this record is a placeholder, not a researched classification. No cost-of-living figures have been gathered for United Kingdom.",
+    "healthcare": "Verify before publish — healthcare entitlement for newcomers to United Kingdom has not been researched.",
+    "schooling": "Verify before publish — schooling access for children of temporary residents in United Kingdom has not been researched.",
+    "bringingFamily": "Verify before publish — dependant and partner eligibility for United Kingdom has not been researched."
+  },
+  "commonDocuments": [],
+  "relatedCountries": [],
+  "sources": [
+    {
+      "label": "Visas and immigration — GOV.UK",
+      "url": "https://www.gov.uk/browse/visas-immigration",
+      "retrieved": "2026-08-29"
+    }
+  ],
+  "author": {
+    "name": "Pending review",
+    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+  },
+  "lastReviewed": "2026-08-29"
+}

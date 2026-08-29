@@ -1,0 +1,41 @@
+{
+  "//": "Scaffold pending launch country list — OPN-02",
+  "slug": "vietnam",
+  "name": "Vietnam",
+  "iso2": "VN",
+  "region": "South-East Asia",
+  "summary": "Vietnam is a country in South-East Asia. Vietnamese is the official language and the dong is the national currency. Entry and residence are administered by the national immigration authority, which publishes visa and electronic visa services online. No programme guides have been written for Vietnam yet, so this record carries only the facts that can be stated without research.",
+  "currency": "VND",
+  "languages": ["Vietnamese"],
+  "costBand": "medium",
+  "atAGlance": {
+    "processingWindow": "Verify before publish — no processing times have been researched for Vietnam.",
+    "typicalCostRange": "Verify before publish — no official fee schedule has been read for Vietnam.",
+    "visaFreeNote": "Verify before publish — visa-free and visa-on-arrival access to Vietnam has not been researched."
+  },
+  "living": {
+    "costOfLiving": "Verify before publish — the cost band on this record is a placeholder, not a researched classification. No cost-of-living figures have been gathered for Vietnam.",
+    "healthcare": "Verify before publish — healthcare entitlement for newcomers to Vietnam has not been researched.",
+    "schooling": "Verify before publish — schooling access for children of temporary residents in Vietnam has not been researched.",
+    "bringingFamily": "Verify before publish — dependant and partner eligibility for Vietnam has not been researched."
+  },
+  "commonDocuments": [],
+  "relatedCountries": [],
+  "sources": [
+    {
+      "label": "Vietnam Immigration Department — official portal",
+      "url": "https://xuatnhapcanh.gov.vn/",
+      "retrieved": "2026-08-29"
+    },
+    {
+      "label": "National Portal on Electronic Visa Issuance",
+      "url": "https://evisa.gov.vn/",
+      "retrieved": "2026-08-29"
+    }
+  ],
+  "author": {
+    "name": "Pending review",
+    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+  },
+  "lastReviewed": "2026-08-29"
+}

@@ -10,6 +10,10 @@
  * @property {string} label                      Column heading.
  * @property {"left" | "right" | "center"} [align]
  * @property {boolean} [mono]                    Tabular figures for numeric columns.
+ * @property {string} [width]                    CSS width hint, e.g. "22%". Auto layout
+ *   otherwise lets one long prose column starve the rest.
+ * @property {boolean} [nowrap]                  Keep short labels on one line, so a badge
+ *   in a narrow column cannot be broken mid-word.
  */
 
 /** @type {Record<string, string>} */
@@ -42,9 +46,10 @@ export default function DataTable({ columns, rows, caption }) {
               <th
                 key={column.key}
                 scope="col"
+                style={column.width ? { width: column.width } : undefined}
                 className={`border-b border-separator px-4 py-2.5 font-ui text-xs font-semibold uppercase tracking-wide text-label-2 ${
                   ALIGN[column.align] ?? ALIGN.left
-                }`}
+                } ${column.nowrap ? "whitespace-nowrap" : ""}`}
               >
                 {column.label}
               </th>
@@ -57,9 +62,13 @@ export default function DataTable({ columns, rows, caption }) {
               {columns.map((column) => (
                 <td
                   key={column.key}
-                  className={`border-b border-separator px-4 py-2.5 align-top text-label [overflow-wrap:anywhere] ${
-                    ALIGN[column.align] ?? ALIGN.left
-                  } ${column.mono ? "font-data tabular-nums" : ""}`}
+                  className={`border-b border-separator px-4 py-2.5 align-top text-label ${
+                    column.nowrap
+                      ? "whitespace-nowrap"
+                      : "[overflow-wrap:anywhere]"
+                  } ${ALIGN[column.align] ?? ALIGN.left} ${
+                    column.mono ? "font-data tabular-nums" : ""
+                  }`}
                 >
                   {row[column.key]}
                 </td>

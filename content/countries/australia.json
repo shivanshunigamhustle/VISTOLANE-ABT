@@ -1,0 +1,36 @@
+{
+  "//": "Scaffold pending launch country list — OPN-02",
+  "slug": "australia",
+  "name": "Australia",
+  "iso2": "AU",
+  "region": "Oceania",
+  "summary": "Australia is a country in Oceania. English is the national language and the Australian dollar is the currency. Visas are administered by the Department of Home Affairs, which publishes the requirements for each route on its immigration and citizenship portal. No programme guides have been written for Australia yet, so this record carries only the facts that can be stated without research.",
+  "currency": "AUD",
+  "languages": ["English"],
+  "costBand": "medium",
+  "atAGlance": {
+    "processingWindow": "Verify before publish — no processing times have been researched for Australia.",
+    "typicalCostRange": "Verify before publish — no official fee schedule has been read for Australia.",
+    "visaFreeNote": "Verify before publish — visa-free and visa-on-arrival access to Australia has not been researched."
+  },
+  "living": {
+    "costOfLiving": "Verify before publish — the cost band on this record is a placeholder, not a researched classification. No cost-of-living figures have been gathered for Australia.",
+    "healthcare": "Verify before publish — healthcare entitlement for newcomers to Australia has not been researched.",
+    "schooling": "Verify before publish — schooling access for children of temporary residents in Australia has not been researched.",
+    "bringingFamily": "Verify before publish — dependant and partner eligibility for Australia has not been researched."
+  },
+  "commonDocuments": [],
+  "relatedCountries": [],
+  "sources": [
+    {
+      "label": "Immigration and citizenship — Department of Home Affairs",
+      "url": "https://immi.homeaffairs.gov.au/",
+      "retrieved": "2026-08-29"
+    }
+  ],
+  "author": {
+    "name": "Pending review",
+    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+  },
+  "lastReviewed": "2026-08-29"
+}
