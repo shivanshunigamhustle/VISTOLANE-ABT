@@ -72,17 +72,25 @@ function ToneIcon({ name, hue }) {
 }
 
 /**
- * @param {{ tone?: BadgeTone, children: React.ReactNode }} props
+ * @param {{ tone?: BadgeTone, children: React.ReactNode, onInk?: boolean }} props
  * @returns {JSX.Element}
  */
-export default function Badge({ tone = "neutral", children }) {
+export default function Badge({ tone = "neutral", children, onInk = false }) {
   const { hue, icon } = TONES[tone] ?? TONES.neutral;
+
+  // On a brand-ink ground the label cannot stay on --color-label: black text
+  // over a 14% hue tint composited on navy measures 1.33:1. The ink variant
+  // flips the text to --color-on-brand and lifts the fill so the badge still
+  // reads as a badge.
+  const fillPercent = onInk ? 26 : 14;
 
   return (
     <span
-      className="inline-flex max-w-full items-center gap-1.5 rounded-[var(--radius-control)] px-2 py-1 text-xs font-medium text-label [overflow-wrap:anywhere]"
+      className={`inline-flex max-w-full items-center gap-1.5 rounded-[var(--radius-control)] px-2 py-1 text-xs font-medium [overflow-wrap:anywhere] ${
+        onInk ? "text-on-brand" : "text-label"
+      }`}
       style={{
-        backgroundColor: `color-mix(in srgb, ${hue} 14%, transparent)`,
+        backgroundColor: `color-mix(in srgb, ${hue} ${fillPercent}%, transparent)`,
       }}
     >
       {icon ? (

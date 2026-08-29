@@ -182,7 +182,7 @@ export default async function ProgramPage({ params }) {
             {program.officialName}
           </p>
           <p className="t-body mt-6 text-on-brand opacity-85">
-            <FieldValue value={program.whoItsFor} />
+            <FieldValue value={program.whoItsFor} onInk />
           </p>
 
           <dl className="mt-10 grid gap-x-10 gap-y-6 border-t border-on-brand/25 pt-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -195,7 +195,7 @@ export default async function ProgramPage({ params }) {
                   {entry.label}
                 </dt>
                 <dd className="t-value mt-2 text-on-brand [overflow-wrap:anywhere]">
-                  <FieldValue value={entry.value} />
+                  <FieldValue value={entry.value} onInk />
                 </dd>
               </div>
             ))}
@@ -208,7 +208,9 @@ export default async function ProgramPage({ params }) {
             <div>
               <dt className="t-eyebrow text-on-brand opacity-60">Intent</dt>
               <dd className="mt-2">
-                <Badge tone={program.intent}>{intentLabel}</Badge>
+                <Badge tone={program.intent} onInk>
+                  {intentLabel}
+                </Badge>
               </dd>
             </div>
           </dl>

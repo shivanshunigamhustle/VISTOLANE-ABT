@@ -16,13 +16,17 @@ import { splitUnverified } from "@/lib/content/unverified";
 export { splitUnverified };
 
 /**
- * @param {{ reason?: string | null }} props
+ * @param {{ reason?: string | null, onInk?: boolean }} props
  * @returns {JSX.Element}
  */
-export default function Unverified({ reason }) {
+export default function Unverified({ reason, onInk = false }) {
+  // On a brand-ink ground --color-label-2 is a dark grey on navy and measures
+  // 1.47:1. The ink variant flips to --color-on-brand over a lifted fill.
   return (
     <span
-      className="inline-flex max-w-full items-center gap-1.5 rounded-[var(--radius-control)] bg-fill px-2 py-0.5 align-middle font-ui text-xs font-medium text-label-2"
+      className={`inline-flex max-w-full items-center gap-1.5 rounded-[var(--radius-control)] px-2 py-0.5 align-middle font-ui text-xs font-medium ${
+        onInk ? "bg-on-brand/15 text-on-brand" : "bg-fill text-label-2"
+      }`}
       title={reason || undefined}
     >
       <svg
@@ -51,18 +55,18 @@ export default function Unverified({ reason }) {
 /**
  * Render a record field, substituting the chip where the value is unverified.
  *
- * @param {{ value: unknown }} props
+ * @param {{ value: unknown, onInk?: boolean }} props
  * @returns {JSX.Element}
  */
-export function FieldValue({ value }) {
+export function FieldValue({ value, onInk = false }) {
   const { text, reason } = splitUnverified(value);
 
-  if (!text) return <Unverified reason={reason} />;
+  if (!text) return <Unverified reason={reason} onInk={onInk} />;
   if (!reason) return <>{text}</>;
 
   return (
     <>
-      {text} <Unverified reason={reason} />
+      {text} <Unverified reason={reason} onInk={onInk} />
     </>
   );
 }
