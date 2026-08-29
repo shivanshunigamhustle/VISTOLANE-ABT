@@ -44,5 +44,27 @@
       "note": "Amounts differ by route. For study permits the confirmed figure is $22,895 CAD for a single applicant outside Quebec as of September 2025, excluding tuition and travel."
     }
   ],
-  "relatedCountries": []
+  "relatedCountries": [],
+  "sources": [
+    {
+      "label": "Citizenship and immigration application fees: Fee list — Immigration, Refugees and Citizenship Canada",
+      "url": "https://ircc.canada.ca/english/information/fees/fees.asp",
+      "retrieved": "2026-08-29"
+    },
+    {
+      "label": "Study permit: Get the right documents — Proof of financial support",
+      "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/study-canada/study-permit/get-documents/financial-support.html",
+      "retrieved": "2026-08-29"
+    },
+    {
+      "label": "Immigrate through Express Entry — Immigration, Refugees and Citizenship Canada",
+      "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry.html",
+      "retrieved": "2026-08-29"
+    }
+  ],
+  "author": {
+    "name": "Pending review",
+    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+  },
+  "lastReviewed": "2026-08-29"
 }
