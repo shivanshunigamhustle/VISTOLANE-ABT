@@ -4,6 +4,9 @@ import "@/styles/globals.css";
 import Attribution from "@/components/site/Attribution";
 import SiteFooter from "@/components/site/SiteFooter";
 import SiteHeader from "@/components/site/SiteHeader";
+import UtilityBar from "@/components/site/UtilityBar";
+import { getAllCountries, getAllPrograms } from "@/lib/content/loader";
+import { formatReviewDate, latestReview } from "@/lib/content/provenance";
 import { SITE_NAME, siteUrl } from "@/lib/seo/metadata";
 
 export const metadata = {
@@ -33,9 +36,17 @@ export const metadata = {
  * targets.
  *
  * @param {{ children: React.ReactNode }} props
- * @returns {JSX.Element}
+ * @returns {Promise<JSX.Element>}
  */
-export default function SiteLayout({ children }) {
+export default async function SiteLayout({ children }) {
+  const [countries, programs] = await Promise.all([
+    getAllCountries(),
+    getAllPrograms(),
+  ]);
+  const reviewedLabel = formatReviewDate(
+    latestReview([...countries, ...programs])
+  );
+
   return (
     <html lang="en">
       <body className="flex min-h-screen flex-col bg-bg font-ui text-label antialiased">
@@ -55,6 +66,7 @@ export default function SiteLayout({ children }) {
         {/* Captures first-touch attribution once per session. Renders nothing. */}
         <Attribution />
 
+        <UtilityBar reviewedLabel={reviewedLabel} />
         <SiteHeader />
 
         <div className="flex-1">{children}</div>

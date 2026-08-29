@@ -92,9 +92,11 @@
 }
 
 /* Tell the UA to render form controls and scrollbars for the active
-   appearance. No colour is declared here — the tokens carry the palette. */
+   appearance. No colour is declared here — the tokens carry the palette.
+   Light is the default; only an explicit data-theme="dark" switches it,
+   matching tokens.css no longer following prefers-color-scheme. */
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
 }
 
 :root[data-theme="light"] {
@@ -246,15 +248,49 @@
    * A shadow of 4% black is invisible on a black page ground, which would leave
    * a dark-appearance card with no edge at all. Dark gets a hairline instead.
    */
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) .elevate-soft,
-    :root:not([data-theme="light"]) .surface-raised {
-      box-shadow: inset 0 0 0 1px var(--color-rule);
-    }
-  }
-
   :root[data-theme="dark"] .elevate-soft,
   :root[data-theme="dark"] .surface-raised {
     box-shadow: inset 0 0 0 1px var(--color-rule);
+  }
+
+  /*
+   * Continuous right-to-left ticker. The track holds the content twice,
+   * back to back; animating exactly -50% moves the first copy fully out as
+   * the second reaches the start, so the loop has no seam or snap-back.
+   */
+  .marquee {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 8%,
+      black 92%,
+      transparent
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 8%,
+      black 92%,
+      transparent
+    );
+  }
+  .marquee-track {
+    animation: marquee 26s linear infinite;
+  }
+  .marquee:hover .marquee-track {
+    animation-play-state: paused;
+  }
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+      animation: none;
+    }
   }
 }

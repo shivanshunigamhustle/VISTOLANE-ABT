@@ -1,3 +1,7 @@
+"use client";
+
+import { motion, useReducedMotion } from "framer-motion";
+
 /**
  * @typedef {"primary" | "primaryInk" | "secondary" | "quiet" | "quietInk" | "tint"} ButtonVariant
  */
@@ -60,17 +64,40 @@ export default function Button({
   const classes =
     `${BASE} ${VARIANTS[variant] ?? VARIANTS.primary} ${className}`.trim();
 
+  // Kept deliberately tiny and fast — a 2px lift and a 4% press, both under
+  // 150ms — so the button feels responsive rather than decorated. Reduced
+  // motion drops straight to the static hover/active states the classes
+  // above already provide.
+  const reduceMotion = useReducedMotion();
+  const tap = reduceMotion ? undefined : { scale: 0.96 };
+  const hover = reduceMotion ? undefined : { y: -2 };
+  const spring = { type: "spring", stiffness: 500, damping: 30, mass: 0.5 };
+
   if (href) {
     return (
-      <a href={href} className={classes} {...rest}>
+      <motion.a
+        href={href}
+        className={classes}
+        whileHover={hover}
+        whileTap={tap}
+        transition={spring}
+        {...rest}
+      >
         {children}
-      </a>
+      </motion.a>
     );
   }
 
   return (
-    <button type={type} className={classes} {...rest}>
+    <motion.button
+      type={type}
+      className={classes}
+      whileHover={hover}
+      whileTap={tap}
+      transition={spring}
+      {...rest}
+    >
       {children}
-    </button>
+    </motion.button>
   );
 }

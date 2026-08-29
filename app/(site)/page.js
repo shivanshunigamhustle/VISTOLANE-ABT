@@ -8,13 +8,11 @@ import JsonLd from "@/components/site/JsonLd";
 import Media from "@/components/site/Media";
 import SectionHeading from "@/components/site/SectionHeading";
 import SoftBridge from "@/components/site/SoftBridge";
+import Reveal from "@/components/motion/Reveal";
+import { StaggerGroup, StaggerItem } from "@/components/motion/Stagger";
 import { INTENTS } from "@/lib/content/intents";
 import { getAllCountries, getAllPrograms } from "@/lib/content/loader";
-import {
-  formatReviewDate,
-  latestReview,
-  sourceHosts,
-} from "@/lib/content/provenance";
+import { sourceHosts } from "@/lib/content/provenance";
 import { eligibilityPath } from "@/lib/bridge";
 import { pageMetadata, SITE_NAME } from "@/lib/seo/metadata";
 import { breadcrumbList, webSite } from "@/lib/seo/schema";
@@ -124,8 +122,6 @@ export default async function HomePage() {
   ]);
   const records = [...countries, ...programs];
 
-  const reviewedOn = latestReview(records);
-  const reviewedLabel = formatReviewDate(reviewedOn);
   const hosts = sourceHosts(records);
 
   const programsPerCountry = programs.reduce((counts, program) => {
@@ -149,57 +145,29 @@ export default async function HomePage() {
       <JsonLd schema={webSite({ description: TAGLINE })} />
       <JsonLd schema={breadcrumbList([{ name: "Home", path: "/" }])} />
 
-      {/* 1. Utility strip */}
-      <div className="border-b border-rule bg-surface">
-        <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-1 px-5 py-2">
-          <p className="font-ui text-[0.8125rem] text-label-2">
-            Immigration guidance built from official government sources.
-          </p>
-          {reviewedOn ? (
-            <p className="font-ui text-[0.8125rem] text-label-2">
-              Content last reviewed{" "}
-              <time dateTime={reviewedOn} className="t-data">
-                {reviewedLabel}
-              </time>
-            </p>
-          ) : null}
-        </div>
-      </div>
-
       {/* 2. Hero */}
       <section aria-labelledby="hero-heading" className="relative bg-bg">
-        {/* The photograph occupies the right two-thirds from lg up. */}
-        <Media
-          slot="hero"
-          className="pointer-events-none absolute inset-y-0 right-0 hidden w-[58%] lg:block"
-        >
-          <div
-            aria-hidden="true"
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(to right, var(--color-bg) 0%, var(--color-bg) 20%, color-mix(in srgb, var(--color-bg) 60%, transparent) 45%, transparent 78%)",
-            }}
-          />
-        </Media>
-
-        <div className="relative mx-auto w-full max-w-6xl px-5 pb-16 pt-14 lg:min-h-[520px]">
-          <div className="lg:max-w-[36rem]">
-            <p className="t-eyebrow">Immigration and global mobility</p>
-            <h1 id="hero-heading" className="t-display mt-5 text-label">
+        <div className="relative mx-auto w-full max-w-6xl px-5 pb-16 pt-14">
+          <div className="lg:max-w-[42rem]">
+            <Reveal as="p" className="t-eyebrow" y={10}>
+              Immigration and global mobility
+            </Reveal>
+            <Reveal
+              as="h1"
+              id="hero-heading"
+              className="t-display mt-5 text-label"
+              delay={0.06}
+              y={16}
+            >
               Immigration routes, explained in full
-            </h1>
-            <p className="t-lede mt-6 max-w-[46ch]">{TAGLINE}.</p>
+            </Reveal>
+            <Reveal as="p" className="t-lede mt-6 max-w-[46ch]" delay={0.12}>
+              {TAGLINE}.
+            </Reveal>
           </div>
 
-          {/* Photograph on small screens, where the absolute slot is hidden. */}
-          <Media
-            slot="hero"
-            className="mt-8 h-[380px] w-full rounded-media lg:hidden"
-          />
-
           {/* Tabs are links. The active one is this page. */}
-          <div className="mt-10 lg:max-w-[42rem]">
+          <Reveal as="div" className="mt-10 lg:max-w-[42rem]" delay={0.18}>
             <nav aria-label="Search" className="flex flex-wrap gap-1">
               <span
                 aria-current="page"
@@ -266,119 +234,128 @@ export default async function HomePage() {
                 Find destinations
               </Button>
             </form>
-          </div>
-        </div>
-      </section>
+          </Reveal>
 
-      {/* 3. Trust bar */}
-      <section
-        aria-labelledby="trust-heading"
-        className="border-y border-rule bg-surface"
-      >
-        <h2 id="trust-heading" className="sr-only">
-          How this site is written
-        </h2>
-        <ul className="mx-auto grid w-full max-w-6xl gap-8 px-5 py-8 sm:grid-cols-3">
-          {TRUST.map((item) => (
-            <li key={item.title} className="flex gap-3">
-              <svg
-                aria-hidden="true"
-                focusable="false"
-                viewBox="0 0 24 24"
-                width="22"
-                height="22"
-                fill="none"
-                stroke="var(--color-tint)"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="mt-0.5 shrink-0"
-              >
-                {item.icon}
-              </svg>
-              <div>
-                <p className="font-ui text-[0.9375rem] font-semibold text-label">
-                  {item.title}
-                </p>
-                <p className="mt-1 font-ui text-[0.875rem] leading-snug text-label-2">
-                  {item.body}
-                </p>
-              </div>
-            </li>
-          ))}
-        </ul>
+          {/* 3. Trust bar — moved up under the search, same content as before. */}
+          <h2 id="trust-heading" className="sr-only">
+            How this site is written
+          </h2>
+          <StaggerGroup
+            as="ul"
+            aria-labelledby="trust-heading"
+            className="mt-8 flex flex-wrap gap-x-8 gap-y-4 lg:max-w-[42rem]"
+          >
+            {TRUST.map((item) => (
+              <StaggerItem as="li" key={item.title} className="flex gap-2.5">
+                <svg
+                  aria-hidden="true"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                  width="20"
+                  height="20"
+                  fill="none"
+                  stroke="var(--color-tint)"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="mt-0.5 shrink-0"
+                >
+                  {item.icon}
+                </svg>
+                <div>
+                  <p className="font-ui text-[0.8125rem] font-semibold text-label">
+                    {item.title}
+                  </p>
+                  <p className="mt-0.5 font-ui text-[0.75rem] leading-snug text-label-2">
+                    {item.body}
+                  </p>
+                </div>
+              </StaggerItem>
+            ))}
+          </StaggerGroup>
+        </div>
       </section>
 
       {/* 4. Intents */}
       <section aria-labelledby="intents-heading" className="bg-bg">
         <div className="mx-auto w-full max-w-6xl px-5 py-20">
-          <SectionHeading id="intents-heading" eyebrow="By intent">
-            Explore by what matters to you
-          </SectionHeading>
+          <Reveal>
+            <SectionHeading id="intents-heading" eyebrow="By intent">
+              Explore by what matters to you
+            </SectionHeading>
+          </Reveal>
           {/*
             Six across only where six fit. At max-w-6xl a 6-column row gives each
             card ~172px, which will not hold "Settle & Citizenship" beside a 28px
             icon — so it is 2 up on mobile, 3 from md, and 6 only at 2xl.
           */}
-          <div className="mt-10 grid auto-rows-fr grid-cols-2 gap-4 md:grid-cols-3 2xl:grid-cols-6">
+          <StaggerGroup className="mt-10 grid auto-rows-fr grid-cols-2 gap-4 md:grid-cols-3 2xl:grid-cols-6">
             {INTENTS.map((intent) => (
-              <IntentCard
-                key={intent.slug}
-                intent={intent}
-                href={`/destinations?intent=${intent.slug}`}
-                count={countFor(intent.slug)}
-                description={INTENT_BLURB[intent.slug]}
-              />
+              <StaggerItem key={intent.slug}>
+                <IntentCard
+                  intent={intent}
+                  href={`/destinations?intent=${intent.slug}`}
+                  count={countFor(intent.slug)}
+                  description={INTENT_BLURB[intent.slug]}
+                />
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerGroup>
         </div>
       </section>
 
       {/* 5. Destinations */}
       <section aria-labelledby="destinations-heading" className="band-inset">
         <div className="mx-auto w-full max-w-6xl px-5 py-20">
-          <SectionHeading
-            id="destinations-heading"
-            eyebrow="By country"
-            trailing={
-              <Link
-                href="/destinations"
-                className="text-sm text-tint underline underline-offset-4
-                  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
-              >
-                See all {countries.length}
-              </Link>
-            }
-          >
-            Most covered destinations
-          </SectionHeading>
+          <Reveal>
+            <SectionHeading
+              id="destinations-heading"
+              eyebrow="By country"
+              trailing={
+                <Link
+                  href="/destinations"
+                  className="text-sm text-tint underline underline-offset-4
+                    focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                >
+                  See all {countries.length}
+                </Link>
+              }
+            >
+              Most covered destinations
+            </SectionHeading>
+          </Reveal>
           {/*
             Ordered by how many guides exist, which is what the heading says.
             Horizontal scroll on mobile; the vertical padding keeps focus rings
             from being clipped by the scroll container.
           */}
-          <ul className="-mx-5 mt-10 flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 py-2 [overscroll-behavior-x:contain] sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 lg:grid-cols-3">
+          <StaggerGroup
+            as="ul"
+            className="-mx-5 mt-10 flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 py-2 [overscroll-behavior-x:contain] sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 lg:grid-cols-3"
+          >
             {ordered.slice(0, 6).map((country) => (
-              <li key={country.slug} className="snap-start">
+              <StaggerItem as="li" key={country.slug} className="snap-start">
                 <DestinationPhotoCard
                   country={country}
                   programCount={programsPerCountry.get(country.slug) ?? 0}
                 />
-              </li>
+              </StaggerItem>
             ))}
-          </ul>
+          </StaggerGroup>
         </div>
       </section>
 
       {/* 6. Tools */}
       <section aria-labelledby="tools-heading" className="bg-bg">
         <div className="mx-auto w-full max-w-6xl px-5 py-20">
-          <SectionHeading id="tools-heading" eyebrow="Practical">
-            Tools &amp; resources
-          </SectionHeading>
-          <ul className="mt-10 grid auto-rows-fr gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <Reveal>
+            <SectionHeading id="tools-heading" eyebrow="Practical">
+              Tools &amp; resources
+            </SectionHeading>
+          </Reveal>
+          <StaggerGroup as="ul" className="mt-10 grid auto-rows-fr gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {TOOLS.map((tool) => (
-              <li key={tool.name} className="surface-raised flex flex-col p-5">
+              <StaggerItem as="li" key={tool.name} className="surface-raised flex flex-col p-5">
                 <p className="font-ui text-[1.0625rem] font-semibold text-label">
                   {tool.name}
                 </p>
@@ -401,9 +378,9 @@ export default async function HomePage() {
                     </span>
                   )}
                 </p>
-              </li>
+              </StaggerItem>
             ))}
-          </ul>
+          </StaggerGroup>
         </div>
       </section>
 
@@ -412,7 +389,7 @@ export default async function HomePage() {
         <div className="mx-auto grid w-full max-w-6xl gap-0 px-0 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
           <Media slot="consultation" className="h-[260px] w-full lg:h-full" />
 
-          <div className="px-5 py-16 lg:px-12">
+          <Reveal as="div" className="px-5 py-16 lg:px-12">
             <p className="t-eyebrow text-on-brand opacity-70">
               Talk to someone
             </p>
@@ -446,7 +423,7 @@ export default async function HomePage() {
                 then.
               </p>
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
 
@@ -459,13 +436,19 @@ export default async function HomePage() {
           <h2 id="sources-heading" className="t-eyebrow">
             Official sources we rely on
           </h2>
-          <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
-            {hosts.map((host) => (
-              <li key={host} className="t-data text-label-2">
-                {host}
-              </li>
-            ))}
-          </ul>
+          <div className="marquee mt-4 overflow-hidden">
+            <ul className="marquee-track flex w-max flex-nowrap gap-x-10">
+              {[...hosts, ...hosts].map((host, i) => (
+                <li
+                  key={`${host}-${i}`}
+                  aria-hidden={i >= hosts.length ? "true" : undefined}
+                  className="t-data shrink-0 font-semibold text-label-2"
+                >
+                  {host}
+                </li>
+              ))}
+            </ul>
+          </div>
           <p className="mt-4 font-ui text-[0.8125rem] text-label-2">
             Every figure on a guide links to the page it came from, with the
             date it was checked.
@@ -475,9 +458,9 @@ export default async function HomePage() {
 
       {/* 9. Closing bridge */}
       <section className="band-ink">
-        <div className="mx-auto w-full max-w-6xl px-5 py-20">
+        <Reveal as="div" className="mx-auto w-full max-w-6xl px-5 py-20">
           <SoftBridge tone="ink" />
-        </div>
+        </Reveal>
       </section>
     </main>
   );

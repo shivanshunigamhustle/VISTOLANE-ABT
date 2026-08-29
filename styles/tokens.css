@@ -45,41 +45,13 @@
   --radius-pill: 999px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --color-bg: #000000;
-    --color-bg-grouped: #2C2C2E;
-    --color-surface: #1C1C1E;
-    --color-label: #FFFFFF;
-    --color-label-2: rgba(235, 235, 245, 0.78);
-    --color-label-3: rgba(235, 235, 245, 0.30);
-    --color-separator: #38383A;
-    --color-rule: #48484A;
-    --color-fill: rgba(120, 120, 128, 0.24);
-    --color-tint: #3D9BFF;
-    --color-brand: #1B3563;
-    --color-brand-ink: #0B1830;
-    --color-on-brand: #FFFFFF;
-    --color-accent: #F7CE55;
-    --color-on-accent: #0B1830;
-    --color-success: #30D158;
-    --color-warning: #FF9F0A;
-    --color-danger: #FF453A;
-    --intent-visitor: #64D2FF;
-    --intent-work: #5E5CE6;
-    --intent-study: #40CBE0;
-    --intent-family: #FF375F;
-    --intent-investor: #AC8E68;
-    --intent-residence: #BF5AF2;
-    --intent-visitor-text: #64D2FF;
-    --intent-work-text: #8583EC;
-    --intent-study-text: #40CBE0;
-    --intent-family-text: #FF496D;
-    --intent-investor-text: #AC8E68;
-    --intent-residence-text: #C366F3;
-  }
-}
-
+/*
+ * Light is the default appearance regardless of the OS/browser setting.
+ * The dark palette below only applies when something explicitly sets
+ * data-theme="dark" on the root (a future theme toggle) — it no longer
+ * follows prefers-color-scheme, so a visitor's OS dark mode can't force
+ * this brand-forward site into a dark reading of itself by default.
+ */
 :root[data-theme="dark"] {
   --color-bg: #000000;
   --color-bg-grouped: #2C2C2E;

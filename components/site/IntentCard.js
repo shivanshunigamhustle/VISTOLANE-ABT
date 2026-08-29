@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { motion, useReducedMotion } from "framer-motion";
 
 import IntentIcon from "@/components/site/IntentIcon";
 
@@ -38,13 +41,20 @@ export default function IntentCard({
   const empty = count === 0;
 
   const background = `color-mix(in srgb, ${hue} 7%, var(--color-surface))`;
+  const reduceMotion = useReducedMotion();
 
   const inner = (
     <>
-      <IntentIcon
-        slug={intent.slug}
-        hue={empty ? `color-mix(in srgb, ${hue} 55%, transparent)` : hue}
-      />
+      <motion.span
+        className="block w-fit"
+        whileHover={reduceMotion || empty ? undefined : { scale: 1.08, rotate: -4 }}
+        transition={{ type: "spring", stiffness: 420, damping: 22 }}
+      >
+        <IntentIcon
+          slug={intent.slug}
+          hue={empty ? `color-mix(in srgb, ${hue} 55%, transparent)` : hue}
+        />
+      </motion.span>
 
       <span className="mt-4 block">
         <span
@@ -100,15 +110,21 @@ export default function IntentCard({
   }
 
   return (
-    <Link
-      href={href ?? `/destinations/${countrySlug}/${intent.slug}`}
-      className="elevate-soft flex flex-col rounded-card p-5 no-underline
-        transition-shadow duration-200 motion-reduce:transition-none
-        hover:shadow-[0_2px_6px_rgb(0_0_0/0.06),0_12px_28px_rgb(0_0_0/0.08)]
-        focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
-      style={{ background }}
+    <motion.div
+      whileHover={reduceMotion ? undefined : { y: -4 }}
+      whileTap={reduceMotion ? undefined : { scale: 0.98 }}
+      transition={{ type: "spring", stiffness: 420, damping: 28 }}
     >
-      {inner}
-    </Link>
+      <Link
+        href={href ?? `/destinations/${countrySlug}/${intent.slug}`}
+        className="elevate-soft flex flex-col rounded-card p-5 no-underline
+          transition-shadow duration-200 motion-reduce:transition-none
+          hover:shadow-[0_2px_6px_rgb(0_0_0/0.06),0_12px_28px_rgb(0_0_0/0.08)]
+          focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+        style={{ background }}
+      >
+        {inner}
+      </Link>
+    </motion.div>
   );
 }
