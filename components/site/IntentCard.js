@@ -9,14 +9,19 @@ import Link from "next/link";
  * Someone looking for a study route needs to know it is not covered yet, not to
  * be left wondering whether they missed it.
  *
+ * `href` overrides the default country-scoped target, which is what the home
+ * page needs: there are no global intent hubs yet, so an intent card there
+ * points at the filtered destination grid instead.
+ *
  * @param {{
  *   intent: import("@/lib/content/intents").Intent,
- *   countrySlug: string,
+ *   countrySlug?: string,
+ *   href?: string,
  *   count: number,
  * }} props
  * @returns {JSX.Element}
  */
-export default function IntentCard({ intent, countrySlug, count }) {
+export default function IntentCard({ intent, countrySlug, href, count }) {
   const hue = `var(${intent.token})`;
   const style = {
     borderLeftColor: hue,
@@ -50,7 +55,7 @@ export default function IntentCard({ intent, countrySlug, count }) {
 
   return (
     <Link
-      href={`/destinations/${countrySlug}/${intent.slug}`}
+      href={href ?? `/destinations/${countrySlug}/${intent.slug}`}
       className="block rounded-xl border border-separator border-l-2 p-5 no-underline
         transition-opacity duration-200 motion-reduce:transition-none hover:opacity-90
         focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"

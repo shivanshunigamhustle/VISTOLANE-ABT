@@ -93,7 +93,7 @@ export default async function CountryPage({ params }) {
   ];
 
   return (
-    <main className="mx-auto w-full max-w-6xl px-5 py-16">
+    <main id="main-content" className="mx-auto w-full max-w-6xl px-5 py-16">
       <nav aria-label="Breadcrumb" className="mb-8">
         <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-label-2">
           <li className="flex items-center gap-2">

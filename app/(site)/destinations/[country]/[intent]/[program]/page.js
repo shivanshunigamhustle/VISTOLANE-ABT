@@ -108,7 +108,7 @@ export default async function ProgramPage({ params }) {
   }));
 
   return (
-    <main className="mx-auto w-full max-w-5xl px-5 py-10">
+    <main id="main-content" className="mx-auto w-full max-w-5xl px-5 py-10">
       {/* 1. Breadcrumb */}
       <nav aria-label="Breadcrumb" className="mb-8">
         <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-label-2">

@@ -19,7 +19,7 @@ import { buildPortalUrl, eligibilityPath } from "@/lib/bridge";
  * than to a guessed checker URL (OPN-07).
  *
  * @param {{
- *   country: string,
+ *   country?: string,
  *   intent?: string,
  *   intentLabel?: string,
  * }} props

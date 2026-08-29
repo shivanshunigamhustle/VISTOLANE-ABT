@@ -2,22 +2,31 @@ import "@/styles/tokens.css";
 import "@/styles/globals.css";
 
 import Attribution from "@/components/site/Attribution";
-import PortalLink from "@/components/site/PortalLink";
+import SiteFooter from "@/components/site/SiteFooter";
+import SiteHeader from "@/components/site/SiteHeader";
 
 export const metadata = {
-  title: "Vistolane",
-  description: "Immigration guidance, country by country.",
+  title: {
+    default: "Vistolane",
+    template: "%s — Vistolane",
+  },
+  description: "A clear path to your next move abroad.",
 };
 
 /**
  * Root layout.
  *
- * This is the application's only root layout — there is deliberately no
- * app/layout.js. Next.js treats the layout inside the (site) route group as the
- * root when no layout sits above it, so this file owns <html> and <body>.
+ * This is the application's only root layout for the public site — there is
+ * deliberately no app/layout.js. Next.js treats the layout inside the (site)
+ * route group as the root when no layout sits above it, so this file owns
+ * <html> and <body>.
  *
  * Import order matters: tokens.css declares the custom properties, then
  * globals.css pulls in Tailwind and maps those properties onto utilities.
+ *
+ * Header and footer live here so every route in the group carries them. Each
+ * page supplies its own <main id="main-content">, which is what the skip link
+ * targets.
  *
  * @param {{ children: React.ReactNode }} props
  * @returns {JSX.Element}
@@ -25,7 +34,7 @@ export const metadata = {
 export default function SiteLayout({ children }) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-bg font-ui text-label antialiased">
+      <body className="flex min-h-screen flex-col bg-bg font-ui text-label antialiased">
         {/*
           Skip link. It is parked just above the viewport rather than clipped,
           so it keeps its real box and slides into place on focus. Only the
@@ -38,20 +47,15 @@ export default function SiteLayout({ children }) {
         >
           Skip to content
         </a>
+
         {/* Captures first-touch attribution once per session. Renders nothing. */}
         <Attribution />
 
-        {/*
-          Minimal header. It exists so the portal sign-in link has a home; the
-          full site chrome — navigation, footer, logo — is not built yet.
-        */}
-        <header className="border-b border-separator">
-          <div className="mx-auto flex w-full max-w-6xl items-center justify-end px-5 py-3">
-            <PortalLink />
-          </div>
-        </header>
+        <SiteHeader />
 
-        <div id="main-content">{children}</div>
+        <div className="flex-1">{children}</div>
+
+        <SiteFooter />
       </body>
     </html>
   );

@@ -117,7 +117,7 @@ export default async function DestinationsPage({ searchParams }) {
   ];
 
   return (
-    <main className="mx-auto w-full max-w-6xl px-5 py-16">
+    <main id="main-content" className="mx-auto w-full max-w-6xl px-5 py-16">
       <header className="max-w-[68ch]">
         <h1 className="text-4xl font-semibold leading-tight">
           {metadata.title}
