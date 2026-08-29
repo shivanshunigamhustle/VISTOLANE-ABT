@@ -28,8 +28,7 @@ function TocList({ headings, activeId }) {
             <a
               href={`#${heading.id}`}
               aria-current={active ? "location" : undefined}
-              className={`block border-l py-1.5 pl-3 font-ui text-[0.8125rem] leading-snug no-underline
-                transition-colors duration-200 motion-reduce:transition-none
+              className={`color-transition block border-l py-1.5 pl-3 font-ui text-[0.8125rem] leading-snug no-underline
                 hover:text-label focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint
                 ${
                   active
@@ -99,7 +98,7 @@ export default function Toc({ headings, label = "On this page" }) {
         <summary className="t-subsection cursor-pointer text-label focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint">
           {label}
         </summary>
-        <div className="mt-4">
+        <div className="disclose-content mt-4">
           <TocList headings={headings} activeId={activeId} />
         </div>
       </details>

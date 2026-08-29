@@ -1,0 +1,26 @@
+{
+  "slug": "job-bank",
+  "term": "Job Bank",
+  "aliases": [],
+  "definition": "The Government of Canada's employment website. An employer applying for a Labour Market Impact Assessment must advertise the position on Job Bank as part of the required recruitment activities, and needs a Job Bank for employers account to submit through LMIA Online.",
+  "longform": "For a high-wage position the advertising on Job Bank must run for at least 4 consecutive weeks within the 3 months before applying, alongside at least 2 other recruitment methods appropriate to the occupation.",
+  "relatedPrograms": ["lmia"],
+  "relatedTerms": ["lmia", "tfwp"],
+  "sources": [
+    {
+      "label": "Fill a position — Job Bank",
+      "url": "https://www.jobbank.gc.ca/employers",
+      "retrieved": "2026-08-29"
+    },
+    {
+      "label": "Program requirements for high-wage positions",
+      "url": "https://www.canada.ca/en/employment-social-development/services/foreign-workers/median-wage/high/requirements.html",
+      "retrieved": "2026-08-29"
+    }
+  ],
+  "author": {
+    "name": "Pending review",
+    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+  },
+  "lastReviewed": "2026-08-29"
+}

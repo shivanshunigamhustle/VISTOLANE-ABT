@@ -1,0 +1,21 @@
+{
+  "slug": "global-talent-stream",
+  "term": "Global Talent Stream",
+  "aliases": ["GTS"],
+  "definition": "A stream of the Temporary Foreign Worker Program for employers hiring highly skilled workers in select occupations, with the fastest published Labour Market Impact Assessment service standard: 10 business days for 80% of applications.",
+  "longform": "It is the one part of the LMIA system with a fixed, published turnaround, which is why it is often the fastest route to an employer-sponsored work permit for the occupations it covers.",
+  "relatedPrograms": ["lmia"],
+  "relatedTerms": ["lmia", "tfwp"],
+  "sources": [
+    {
+      "label": "Hire a temporary foreign worker through the Global Talent Stream",
+      "url": "https://www.canada.ca/en/employment-social-development/services/foreign-workers/global-talent.html",
+      "retrieved": "2026-08-29"
+    }
+  ],
+  "author": {
+    "name": "Pending review",
+    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+  },
+  "lastReviewed": "2026-08-29"
+}

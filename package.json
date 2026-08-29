@@ -13,7 +13,6 @@
     "validate:content": "node scripts/validate-content.mjs"
   },
   "dependencies": {
-    "framer-motion": "^13.1.1",
     "github-slugger": "^2.0.0",
     "gray-matter": "^4.0.3",
     "next": "^15.5.24",

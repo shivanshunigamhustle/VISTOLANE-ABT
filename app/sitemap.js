@@ -1,5 +1,11 @@
-import { INTENT_SLUGS } from "@/lib/content/intents";
-import { getAllCountries, getAllPrograms } from "@/lib/content/loader";
+import { INTENTS, INTENT_SLUGS } from "@/lib/content/intents";
+import {
+  getAllCountries,
+  getAllGuides,
+  getAllNewsUpdates,
+  getAllPrograms,
+  getAllTerms,
+} from "@/lib/content/loader";
 import { absoluteUrl } from "@/lib/seo/metadata";
 
 /**
@@ -7,17 +13,23 @@ import { absoluteUrl } from "@/lib/seo/metadata";
  *
  * Segmented by content type in the order a crawler benefits from: the static
  * entry points, then countries, then country + intent, then the programme pages
- * that carry the actual depth. lastModified comes from a record's lastReviewed
- * where it has one, which is honest — it is the date a person last looked at the
- * content, not the date a build ran.
+ * that carry the actual depth, then the global intent hubs and the reference
+ * content types. lastModified comes from a record's lastReviewed where it has
+ * one, which is honest — it is the date a person last looked at the content,
+ * not the date a build ran.
  *
  * @returns {Promise<import("next").MetadataRoute.Sitemap>}
  */
 export default async function sitemap() {
-  const [countries, programs] = await Promise.all([
-    getAllCountries(),
-    getAllPrograms(),
-  ]);
+  const [countries, programs, terms, guides, newsUpdates] = await Promise.all(
+    [
+      getAllCountries(),
+      getAllPrograms(),
+      getAllTerms(),
+      getAllGuides(),
+      getAllNewsUpdates(),
+    ]
+  );
 
   /** @type {import("next").MetadataRoute.Sitemap} */
   const staticRoutes = [
@@ -27,6 +39,26 @@ export default async function sitemap() {
       changeFrequency: "weekly",
       priority: 0.9,
     },
+    { url: absoluteUrl("/business"), changeFrequency: "monthly", priority: 0.5 },
+    { url: absoluteUrl("/tools"), changeFrequency: "monthly", priority: 0.7 },
+    {
+      url: absoluteUrl("/tools/processing-times"),
+      changeFrequency: "weekly",
+      priority: 0.7,
+    },
+    {
+      url: absoluteUrl("/tools/cost-estimator"),
+      changeFrequency: "weekly",
+      priority: 0.7,
+    },
+    {
+      url: absoluteUrl("/tools/document-checklist"),
+      changeFrequency: "weekly",
+      priority: 0.7,
+    },
+    { url: absoluteUrl("/resources"), changeFrequency: "weekly", priority: 0.7 },
+    { url: absoluteUrl("/news"), changeFrequency: "weekly", priority: 0.6 },
+    { url: absoluteUrl("/glossary"), changeFrequency: "monthly", priority: 0.6 },
   ];
 
   const countryRoutes = countries.map((country) => ({
@@ -57,5 +89,41 @@ export default async function sitemap() {
     priority: 0.9,
   }));
 
-  return [...staticRoutes, ...countryRoutes, ...intentRoutes, ...programRoutes];
+  const intentHubRoutes = INTENTS.map((intent) => ({
+    url: absoluteUrl(`/${intent.path}`),
+    changeFrequency: "weekly",
+    priority: 0.8,
+  }));
+
+  const termRoutes = terms.map((term) => ({
+    url: absoluteUrl(`/glossary/${term.slug}`),
+    lastModified: term.lastReviewed,
+    changeFrequency: "monthly",
+    priority: 0.5,
+  }));
+
+  const guideRoutes = guides.map((guide) => ({
+    url: absoluteUrl(`/resources/${guide.slug}`),
+    lastModified: guide.lastReviewed,
+    changeFrequency: "monthly",
+    priority: 0.6,
+  }));
+
+  const newsRoutes = newsUpdates.map((update) => ({
+    url: absoluteUrl(`/news/${update.slug}`),
+    lastModified: update.lastReviewed,
+    changeFrequency: "yearly",
+    priority: 0.4,
+  }));
+
+  return [
+    ...staticRoutes,
+    ...countryRoutes,
+    ...intentRoutes,
+    ...programRoutes,
+    ...intentHubRoutes,
+    ...termRoutes,
+    ...guideRoutes,
+    ...newsRoutes,
+  ];
 }

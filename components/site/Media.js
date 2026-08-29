@@ -14,15 +14,26 @@ import { asset } from "@/lib/media";
  * photograph. That is what makes the overlay contrast reviewable before the
  * assets arrive.
  *
+ * A slot with no photograph yet renders `fallback` when the caller supplies
+ * one — a designed permanent treatment, not scaffolding — and otherwise a
+ * generic placeholder. Either way the "no asset yet" state only reaches the
+ * console, as a dev-only warning; production readers never see build-status
+ * text on a public page.
+ *
  * @param {{
  *   slot: string,
  *   className?: string,
  *   children?: React.ReactNode,
+ *   fallback?: React.ReactNode,
  * }} props
  * @returns {JSX.Element}
  */
-export default function Media({ slot, className = "", children }) {
+export default function Media({ slot, className = "", children, fallback }) {
   const { src, width, height, alt, note } = asset(slot);
+
+  if (!src && process.env.NODE_ENV !== "production") {
+    console.warn(`[Media] no asset configured for slot "${slot}": ${note}`);
+  }
 
   return (
     <div
@@ -37,6 +48,8 @@ export default function Media({ slot, className = "", children }) {
           height={height}
           className="absolute inset-0 size-full object-cover"
         />
+      ) : fallback ? (
+        <div className="absolute inset-0">{fallback}</div>
       ) : (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 p-4 text-center">
           <p className="font-ui text-[0.8125rem] font-medium text-label-2">

@@ -2,6 +2,7 @@ import "@/styles/tokens.css";
 import "@/styles/globals.css";
 
 import Attribution from "@/components/site/Attribution";
+import NavAutoClose from "@/components/site/NavAutoClose";
 import SiteFooter from "@/components/site/SiteFooter";
 import SiteHeader from "@/components/site/SiteHeader";
 import UtilityBar from "@/components/site/UtilityBar";
@@ -68,6 +69,7 @@ export default async function SiteLayout({ children }) {
 
         <UtilityBar reviewedLabel={reviewedLabel} />
         <SiteHeader />
+        <NavAutoClose />
 
         <div className="flex-1">{children}</div>
 

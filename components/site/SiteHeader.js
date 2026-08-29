@@ -80,7 +80,7 @@ function NavGroup({ group, panelClassName }) {
  */
 export default function SiteHeader() {
   return (
-    <header className="relative border-b border-rule bg-surface">
+    <header className="sticky top-0 z-40 border-b border-rule bg-surface">
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-5 py-3">
         {/*
           TODO(OPN-09): text lockup standing in for the real logo, which is still
@@ -102,7 +102,7 @@ export default function SiteHeader() {
             <NavGroup
               key={group.label}
               group={group}
-              panelClassName="absolute z-40 mt-1 min-w-56 rounded-card border border-rule bg-surface p-3 shadow-[0_1px_2px_rgb(0_0_0/0.04),0_4px_12px_rgb(0_0_0/0.04)]"
+              panelClassName="disclose-content absolute z-40 mt-1 min-w-56 rounded-card border border-rule bg-surface p-3 shadow-[0_1px_2px_rgb(0_0_0/0.04),0_4px_12px_rgb(0_0_0/0.04)]"
             />
           ))}
         </nav>
@@ -170,14 +170,14 @@ export default function SiteHeader() {
             Menu
           </summary>
 
-          <div className="absolute left-0 right-0 top-full z-40 max-h-[80vh] overflow-y-auto border-b border-rule bg-surface px-5 py-4">
+          <div className="disclose-content absolute left-0 right-0 top-full z-40 max-h-[80vh] overflow-y-auto border-b border-rule bg-surface px-5 py-4">
             <nav aria-label="Primary, mobile">
               <ul className="space-y-1">
                 {NAV.map((group) => (
                   <li key={group.label}>
                     <NavGroup
                       group={group}
-                      panelClassName="border-l border-separator pl-4 pt-1"
+                      panelClassName="disclose-content border-l border-separator pl-4 pt-1"
                     />
                   </li>
                 ))}

@@ -197,6 +197,11 @@ export default async function DestinationsPage({ searchParams }) {
                 key={country.slug}
                 country={country}
                 programCount={(byCountry.get(country.slug) ?? []).length}
+                coveredIntents={[
+                  ...new Set(
+                    (byCountry.get(country.slug) ?? []).map((p) => p.intent)
+                  ),
+                ]}
               />
             ))}
           </div>

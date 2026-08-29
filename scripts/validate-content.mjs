@@ -12,11 +12,20 @@ import path from "node:path";
 import process from "node:process";
 
 import { INTENT_SLUGS } from "../lib/content/intents.js";
-import { getCountry, getProgram } from "../lib/content/loader.js";
+import {
+  getCountry,
+  getGuide,
+  getNewsUpdate,
+  getProgram,
+  getTerm,
+} from "../lib/content/loader.js";
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
 const COUNTRIES_DIR = path.join(CONTENT_DIR, "countries");
 const PROGRAMS_DIR = path.join(CONTENT_DIR, "programs");
+const GLOSSARY_DIR = path.join(CONTENT_DIR, "glossary");
+const GUIDES_DIR = path.join(CONTENT_DIR, "guides");
+const NEWS_DIR = path.join(CONTENT_DIR, "news");
 
 const PASS = "✓";
 const FAIL = "✗";
@@ -125,6 +134,72 @@ for (const country of await entries(PROGRAMS_DIR, (entry) =>
 }
 if (programCount === 0 && failures.length === 0) {
   console.log("  (none)");
+}
+
+console.log("\nGlossary");
+const termSlugs = await entries(
+  GLOSSARY_DIR,
+  (entry) => entry.isFile() && entry.name.endsWith(".json")
+).then((names) => names.map((name) => name.replace(/\.json$/, "")));
+
+if (termSlugs.length === 0) {
+  console.log("  (none)");
+}
+for (const slug of termSlugs) {
+  checked += 1;
+  try {
+    const term = await getTerm(slug);
+    if (!term) {
+      throw new Error(`Loader returned null for a file that exists.`);
+    }
+    console.log(`  ${PASS} ${slug} — ${term.term}`);
+  } catch (error) {
+    report(slug, error);
+  }
+}
+
+console.log("\nGuides");
+const guideSlugs = await entries(
+  GUIDES_DIR,
+  (entry) => entry.isFile() && entry.name.endsWith(".mdx")
+).then((names) => names.map((name) => name.replace(/\.mdx$/, "")));
+
+if (guideSlugs.length === 0) {
+  console.log("  (none)");
+}
+for (const slug of guideSlugs) {
+  checked += 1;
+  try {
+    const guide = await getGuide(slug);
+    if (!guide) {
+      throw new Error(`Loader returned null for a file that exists.`);
+    }
+    console.log(`  ${PASS} ${slug} — ${guide.title}`);
+  } catch (error) {
+    report(slug, error);
+  }
+}
+
+console.log("\nNews");
+const newsSlugs = await entries(
+  NEWS_DIR,
+  (entry) => entry.isFile() && entry.name.endsWith(".json")
+).then((names) => names.map((name) => name.replace(/\.json$/, "")));
+
+if (newsSlugs.length === 0) {
+  console.log("  (none)");
+}
+for (const slug of newsSlugs) {
+  checked += 1;
+  try {
+    const update = await getNewsUpdate(slug);
+    if (!update) {
+      throw new Error(`Loader returned null for a file that exists.`);
+    }
+    console.log(`  ${PASS} ${slug} — ${update.title}`);
+  } catch (error) {
+    report(slug, error);
+  }
 }
 
 const valid = checked - failures.length;

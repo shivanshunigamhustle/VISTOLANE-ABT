@@ -79,6 +79,7 @@ export default function LeadForm({ program }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...values,
+          source: "program-enquiry",
           programSlug: program.slug,
           countrySlug: program.countrySlug,
           intent: program.intent,

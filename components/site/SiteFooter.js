@@ -26,7 +26,14 @@ import { getAllCountries } from "@/lib/content/loader";
 export default async function SiteFooter() {
   const countries = await getAllCountries();
 
-  const columns = NAV.filter((group) => group.items?.some((item) => item.href));
+  // A group with items shows the ones that are built; a group with its own
+  // href (no disclosure) shows as a single link. Either way, a group that has
+  // nothing built yet is omitted rather than listed — the header already says
+  // a section is planned, and repeating that in the footer would turn the
+  // page into a list of what has not shipped.
+  const columns = NAV.filter(
+    (group) => group.href || group.items?.some((item) => item.href)
+  );
 
   return (
     <footer className="band-ink">
@@ -35,17 +42,29 @@ export default async function SiteFooter() {
           {columns.map((group) => (
             <nav key={group.label} aria-label={group.label}>
               <h2 className="t-eyebrow text-on-brand opacity-70">
-                {group.label}
+                {group.href ? (
+                  <Link
+                    href={group.href}
+                    className="text-on-brand no-underline underline-offset-4 hover:underline
+                      focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-on-brand"
+                  >
+                    {group.label}
+                  </Link>
+                ) : (
+                  group.label
+                )}
               </h2>
-              <ul className="mt-3">
-                {group.items
-                  .filter((item) => item.href)
-                  .map((item) => (
-                    <li key={item.label}>
-                      <NavItem item={item} onBrand />
-                    </li>
-                  ))}
-              </ul>
+              {group.items ? (
+                <ul className="mt-3">
+                  {group.items
+                    .filter((item) => item.href)
+                    .map((item) => (
+                      <li key={item.label}>
+                        <NavItem item={item} onBrand />
+                      </li>
+                    ))}
+                </ul>
+              ) : null}
             </nav>
           ))}
 

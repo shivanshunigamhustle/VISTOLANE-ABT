@@ -1,7 +1,3 @@
-"use client";
-
-import { motion, useReducedMotion } from "framer-motion";
-
 /**
  * @typedef {"primary" | "primaryInk" | "secondary" | "quiet" | "quietInk" | "tint"} ButtonVariant
  */
@@ -33,8 +29,12 @@ const VARIANTS = {
   tint: "border-transparent bg-transparent text-tint hover:bg-fill focus-visible:outline-tint",
 };
 
+// press-scale is the motion system's --dur-press token, scale(.97) on :active,
+// applied here rather than as a Tailwind arbitrary value so the single rule in
+// globals.css is what every pressable control shares. Pure CSS: no client
+// component needed for this any more.
 const BASE =
-  "inline-flex cursor-pointer items-center justify-center gap-2 rounded-control border " +
+  "press-scale inline-flex cursor-pointer items-center justify-center gap-2 rounded-control border " +
   "px-5 py-2.5 text-sm font-medium no-underline " +
   "transition-[background-color,opacity,color] duration-200 motion-reduce:transition-none " +
   "focus-visible:outline-2 focus-visible:outline-offset-2 " +
@@ -64,40 +64,17 @@ export default function Button({
   const classes =
     `${BASE} ${VARIANTS[variant] ?? VARIANTS.primary} ${className}`.trim();
 
-  // Kept deliberately tiny and fast — a 2px lift and a 4% press, both under
-  // 150ms — so the button feels responsive rather than decorated. Reduced
-  // motion drops straight to the static hover/active states the classes
-  // above already provide.
-  const reduceMotion = useReducedMotion();
-  const tap = reduceMotion ? undefined : { scale: 0.96 };
-  const hover = reduceMotion ? undefined : { y: -2 };
-  const spring = { type: "spring", stiffness: 500, damping: 30, mass: 0.5 };
-
   if (href) {
     return (
-      <motion.a
-        href={href}
-        className={classes}
-        whileHover={hover}
-        whileTap={tap}
-        transition={spring}
-        {...rest}
-      >
+      <a href={href} className={classes} {...rest}>
         {children}
-      </motion.a>
+      </a>
     );
   }
 
   return (
-    <motion.button
-      type={type}
-      className={classes}
-      whileHover={hover}
-      whileTap={tap}
-      transition={spring}
-      {...rest}
-    >
+    <button type={type} className={classes} {...rest}>
       {children}
-    </motion.button>
+    </button>
   );
 }

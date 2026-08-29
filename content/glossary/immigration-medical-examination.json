@@ -1,0 +1,26 @@
+{
+  "slug": "immigration-medical-examination",
+  "term": "Immigration Medical Examination",
+  "aliases": ["IME", "Medical exam"],
+  "definition": "A medical examination required for some study permit, work permit and most permanent residence applicants, performed only by a panel physician authorised by Immigration, Refugees and Citizenship Canada.",
+  "longform": "Whether one is required depends on the applicant's country of residence and the type of application. It cannot be completed by any doctor — only a panel physician's exam is accepted.",
+  "relatedPrograms": ["study-permit", "express-entry"],
+  "relatedTerms": ["ircc"],
+  "sources": [
+    {
+      "label": "Medical exam for permanent resident applicants — Immigration, Refugees and Citizenship Canada",
+      "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/application/medical-police/medical-exams/requirements-permanent-residents.php",
+      "retrieved": "2026-08-29"
+    },
+    {
+      "label": "Panel physicians — Immigration, Refugees and Citizenship Canada",
+      "url": "https://www.canada.ca/en/immigration-refugees-citizenship/corporate/partners-service-providers/panel-physicians.html",
+      "retrieved": "2026-08-29"
+    }
+  ],
+  "author": {
+    "name": "Pending review",
+    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+  },
+  "lastReviewed": "2026-08-29"
+}
