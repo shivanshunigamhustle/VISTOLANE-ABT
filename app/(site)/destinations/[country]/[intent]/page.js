@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import DataTable from "@/components/primitives/DataTable";
 import { FieldValue } from "@/components/primitives/Unverified";
 import ProgramCard from "@/components/site/ProgramCard";
+import SoftBridge from "@/components/site/SoftBridge";
 import { INTENTS, INTENT_SLUGS } from "@/lib/content/intents";
 import {
   getAllCountries,
@@ -113,6 +114,14 @@ export default async function CountryIntentPage({ params }) {
             : `No routes for this intent have been written yet.`}
         </p>
       </header>
+
+      <div className="mt-12">
+        <SoftBridge
+          country={country.slug}
+          intent={intent.slug}
+          intentLabel={intent.label}
+        />
+      </div>
 
       {programs.length > 0 ? (
         <>

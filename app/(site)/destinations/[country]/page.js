@@ -7,6 +7,7 @@ import DataTable from "@/components/primitives/DataTable";
 import { FieldValue } from "@/components/primitives/Unverified";
 import CountryCard from "@/components/site/CountryCard";
 import IntentCard from "@/components/site/IntentCard";
+import SoftBridge from "@/components/site/SoftBridge";
 import { INTENTS } from "@/lib/content/intents";
 import {
   getAllCountries,
@@ -151,6 +152,10 @@ export default async function CountryPage({ params }) {
           ))}
         </div>
       </section>
+
+      <div className="mt-14">
+        <SoftBridge country={country.slug} />
+      </div>
 
       {/* 3. All programs */}
       <section aria-labelledby="programs" className="mt-16">

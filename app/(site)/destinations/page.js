@@ -81,7 +81,13 @@ export default async function DestinationsPage({ searchParams }) {
   const matches = countries.filter((country) => {
     const countryPrograms = byCountry.get(country.slug) ?? [];
     if (active.region && country.region !== active.region) return false;
-    if (active.costBand && country.costBand !== active.costBand) return false;
+    // A country whose band is unknown is never a match for a cost-band filter.
+    // Equality already excludes it; this is explicit so it cannot regress into a
+    // filter that quietly returns countries whose band was never researched.
+    if (active.costBand) {
+      if (country.costBand === "unknown") return false;
+      if (country.costBand !== active.costBand) return false;
+    }
     if (
       active.intent &&
       !countryPrograms.some((program) => program.intent === active.intent)

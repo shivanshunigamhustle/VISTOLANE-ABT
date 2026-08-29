@@ -21,9 +21,11 @@ const COST_BAND = { low: "Low", medium: "Medium", high: "High" };
  * @returns {JSX.Element}
  */
 export default function CountryCard({ country, programCount }) {
-  const costBandUnverified = Boolean(
-    splitUnverified(country.living.costOfLiving).reason
-  );
+  // An unknown band has no label to show — the chip is the whole answer. A known
+  // band still shows the chip while the record's cost-of-living field is flagged,
+  // because the band is an editorial call rather than an official figure.
+  const bandIsUnknown = country.costBand === "unknown";
+  const costReason = splitUnverified(country.living.costOfLiving).reason;
 
   return (
     <Link
@@ -44,11 +46,11 @@ export default function CountryCard({ country, programCount }) {
         <div className="flex flex-wrap items-baseline gap-x-2">
           <dt className="text-label-3">Cost band</dt>
           <dd className="flex flex-wrap items-center gap-2 text-label">
-            {COST_BAND[country.costBand] ?? country.costBand}
-            {costBandUnverified ? (
-              <Unverified
-                reason={splitUnverified(country.living.costOfLiving).reason}
-              />
+            {bandIsUnknown
+              ? null
+              : (COST_BAND[country.costBand] ?? country.costBand)}
+            {bandIsUnknown || costReason ? (
+              <Unverified reason={costReason} />
             ) : null}
           </dd>
         </div>

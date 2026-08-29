@@ -1,6 +1,9 @@
 import "@/styles/tokens.css";
 import "@/styles/globals.css";
 
+import Attribution from "@/components/site/Attribution";
+import PortalLink from "@/components/site/PortalLink";
+
 export const metadata = {
   title: "Vistolane",
   description: "Immigration guidance, country by country.",
@@ -35,6 +38,19 @@ export default function SiteLayout({ children }) {
         >
           Skip to content
         </a>
+        {/* Captures first-touch attribution once per session. Renders nothing. */}
+        <Attribution />
+
+        {/*
+          Minimal header. It exists so the portal sign-in link has a home; the
+          full site chrome — navigation, footer, logo — is not built yet.
+        */}
+        <header className="border-b border-separator">
+          <div className="mx-auto flex w-full max-w-6xl items-center justify-end px-5 py-3">
+            <PortalLink />
+          </div>
+        </header>
+
         <div id="main-content">{children}</div>
       </body>
     </html>
