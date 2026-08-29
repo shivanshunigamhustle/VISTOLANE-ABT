@@ -1,6 +1,24 @@
+"use client";
+
 import Link from "next/link";
+import { motion, useReducedMotion } from "framer-motion";
 
 import Media from "@/components/site/Media";
+
+/**
+ * Client-supplied flag artwork, cropped from a single composite image into
+ * one square per country. Keyed by country slug rather than iso2 because the
+ * United Kingdom's file is named for brevity, not for its code.
+ *
+ * @type {Record<string, string>}
+ */
+const FLAG_IMAGE = {
+  canada: "/images/flags/canada.jpg",
+  australia: "/images/flags/australia.jpg",
+  germany: "/images/flags/germany.jpg",
+  "united-kingdom": "/images/flags/uk.jpg",
+  vietnam: "/images/flags/vietnam.jpg",
+};
 
 /**
  * A destination as a photo card, for the home page.
@@ -10,9 +28,9 @@ import Media from "@/components/site/Media";
  * card — region, guide count, an honest em dash where a country has nothing yet.
  * This one is a browse surface and leads with the photograph.
  *
- * The chip carries the ISO 3166-1 alpha-2 code from the record. The reference
- * shows a flag there; no flag assets exist and inventing one is not a design
- * placeholder, so the real code stands in until the client supplies them.
+ * The chip carries the flag artwork for the record. Where no crop exists yet
+ * for a slug, it falls back to the ISO 3166-1 alpha-2 code as plain text
+ * rather than rendering a broken image.
  *
  * @param {{
  *   country: import("@/lib/content/schema").Country,
@@ -21,16 +39,24 @@ import Media from "@/components/site/Media";
  * @returns {JSX.Element}
  */
 export default function DestinationPhotoCard({ country, programCount }) {
+  const reduceMotion = useReducedMotion();
+
   return (
-    <Link
-      href={`/destinations/${country.slug}`}
-      className="group block w-[16rem] shrink-0 no-underline sm:w-auto
-        focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+    <motion.div
+      whileHover={reduceMotion ? undefined : { y: -5 }}
+      whileTap={reduceMotion ? undefined : { scale: 0.98 }}
+      transition={{ type: "spring", stiffness: 400, damping: 26 }}
+      className="w-[16rem] shrink-0 sm:w-auto"
     >
-      <Media
-        slot={`destination:${country.slug}`}
-        className="aspect-[4/3] w-full rounded-media"
+      <Link
+        href={`/destinations/${country.slug}`}
+        className="group block no-underline
+          focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
       >
+        <Media
+          slot={`destination:${country.slug}`}
+          className="aspect-[4/3] w-full rounded-media"
+        >
         {/*
           The caption sits on a SOLID brand-ink ground, with a short gradient
           above it doing the transition. A fade alone cannot guarantee contrast:
@@ -47,8 +73,24 @@ export default function DestinationPhotoCard({ country, programCount }) {
           }}
         />
 
-        <span className="absolute left-3 top-3 rounded-pill bg-on-brand px-2.5 py-1 font-data text-[0.6875rem] font-semibold uppercase tracking-wide text-brand-ink">
-          {country.iso2}
+        <span
+          role="img"
+          aria-label={country.iso2}
+          title={country.iso2}
+          className="absolute left-3 top-3 flex size-8 items-center justify-center overflow-hidden rounded-pill bg-on-brand shadow-[0_1px_2px_rgb(0_0_0/0.12)]"
+        >
+          {FLAG_IMAGE[country.slug] ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={FLAG_IMAGE[country.slug]}
+              alt=""
+              className="size-full scale-[2] object-cover"
+            />
+          ) : (
+            <span className="font-data text-[0.6875rem] font-semibold uppercase tracking-wide text-brand-ink">
+              {country.iso2}
+            </span>
+          )}
         </span>
 
         <span className="absolute inset-x-0 bottom-0 block min-h-[4.5rem] bg-brand-ink p-4">
@@ -62,6 +104,7 @@ export default function DestinationPhotoCard({ country, programCount }) {
           </span>
         </span>
       </Media>
-    </Link>
+      </Link>
+    </motion.div>
   );
 }
