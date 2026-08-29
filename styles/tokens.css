@@ -43,6 +43,18 @@
   --radius-media: 14px;
   --radius-inline: 6px;
   --radius-pill: 999px;
+
+  /*
+   * The motion system. One rule governs every use of these: an animation is
+   * triggered by a user action (press, hover, disclosure) or fires once at
+   * first paint (the hero entrance). Nothing here is triggered by scroll.
+   */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.3, 1);
+  --dur-press: 120ms;
+  --dur-hover: 220ms;
+  --dur-color: 160ms;
+  --dur-disclose: 260ms;
+  --dur-enter: 450ms;
 }
 
 /*

@@ -8,8 +8,6 @@ import JsonLd from "@/components/site/JsonLd";
 import Media from "@/components/site/Media";
 import SectionHeading from "@/components/site/SectionHeading";
 import SoftBridge from "@/components/site/SoftBridge";
-import Reveal from "@/components/motion/Reveal";
-import { StaggerGroup, StaggerItem } from "@/components/motion/Stagger";
 import { INTENTS } from "@/lib/content/intents";
 import { getAllCountries, getAllPrograms } from "@/lib/content/loader";
 import { sourceHosts } from "@/lib/content/provenance";
@@ -27,6 +25,10 @@ import { breadcrumbList, webSite } from "@/lib/seo/schema";
  *
  * Every factual line is counted or derived from the loader. The only invented
  * strings are structural labels and the intent descriptions.
+ *
+ * Motion rule: only the hero entrance animates on its own, once, via the
+ * .hero-enter CSS classes — a first-paint effect, not a scroll effect. Every
+ * other section is static until a reader presses or hovers something.
  */
 
 const TAGLINE = "A clear path to your next move abroad";
@@ -93,22 +95,26 @@ const TOOLS = [
   {
     name: "Check your eligibility",
     body: "Answer a few questions and see which routes may fit. No account needed.",
+    href: null,
     live: true,
   },
   {
     name: "Processing times",
     body: "Current published timescales for each route, side by side.",
-    live: false,
+    href: "/tools/processing-times",
+    live: true,
   },
   {
     name: "Document checklist",
     body: "A per-route list of what to gather, and what each item must show.",
-    live: false,
+    href: "/tools/document-checklist",
+    live: true,
   },
   {
     name: "Cost estimator",
     body: "Government fees and the third-party costs that sit alongside them.",
-    live: false,
+    href: "/tools/cost-estimator",
+    live: true,
   },
 ];
 
@@ -140,6 +146,13 @@ export default async function HomePage() {
 
   const regions = [...new Set(countries.map((c) => c.region))].sort();
 
+  // Both hero states are designed (an image bleeds to the edge behind a
+  // fade, or the six-intent index fills the same space) but the client has
+  // said explicitly, more than once, that the hero must never show a photo —
+  // so this always takes the no-image branch regardless of whether hero.jpg
+  // is configured in lib/media.js.
+  const heroHasImage = false;
+
   return (
     <main id="main-content">
       <JsonLd schema={webSite({ description: TAGLINE })} />
@@ -147,27 +160,79 @@ export default async function HomePage() {
 
       {/* 2. Hero */}
       <section aria-labelledby="hero-heading" className="relative bg-bg">
+        {heroHasImage ? (
+          <Media
+            slot="hero"
+            className="pointer-events-none !absolute inset-y-0 right-0 hidden w-[58%] lg:block"
+          >
+            <div
+              aria-hidden="true"
+              className="absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(to right, var(--color-bg) 0%, var(--color-bg) 20%, color-mix(in srgb, var(--color-bg) 60%, transparent) 45%, transparent 78%)",
+              }}
+            />
+          </Media>
+        ) : null}
+
         <div className="relative mx-auto w-full max-w-6xl px-5 pb-16 pt-14">
-          <div className="lg:max-w-[42rem]">
-            <Reveal as="p" className="t-eyebrow" y={10}>
+          <div
+            className={heroHasImage ? "lg:max-w-[36rem]" : "lg:max-w-[42rem]"}
+          >
+            <p className="hero-enter hero-enter-1 t-eyebrow">
               Immigration and global mobility
-            </Reveal>
-            <Reveal
-              as="h1"
+            </p>
+            <h1
               id="hero-heading"
-              className="t-display mt-5 text-label"
-              delay={0.06}
-              y={16}
+              className="hero-enter hero-enter-2 t-display mt-5 text-label"
             >
               Immigration routes, explained in full
-            </Reveal>
-            <Reveal as="p" className="t-lede mt-6 max-w-[46ch]" delay={0.12}>
+            </h1>
+            <p className="hero-enter hero-enter-3 t-lede mt-6 max-w-[46ch]">
               {TAGLINE}.
-            </Reveal>
+            </p>
           </div>
 
+          {heroHasImage ? (
+            /* Photograph on small screens, where the absolute slot is hidden. */
+            <Media
+              slot="hero"
+              className="mt-8 h-[380px] w-full rounded-media lg:hidden"
+            />
+          ) : (
+            <nav
+              aria-label="Browse by intent"
+              className="mt-8 grid gap-2 sm:grid-cols-2 lg:max-w-[38rem]"
+            >
+              {INTENTS.map((intent) => (
+                <Link
+                  key={intent.slug}
+                  href={`/${intent.path}`}
+                  className="lift-card surface-raised flex items-center justify-between gap-3 p-4 no-underline
+                    focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                >
+                  <span className="flex items-center gap-2.5">
+                    <span
+                      aria-hidden="true"
+                      className="size-2 shrink-0 rounded-full"
+                      style={{ backgroundColor: `var(${intent.token})` }}
+                    />
+                    <span className="font-ui text-sm font-medium text-label">
+                      {intent.label}
+                    </span>
+                  </span>
+                  <span className="t-data shrink-0 text-xs text-label-2">
+                    {countFor(intent.slug)}{" "}
+                    {countFor(intent.slug) === 1 ? "guide" : "guides"}
+                  </span>
+                </Link>
+              ))}
+            </nav>
+          )}
+
           {/* Tabs are links. The active one is this page. */}
-          <Reveal as="div" className="mt-10 lg:max-w-[42rem]" delay={0.18}>
+          <div className="hero-enter hero-enter-4 mt-10 lg:max-w-[42rem]">
             <nav aria-label="Search" className="flex flex-wrap gap-1">
               <span
                 aria-current="page"
@@ -177,8 +242,8 @@ export default async function HomePage() {
               </span>
               <Link
                 href="/destinations"
-                className="rounded-t-control border-b-2 border-transparent px-4 py-2.5 font-ui text-sm font-medium text-label-2 no-underline
-                  transition-colors duration-200 motion-reduce:transition-none hover:text-label
+                className="color-transition rounded-t-control border-b-2 border-transparent px-4 py-2.5 font-ui text-sm font-medium text-label-2 no-underline
+                  hover:text-label
                   focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
               >
                 Explore countries
@@ -234,19 +299,18 @@ export default async function HomePage() {
                 Find destinations
               </Button>
             </form>
-          </Reveal>
+          </div>
 
-          {/* 3. Trust bar — moved up under the search, same content as before. */}
+          {/* 3. Trust bar — sits under the search, static. */}
           <h2 id="trust-heading" className="sr-only">
             How this site is written
           </h2>
-          <StaggerGroup
-            as="ul"
+          <ul
             aria-labelledby="trust-heading"
             className="mt-8 flex flex-wrap gap-x-8 gap-y-4 lg:max-w-[42rem]"
           >
             {TRUST.map((item) => (
-              <StaggerItem as="li" key={item.title} className="flex gap-2.5">
+              <li key={item.title} className="flex gap-2.5">
                 <svg
                   aria-hidden="true"
                   focusable="false"
@@ -270,92 +334,82 @@ export default async function HomePage() {
                     {item.body}
                   </p>
                 </div>
-              </StaggerItem>
+              </li>
             ))}
-          </StaggerGroup>
+          </ul>
         </div>
       </section>
 
       {/* 4. Intents */}
       <section aria-labelledby="intents-heading" className="bg-bg">
         <div className="mx-auto w-full max-w-6xl px-5 py-20">
-          <Reveal>
-            <SectionHeading id="intents-heading" eyebrow="By intent">
-              Explore by what matters to you
-            </SectionHeading>
-          </Reveal>
+          <SectionHeading id="intents-heading" eyebrow="By intent">
+            Explore by what matters to you
+          </SectionHeading>
           {/*
             Six across only where six fit. At max-w-6xl a 6-column row gives each
             card ~172px, which will not hold "Settle & Citizenship" beside a 28px
             icon — so it is 2 up on mobile, 3 from md, and 6 only at 2xl.
           */}
-          <StaggerGroup className="mt-10 grid auto-rows-fr grid-cols-2 gap-4 md:grid-cols-3 2xl:grid-cols-6">
+          <div className="mt-10 grid auto-rows-fr grid-cols-2 gap-4 md:grid-cols-3 2xl:grid-cols-6">
             {INTENTS.map((intent) => (
-              <StaggerItem key={intent.slug}>
-                <IntentCard
-                  intent={intent}
-                  href={`/destinations?intent=${intent.slug}`}
-                  count={countFor(intent.slug)}
-                  description={INTENT_BLURB[intent.slug]}
-                />
-              </StaggerItem>
+              <IntentCard
+                key={intent.slug}
+                intent={intent}
+                href={`/${intent.path}`}
+                count={countFor(intent.slug)}
+                description={INTENT_BLURB[intent.slug]}
+              />
             ))}
-          </StaggerGroup>
+          </div>
         </div>
       </section>
 
       {/* 5. Destinations */}
       <section aria-labelledby="destinations-heading" className="band-inset">
         <div className="mx-auto w-full max-w-6xl px-5 py-20">
-          <Reveal>
-            <SectionHeading
-              id="destinations-heading"
-              eyebrow="By country"
-              trailing={
-                <Link
-                  href="/destinations"
-                  className="text-sm text-tint underline underline-offset-4
-                    focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
-                >
-                  See all {countries.length}
-                </Link>
-              }
-            >
-              Most covered destinations
-            </SectionHeading>
-          </Reveal>
+          <SectionHeading
+            id="destinations-heading"
+            eyebrow="By country"
+            trailing={
+              <Link
+                href="/destinations"
+                className="text-sm text-tint underline underline-offset-4
+                  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+              >
+                See all {countries.length}
+              </Link>
+            }
+          >
+            Most covered destinations
+          </SectionHeading>
           {/*
             Ordered by how many guides exist, which is what the heading says.
             Horizontal scroll on mobile; the vertical padding keeps focus rings
             from being clipped by the scroll container.
           */}
-          <StaggerGroup
-            as="ul"
-            className="-mx-5 mt-10 flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 py-2 [overscroll-behavior-x:contain] sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 lg:grid-cols-3"
-          >
+          <ul className="-mx-5 mt-10 flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 py-2 [overscroll-behavior-x:contain] sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 lg:grid-cols-3">
             {ordered.slice(0, 6).map((country) => (
-              <StaggerItem as="li" key={country.slug} className="snap-start">
+              <li key={country.slug} className="snap-start">
                 <DestinationPhotoCard
                   country={country}
                   programCount={programsPerCountry.get(country.slug) ?? 0}
                 />
-              </StaggerItem>
+              </li>
             ))}
-          </StaggerGroup>
+          </ul>
         </div>
       </section>
 
       {/* 6. Tools */}
       <section aria-labelledby="tools-heading" className="bg-bg">
         <div className="mx-auto w-full max-w-6xl px-5 py-20">
-          <Reveal>
-            <SectionHeading id="tools-heading" eyebrow="Practical">
-              Tools &amp; resources
-            </SectionHeading>
-          </Reveal>
-          <StaggerGroup as="ul" className="mt-10 grid auto-rows-fr gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <SectionHeading id="tools-heading" eyebrow="Practical">
+            Tools &amp; resources
+          </SectionHeading>
+          <ul className="mt-10 grid auto-rows-fr gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {TOOLS.map((tool) => (
-              <StaggerItem as="li" key={tool.name} className="surface-raised flex flex-col p-5">
+              <li key={tool.name} className="surface-raised flex flex-col p-5">
                 <p className="font-ui text-[1.0625rem] font-semibold text-label">
                   {tool.name}
                 </p>
@@ -363,11 +417,19 @@ export default async function HomePage() {
                   {tool.body}
                 </p>
                 <p className="mt-4">
-                  {tool.live ? (
+                  {tool.live && tool.href ? (
+                    <Link
+                      href={tool.href}
+                      className="color-transition font-ui text-sm text-tint underline underline-offset-4
+                        focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                    >
+                      Open the tool
+                    </Link>
+                  ) : tool.live ? (
                     <AttributedLink
                       path={eligibilityPath() || undefined}
                       source="home-tools"
-                      className="font-ui text-sm text-tint underline underline-offset-4
+                      className="color-transition font-ui text-sm text-tint underline underline-offset-4
                         focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
                     >
                       Open the checker
@@ -378,9 +440,9 @@ export default async function HomePage() {
                     </span>
                   )}
                 </p>
-              </StaggerItem>
+              </li>
             ))}
-          </StaggerGroup>
+          </ul>
         </div>
       </section>
 
@@ -389,7 +451,7 @@ export default async function HomePage() {
         <div className="mx-auto grid w-full max-w-6xl gap-0 px-0 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
           <Media slot="consultation" className="h-[260px] w-full lg:h-full" />
 
-          <Reveal as="div" className="px-5 py-16 lg:px-12">
+          <div className="px-5 py-16 lg:px-12">
             <p className="t-eyebrow text-on-brand opacity-70">
               Talk to someone
             </p>
@@ -423,7 +485,7 @@ export default async function HomePage() {
                 then.
               </p>
             </div>
-          </Reveal>
+          </div>
         </div>
       </section>
 
@@ -458,9 +520,9 @@ export default async function HomePage() {
 
       {/* 9. Closing bridge */}
       <section className="band-ink">
-        <Reveal as="div" className="mx-auto w-full max-w-6xl px-5 py-20">
+        <div className="mx-auto w-full max-w-6xl px-5 py-20">
           <SoftBridge tone="ink" />
-        </Reveal>
+        </div>
       </section>
     </main>
   );

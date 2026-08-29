@@ -1,0 +1,21 @@
+{
+  "slug": "esdc",
+  "term": "Employment and Social Development Canada",
+  "aliases": ["ESDC"],
+  "definition": "The federal department that assesses employer applications for a Labour Market Impact Assessment and administers the Temporary Foreign Worker Program. It is a separate department from Immigration, Refugees and Citizenship Canada, which decides the worker's own work permit application.",
+  "longform": "The two-department split is the source of most confusion about employer-sponsored work permits: ESDC decides whether hiring a foreign national for a position is acceptable for the labour market, and IRCC separately decides whether the worker may be issued a permit. A positive decision from one does not guarantee a positive decision from the other.",
+  "relatedPrograms": ["lmia"],
+  "relatedTerms": ["lmia", "tfwp", "ircc"],
+  "sources": [
+    {
+      "label": "Hire a temporary foreign worker with a Labour Market Impact Assessment — Employment and Social Development Canada",
+      "url": "https://www.canada.ca/en/employment-social-development/services/foreign-workers.html",
+      "retrieved": "2026-08-29"
+    }
+  ],
+  "author": {
+    "name": "Pending review",
+    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+  },
+  "lastReviewed": "2026-08-29"
+}

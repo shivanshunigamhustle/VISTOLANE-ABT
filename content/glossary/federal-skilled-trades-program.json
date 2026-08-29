@@ -1,0 +1,21 @@
+{
+  "slug": "federal-skilled-trades-program",
+  "term": "Federal Skilled Trades Program",
+  "aliases": ["FSTP"],
+  "definition": "One of the three federal economic immigration programmes managed through Express Entry, for tradespeople with qualifying work experience in a skilled trade occupation.",
+  "longform": "It requires a certificate of qualification from a Canadian provincial, territorial or federal authority, or a valid job offer where the destination province does not certify that trade, in addition to skilled trade work experience and minimum language scores.",
+  "relatedPrograms": ["express-entry"],
+  "relatedTerms": ["express-entry", "comprehensive-ranking-system"],
+  "sources": [
+    {
+      "label": "Express Entry: Federal Skilled Trades Program",
+      "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/who-can-apply/federal-skilled-trades.html",
+      "retrieved": "2026-08-29"
+    }
+  ],
+  "author": {
+    "name": "Pending review",
+    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+  },
+  "lastReviewed": "2026-08-29"
+}

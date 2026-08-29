@@ -254,9 +254,115 @@
   }
 
   /*
-   * Continuous right-to-left ticker. The track holds the content twice,
-   * back to back; animating exactly -50% moves the first copy fully out as
-   * the second reaches the start, so the loop has no seam or snap-back.
+   * The motion system. Every rule below is either a response to a user
+   * action (press, hover, disclosure) or fires once at first paint (the
+   * hero entrance). Nothing here runs on a loop or triggers off scroll —
+   * that ruled out the auto-playing sources ticker this replaces.
+   *
+   * Only transform and opacity animate; box-shadow is the one exception,
+   * used solely for the hover lift's "deeper shadow" and never alone.
+   */
+
+  .press-scale {
+    transition: transform var(--dur-press) var(--ease-out);
+  }
+  .press-scale:active {
+    transform: scale(0.97);
+  }
+
+  .lift-card {
+    transition:
+      transform var(--dur-hover) var(--ease-out),
+      box-shadow var(--dur-hover) var(--ease-out);
+  }
+  .lift-card:hover {
+    transform: translateY(-3px);
+    box-shadow:
+      0 2px 4px rgb(0 0 0 / 0.06),
+      0 8px 24px rgb(0 0 0 / 0.08);
+  }
+
+  .color-transition {
+    transition:
+      color var(--dur-color) var(--ease-out),
+      background-color var(--dur-color) var(--ease-out),
+      border-color var(--dur-color) var(--ease-out);
+  }
+
+  /*
+   * FAQ <details> and the mobile nav disclosure. Built on <details>, so the
+   * disclosure itself works with JavaScript off; this only animates the
+   * content in once it is already open.
+   */
+  @keyframes disclose-in {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  details[open] > .disclose-content {
+    animation: disclose-in var(--dur-disclose) var(--ease-out);
+  }
+
+  /*
+   * Hero entrance. First paint only — a CSS animation with a fixed delay per
+   * element, no JavaScript, no IntersectionObserver, so it cannot re-fire on
+   * scroll and cannot run before the element exists.
+   */
+  @keyframes hero-rise {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .hero-enter {
+    animation: hero-rise var(--dur-enter) var(--ease-out) both;
+  }
+  .hero-enter-1 {
+    animation-delay: 0ms;
+  }
+  .hero-enter-2 {
+    animation-delay: 60ms;
+  }
+  .hero-enter-3 {
+    animation-delay: 120ms;
+  }
+  .hero-enter-4 {
+    animation-delay: 180ms;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .press-scale,
+    .lift-card,
+    .color-transition {
+      transition: none;
+    }
+    .press-scale:active {
+      transform: none;
+    }
+    .lift-card:hover {
+      transform: none;
+    }
+    details[open] > .disclose-content,
+    .hero-enter {
+      animation: none;
+    }
+  }
+
+  /*
+   * Sources ticker. A deliberate, named exception to "nothing animates on
+   * its own": the client asked for this specific section to move
+   * continuously, right to left. The track holds the list twice, back to
+   * back; animating exactly -50% moves the first copy fully out as the
+   * second reaches the start, so the loop has no seam or snap-back.
    */
   .marquee {
     -webkit-mask-image: linear-gradient(
@@ -294,3 +400,19 @@
     }
   }
 }
+
+/*
+ * Print. Chrome (header, footer, forms, buttons) drops out; content stays.
+ * header and footer are tag selectors on purpose — the site has exactly one
+ * of each, in the root layout, so this is a genuine site-wide rule, not
+ * scoped to one tool. .no-print marks anything else that should not print:
+ * the utility bar, and a page's own controls (pickers, forms, buttons).
+ */
+@media print {
+  header,
+  footer,
+  .no-print {
+    display: none !important;
+  }
+}
+

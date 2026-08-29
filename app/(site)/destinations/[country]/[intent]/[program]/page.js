@@ -13,6 +13,7 @@ import Unverified, {
   splitUnverified,
 } from "@/components/primitives/Unverified";
 import JsonLd from "@/components/site/JsonLd";
+import LatestUpdates from "@/components/site/LatestUpdates";
 import LeadForm from "@/components/site/LeadForm";
 import ProgramBridge from "@/components/site/ProgramBridge";
 import SectionHeading from "@/components/site/SectionHeading";
@@ -20,6 +21,7 @@ import {
   getAllPrograms,
   getCountry,
   getIntent,
+  getNewsUpdatesFor,
   getProgram,
   getPrograms,
 } from "@/lib/content/loader";
@@ -101,10 +103,11 @@ export default async function ProgramPage({ params }) {
   const program = await getProgram(country, intent, slug);
   if (!program) notFound();
 
-  const [countryRecord, intentRecord, siblings] = await Promise.all([
+  const [countryRecord, intentRecord, siblings, newsUpdates] = await Promise.all([
     getCountry(program.countrySlug),
     getIntent(program.intent),
     getPrograms({ country: program.countrySlug }),
+    getNewsUpdatesFor({ program: program.slug }),
   ]);
 
   const countryName = countryRecord?.name ?? program.countrySlug;
@@ -216,6 +219,12 @@ export default async function ProgramPage({ params }) {
           </dl>
         </div>
       </div>
+
+      {newsUpdates.length > 0 ? (
+        <div className="mx-auto w-full max-w-6xl px-5 pt-12">
+          <LatestUpdates updates={newsUpdates} />
+        </div>
+      ) : null}
 
       <div className="mx-auto w-full max-w-6xl px-5 py-12">
         <LeadForm
@@ -403,7 +412,7 @@ export default async function ProgramPage({ params }) {
                   <summary className="cursor-pointer font-ui font-medium text-label focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint">
                     {faq.question}
                   </summary>
-                  <p className="mt-3 max-w-[68ch] font-read leading-relaxed text-label-2">
+                  <p className="disclose-content mt-3 max-w-[68ch] font-read leading-relaxed text-label-2">
                     <FieldValue value={faq.answer} />
                   </p>
                 </details>

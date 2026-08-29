@@ -1,0 +1,21 @@
+{
+  "slug": "transition-plan",
+  "term": "Transition Plan",
+  "aliases": [],
+  "definition": "A mandatory part of a Labour Market Impact Assessment application for a high-wage position, setting out what the employer will do to recruit, retain and train Canadians and permanent residents and to reduce reliance on the Temporary Foreign Worker Program.",
+  "longform": "It is valid for the duration of the worker's employment and is generally not required for low-wage positions. It exists so that a positive assessment is tied to an employer's ongoing commitment, not only to a one-time recruitment exercise.",
+  "relatedPrograms": ["lmia"],
+  "relatedTerms": ["lmia", "tfwp"],
+  "sources": [
+    {
+      "label": "Program requirements for high-wage positions",
+      "url": "https://www.canada.ca/en/employment-social-development/services/foreign-workers/median-wage/high/requirements.html",
+      "retrieved": "2026-08-29"
+    }
+  ],
+  "author": {
+    "name": "Pending review",
+    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+  },
+  "lastReviewed": "2026-08-29"
+}

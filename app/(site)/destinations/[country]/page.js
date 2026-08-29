@@ -7,6 +7,7 @@ import DataTable from "@/components/primitives/DataTable";
 import { FieldValue } from "@/components/primitives/Unverified";
 import CountryCard from "@/components/site/CountryCard";
 import IntentCard from "@/components/site/IntentCard";
+import LatestUpdates from "@/components/site/LatestUpdates";
 import SectionHeading from "@/components/site/SectionHeading";
 import JsonLd from "@/components/site/JsonLd";
 import SoftBridge from "@/components/site/SoftBridge";
@@ -15,6 +16,7 @@ import {
   getAllCountries,
   getAllPrograms,
   getCountry,
+  getNewsUpdatesFor,
   getPrograms,
 } from "@/lib/content/loader";
 import { pageMetadata } from "@/lib/seo/metadata";
@@ -61,10 +63,11 @@ export default async function CountryPage({ params }) {
   const country = await getCountry(slug);
   if (!country) notFound();
 
-  const [programs, allCountries, allPrograms] = await Promise.all([
+  const [programs, allCountries, allPrograms, newsUpdates] = await Promise.all([
     getPrograms({ country: country.slug }),
     getAllCountries(),
     getAllPrograms(),
+    getNewsUpdatesFor({ country: country.slug }),
   ]);
 
   /** Guide counts per country, so a related card never claims a count it does not have. */
@@ -156,6 +159,12 @@ export default async function CountryPage({ params }) {
           ))}
         </dl>
       </div>
+
+      {newsUpdates.length > 0 ? (
+        <div className="mx-auto w-full max-w-6xl px-5 pt-16">
+          <LatestUpdates updates={newsUpdates} />
+        </div>
+      ) : null}
 
       {/* 2. Intents */}
       <section

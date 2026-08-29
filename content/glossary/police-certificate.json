@@ -1,0 +1,21 @@
+{
+  "slug": "police-certificate",
+  "term": "Police Certificate",
+  "aliases": ["Police clearance certificate"],
+  "definition": "A document showing whether an applicant has a criminal record, required from applicants 18 or older for some Canadian immigration programmes, including most permanent residence applications.",
+  "longform": "Applicants normally request it directly from the local police or government of each country they have lived in. Express Entry candidates who are asked for one have a limited window — 60 days — to submit it.",
+  "relatedPrograms": ["express-entry", "study-permit"],
+  "relatedTerms": ["immigration-medical-examination"],
+  "sources": [
+    {
+      "label": "Police certificate — Immigration, Refugees and Citizenship Canada",
+      "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/application/medical-police/police-certificates.html",
+      "retrieved": "2026-08-29"
+    }
+  ],
+  "author": {
+    "name": "Pending review",
+    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+  },
+  "lastReviewed": "2026-08-29"
+}

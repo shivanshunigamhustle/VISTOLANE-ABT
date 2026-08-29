@@ -1,0 +1,21 @@
+{
+  "slug": "provincial-attestation-letter",
+  "term": "Provincial Attestation Letter",
+  "aliases": ["PAL", "Territorial Attestation Letter"],
+  "definition": "A letter issued and signed by the province or territory where a student will study, confirming they hold one of that jurisdiction's allocated spaces. Since 22 January 2024 most new post-secondary students at the college or undergraduate level must include one with their study permit application.",
+  "longform": "It is a separate document from the institution's own letter of acceptance and comes from a different authority. Quebec applicants provide the attestation of issuance of a Quebec Acceptance Certificate instead.",
+  "relatedPrograms": ["study-permit"],
+  "relatedTerms": ["designated-learning-institution", "quebec-acceptance-certificate"],
+  "sources": [
+    {
+      "label": "Study permit: Get the right documents — Provincial attestation letter or territorial attestation letter",
+      "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/study-canada/study-permit/get-documents/provincial-attestation-letter.html",
+      "retrieved": "2026-08-29"
+    }
+  ],
+  "author": {
+    "name": "Pending review",
+    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+  },
+  "lastReviewed": "2026-08-29"
+}

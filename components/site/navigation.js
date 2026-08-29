@@ -27,29 +27,21 @@ import { INTENTS } from "@/lib/content/intents";
 export const NAV = [
   {
     label: "For Individuals",
-    // The six intents, pointed at the filtered destination grid. Global intent
-    // hubs are a later prompt; until they exist the grid is the honest target.
+    // The six global intent hubs, at their readable paths.
     items: INTENTS.map((intent) => ({
       label: intent.label,
-      href: `/destinations?intent=${intent.slug}`,
+      href: `/${intent.path}`,
     })),
   },
-  {
-    label: "For Business",
-    items: [
-      { label: "Hire Global Talent" },
-      { label: "Post a Job" },
-      { label: "Partner With Us" },
-    ],
-  },
+  { label: "For Business", href: "/business" },
   { label: "Destinations", href: "/destinations" },
   {
     label: "Resources",
     items: [
-      { label: "Guides" },
-      { label: "Tools" },
-      { label: "News" },
-      { label: "Glossary" },
+      { label: "Guides", href: "/resources" },
+      { label: "Tools", href: "/tools" },
+      { label: "News", href: "/news" },
+      { label: "Glossary", href: "/glossary" },
     ],
   },
 ];

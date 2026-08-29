@@ -1,7 +1,4 @@
-"use client";
-
 import Link from "next/link";
-import { motion, useReducedMotion } from "framer-motion";
 
 import IntentIcon from "@/components/site/IntentIcon";
 
@@ -19,6 +16,9 @@ import IntentIcon from "@/components/site/IntentIcon";
  * An intent with nothing behind it is shown quietly and inert rather than
  * hidden — someone looking for a study route needs to know it is not covered
  * yet, not to wonder whether they missed it.
+ *
+ * The hover lift is .lift-card from the motion system (styles/globals.css) —
+ * a hover-only transform and shadow, never anything that fires on its own.
  *
  * @param {{
  *   intent: import("@/lib/content/intents").Intent,
@@ -41,20 +41,13 @@ export default function IntentCard({
   const empty = count === 0;
 
   const background = `color-mix(in srgb, ${hue} 7%, var(--color-surface))`;
-  const reduceMotion = useReducedMotion();
 
   const inner = (
     <>
-      <motion.span
-        className="block w-fit"
-        whileHover={reduceMotion || empty ? undefined : { scale: 1.08, rotate: -4 }}
-        transition={{ type: "spring", stiffness: 420, damping: 22 }}
-      >
-        <IntentIcon
-          slug={intent.slug}
-          hue={empty ? `color-mix(in srgb, ${hue} 55%, transparent)` : hue}
-        />
-      </motion.span>
+      <IntentIcon
+        slug={intent.slug}
+        hue={empty ? `color-mix(in srgb, ${hue} 55%, transparent)` : hue}
+      />
 
       <span className="mt-4 block">
         <span
@@ -110,21 +103,13 @@ export default function IntentCard({
   }
 
   return (
-    <motion.div
-      whileHover={reduceMotion ? undefined : { y: -4 }}
-      whileTap={reduceMotion ? undefined : { scale: 0.98 }}
-      transition={{ type: "spring", stiffness: 420, damping: 28 }}
+    <Link
+      href={href ?? `/destinations/${countrySlug}/${intent.slug}`}
+      className="lift-card elevate-soft flex flex-col rounded-card p-5 no-underline
+        focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+      style={{ background }}
     >
-      <Link
-        href={href ?? `/destinations/${countrySlug}/${intent.slug}`}
-        className="elevate-soft flex flex-col rounded-card p-5 no-underline
-          transition-shadow duration-200 motion-reduce:transition-none
-          hover:shadow-[0_2px_6px_rgb(0_0_0/0.06),0_12px_28px_rgb(0_0_0/0.08)]
-          focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
-        style={{ background }}
-      >
-        {inner}
-      </Link>
-    </motion.div>
+      {inner}
+    </Link>
   );
 }

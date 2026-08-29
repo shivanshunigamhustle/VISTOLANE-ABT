@@ -1,0 +1,26 @@
+{
+  "slug": "express-entry",
+  "term": "Express Entry",
+  "aliases": [],
+  "definition": "The system Immigration, Refugees and Citizenship Canada uses to manage applications for three federal economic immigration programmes: the Federal Skilled Worker Program, the Canadian Experience Class and the Federal Skilled Trades Program.",
+  "longform": "Meeting the minimum requirements of one of the three programmes gets a candidate into the pool. It does not by itself produce an invitation to apply for permanent residence — that depends on a separate ranking score.",
+  "relatedPrograms": ["express-entry"],
+  "relatedTerms": [
+    "comprehensive-ranking-system",
+    "federal-skilled-worker-program",
+    "canadian-experience-class",
+    "federal-skilled-trades-program"
+  ],
+  "sources": [
+    {
+      "label": "Immigrate through Express Entry — Immigration, Refugees and Citizenship Canada",
+      "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry.html",
+      "retrieved": "2026-08-29"
+    }
+  ],
+  "author": {
+    "name": "Pending review",
+    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+  },
+  "lastReviewed": "2026-08-29"
+}

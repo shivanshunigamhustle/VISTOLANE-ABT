@@ -1,24 +1,8 @@
-"use client";
-
 import Link from "next/link";
-import { motion, useReducedMotion } from "framer-motion";
 
+import CountryMark from "@/components/site/CountryMark";
 import Media from "@/components/site/Media";
-
-/**
- * Client-supplied flag artwork, cropped from a single composite image into
- * one square per country. Keyed by country slug rather than iso2 because the
- * United Kingdom's file is named for brevity, not for its code.
- *
- * @type {Record<string, string>}
- */
-const FLAG_IMAGE = {
-  canada: "/images/flags/canada.jpg",
-  australia: "/images/flags/australia.jpg",
-  germany: "/images/flags/germany.jpg",
-  "united-kingdom": "/images/flags/uk.jpg",
-  vietnam: "/images/flags/vietnam.jpg",
-};
+import { FLAG_IMAGE } from "@/lib/media";
 
 /**
  * A destination as a photo card, for the home page.
@@ -32,6 +16,8 @@ const FLAG_IMAGE = {
  * for a slug, it falls back to the ISO 3166-1 alpha-2 code as plain text
  * rather than rendering a broken image.
  *
+ * The hover lift is .lift-card from the motion system (styles/globals.css).
+ *
  * @param {{
  *   country: import("@/lib/content/schema").Country,
  *   programCount: number,
@@ -39,24 +25,19 @@ const FLAG_IMAGE = {
  * @returns {JSX.Element}
  */
 export default function DestinationPhotoCard({ country, programCount }) {
-  const reduceMotion = useReducedMotion();
-
   return (
-    <motion.div
-      whileHover={reduceMotion ? undefined : { y: -5 }}
-      whileTap={reduceMotion ? undefined : { scale: 0.98 }}
-      transition={{ type: "spring", stiffness: 400, damping: 26 }}
-      className="w-[16rem] shrink-0 sm:w-auto"
+    <Link
+      href={`/destinations/${country.slug}`}
+      className="lift-card group block w-[16rem] shrink-0 no-underline sm:w-auto
+        focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
     >
-      <Link
-        href={`/destinations/${country.slug}`}
-        className="group block no-underline
-          focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+      <Media
+        slot={`destination:${country.slug}`}
+        className="aspect-[4/3] w-full rounded-media"
+        fallback={
+          <CountryMark countrySlug={country.slug} label={country.name} />
+        }
       >
-        <Media
-          slot={`destination:${country.slug}`}
-          className="aspect-[4/3] w-full rounded-media"
-        >
         {/*
           The caption sits on a SOLID brand-ink ground, with a short gradient
           above it doing the transition. A fade alone cannot guarantee contrast:
@@ -104,7 +85,6 @@ export default function DestinationPhotoCard({ country, programCount }) {
           </span>
         </span>
       </Media>
-      </Link>
-    </motion.div>
+    </Link>
   );
 }

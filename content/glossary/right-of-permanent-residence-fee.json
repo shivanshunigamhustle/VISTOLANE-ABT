@@ -1,0 +1,21 @@
+{
+  "slug": "right-of-permanent-residence-fee",
+  "term": "Right of Permanent Residence Fee",
+  "aliases": ["RPRF"],
+  "definition": "A fee bundled into the cost of most permanent residence applications, on top of the processing fee. For an application through Express Entry it is included in the $1,590 CAD principal-applicant fee.",
+  "longform": "It is charged alongside, not instead of, the processing fee, which is why permanent residence applications cost more than a study or work permit application.",
+  "relatedPrograms": ["express-entry"],
+  "relatedTerms": ["express-entry", "ircc"],
+  "sources": [
+    {
+      "label": "Citizenship and immigration application fees: Fee list — Immigration, Refugees and Citizenship Canada",
+      "url": "https://ircc.canada.ca/english/information/fees/fees.asp",
+      "retrieved": "2026-08-29"
+    }
+  ],
+  "author": {
+    "name": "Pending review",
+    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+  },
+  "lastReviewed": "2026-08-29"
+}
