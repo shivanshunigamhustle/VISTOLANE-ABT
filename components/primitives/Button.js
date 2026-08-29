@@ -4,18 +4,22 @@
 
 /** @type {Record<ButtonVariant, string>} */
 const VARIANTS = {
-  primary: "border-transparent bg-brand text-on-brand hover:opacity-90",
-  tint: "border-transparent bg-transparent text-tint hover:bg-fill",
-  quiet: "border-rule bg-transparent text-label hover:bg-fill",
-  // For the brand-ink grounds, where a navy fill would disappear.
-  onInk: "border-transparent bg-on-brand text-brand-ink hover:opacity-90",
+  primary:
+    "border-transparent bg-brand text-on-brand hover:opacity-90 focus-visible:outline-tint",
+  tint: "border-transparent bg-transparent text-tint hover:bg-fill focus-visible:outline-tint",
+  quiet:
+    "border-rule bg-transparent text-label hover:bg-fill focus-visible:outline-tint",
+  // For the brand-ink grounds, where a navy fill would disappear and a tint ring
+  // measures only 2.97:1 against the ink.
+  onInk:
+    "border-transparent bg-on-brand text-brand-ink hover:opacity-90 focus-visible:outline-on-brand",
 };
 
 const BASE =
   "inline-flex cursor-pointer items-center justify-center gap-2 rounded-[var(--radius-control)] border " +
   "px-4 py-2 text-sm font-medium no-underline " +
   "transition-[background-color,opacity,color] duration-200 motion-reduce:transition-none " +
-  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint " +
+  "focus-visible:outline-2 focus-visible:outline-offset-2 " +
   "disabled:cursor-not-allowed disabled:opacity-50";
 
 /**

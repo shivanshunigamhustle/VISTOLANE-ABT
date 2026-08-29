@@ -1,7 +1,9 @@
 import Link from "next/link";
 
 import NavItem from "@/components/site/NavItem";
+import PortalLink from "@/components/site/PortalLink";
 import { NAV } from "@/components/site/navigation";
+import { getAllCountries } from "@/lib/content/loader";
 
 /**
  * The site footer.
@@ -10,55 +12,81 @@ import { NAV } from "@/components/site/navigation";
  * --color-on-brand is white in both appearances, so the pairing holds whichever
  * way the OS is set.
  *
- * The navigation mirrors the header, but only the parts that exist. An unbuilt
- * route is omitted here rather than listed with a "Coming soon" chip: the header
- * already tells someone the section is planned, and repeating that eleven times
- * in the footer turns the whole page into a list of things we have not done.
+ * Navigation mirrors the header, but only the parts that exist. An unbuilt route
+ * is omitted rather than listed with a "Coming soon" chip: the header already
+ * says the section is planned, and repeating that across the footer turns the
+ * page into a list of things we have not done.
+ *
+ * The destinations column is real internal linking, not filler. Every country
+ * page is one hop from every page on the site, which is exactly the link equity
+ * the thin country records need.
+ *
+ * @returns {Promise<JSX.Element>}
  */
+export default async function SiteFooter() {
+  const countries = await getAllCountries();
 
-/**
- * @returns {JSX.Element}
- */
-export default function SiteFooter() {
+  const columns = NAV.filter((group) => group.items?.some((item) => item.href));
+
   return (
-    <footer className="band-ink mt-0">
+    <footer className="band-ink">
       <div className="mx-auto w-full max-w-6xl px-5 py-14">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-          {/*
-            Only groups with at least one built child become a column. A heading
-            with nothing under it — which is what "Destinations" was — reads as a
-            missing section rather than a nav item.
-          */}
-          {NAV.filter((group) => group.items?.some((item) => item.href)).map(
-            (group) => (
-              <nav key={group.label} aria-label={group.label}>
-                <h2 className="t-eyebrow text-on-brand opacity-70">
-                  {group.href ? (
-                    <Link
-                      href={group.href}
-                      className="text-on-brand no-underline hover:underline underline-offset-2
-                      focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
-                    >
-                      {group.label}
-                    </Link>
-                  ) : (
-                    group.label
-                  )}
-                </h2>
-                {group.items ? (
-                  <ul className="mt-3">
-                    {group.items
-                      .filter((item) => item.href)
-                      .map((item) => (
-                        <li key={item.label}>
-                          <NavItem item={item} onBrand />
-                        </li>
-                      ))}
-                  </ul>
-                ) : null}
-              </nav>
-            )
-          )}
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+          {columns.map((group) => (
+            <nav key={group.label} aria-label={group.label}>
+              <h2 className="t-eyebrow text-on-brand opacity-70">
+                {group.label}
+              </h2>
+              <ul className="mt-3">
+                {group.items
+                  .filter((item) => item.href)
+                  .map((item) => (
+                    <li key={item.label}>
+                      <NavItem item={item} onBrand />
+                    </li>
+                  ))}
+              </ul>
+            </nav>
+          ))}
+
+          <nav aria-label="Destinations">
+            <h2 className="t-eyebrow text-on-brand opacity-70">
+              <Link
+                href="/destinations"
+                className="text-on-brand no-underline underline-offset-4 hover:underline
+                  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-on-brand"
+              >
+                Destinations
+              </Link>
+            </h2>
+            <ul className="mt-3">
+              {countries.map((country) => (
+                <li key={country.slug}>
+                  <NavItem
+                    item={{
+                      label: country.name,
+                      href: `/destinations/${country.slug}`,
+                    }}
+                    onBrand
+                  />
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <div>
+            <h2 className="t-eyebrow text-on-brand opacity-70">About</h2>
+            <p className="mt-3 font-read text-xl font-semibold text-on-brand">
+              Vistolane
+            </p>
+            <p className="mt-2 max-w-[38ch] font-ui text-[0.9375rem] text-on-brand opacity-80">
+              Immigration routes explained in full, with every figure traced to
+              an official government source or marked on the page as unverified.
+            </p>
+            <div className="mt-5">
+              <PortalLink onInk />
+            </div>
+          </div>
         </div>
 
         {/*
@@ -66,7 +94,7 @@ export default function SiteFooter() {
           must be agreed with the client and, given what this site publishes,
           reviewed by someone qualified. Do not launch with this text.
         */}
-        <div className="mt-12 rounded-[var(--radius-card)] border border-on-brand/30 p-5">
+        <div className="mt-14 rounded-[var(--radius-card)] border border-on-brand/30 p-5">
           <h2 className="t-subsection">
             Advisory disclaimer — placeholder, not for launch
           </h2>
@@ -78,13 +106,13 @@ export default function SiteFooter() {
           </p>
         </div>
 
-        <div className="mt-10 flex flex-col gap-4 border-t border-on-brand/20 pt-6 sm:flex-row sm:items-center sm:justify-between">
-          <p className="font-ui text-sm opacity-80">Vistolane</p>
-          {/*
-            TODO(legal): Privacy, Terms, Cookies and Accessibility pages are not
-            written. They are omitted rather than listed as absent — a footer of
-            "Coming soon" chips reads as an unfinished site.
-          */}
+        {/*
+          TODO(legal): Privacy, Terms, Cookies and Accessibility pages are not
+          written. They are omitted rather than listed as absent — a footer of
+          "Coming soon" chips reads as an unfinished site.
+        */}
+        <div className="mt-10 border-t border-on-brand/20 pt-6">
+          <p className="font-ui text-sm text-on-brand opacity-70">Vistolane</p>
         </div>
       </div>
     </footer>

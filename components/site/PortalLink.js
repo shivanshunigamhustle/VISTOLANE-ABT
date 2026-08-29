@@ -13,11 +13,15 @@ import { buildPortalUrl } from "@/lib/bridge";
  * sign-in path has been confirmed and guessing one would be inventing a URL
  * (OPN-07). The application decides where an unauthenticated visitor lands.
  *
+ * @param {{ onInk?: boolean }} [props]
  * @returns {JSX.Element}
  */
-export default function PortalLink() {
+export default function PortalLink({ onInk = false } = {}) {
   return (
-    <Button href={buildPortalUrl({ path: "/" })} variant="quiet">
+    <Button
+      href={buildPortalUrl({ path: "/" })}
+      variant={onInk ? "onInk" : "quiet"}
+    >
       Sign in to your portal
     </Button>
   );

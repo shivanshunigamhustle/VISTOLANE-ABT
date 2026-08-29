@@ -122,7 +122,7 @@ export default async function HomePage() {
                       href={`/destinations?intent=${intent.slug}`}
                       className="flex items-baseline justify-between gap-4 py-3.5 no-underline
                         transition-opacity duration-200 motion-reduce:transition-none
-                        hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                        hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-on-brand"
                     >
                       <span className="flex items-baseline gap-2.5">
                         <span
@@ -308,7 +308,7 @@ export default async function HomePage() {
         above the closing bridge until there is something real to fill a section.
       */}
       <section className="band-ink">
-        <div className="mx-auto w-full max-w-6xl px-5 py-20">
+        <div className="mx-auto w-full max-w-6xl px-5 pb-12 pt-20">
           <p className="border-b border-on-brand/20 pb-8 font-ui text-[0.9375rem] text-on-brand opacity-70">
             Verified testimonials, success metrics and regulator registrations
             are pending from the client. Nothing on this page is

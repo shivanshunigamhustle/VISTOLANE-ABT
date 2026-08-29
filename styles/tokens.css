@@ -13,7 +13,7 @@
   --color-rule: #C6C6C8;
   --color-fill: rgba(120, 120, 128, 0.12);
 
-  --color-tint: #007AFF;
+  --color-tint: #0A5FCC;
   --color-brand: #13274D;
   --color-brand-ink: #0B1830;
   --color-on-brand: #FFFFFF;
@@ -45,7 +45,7 @@
     --color-separator: #38383A;
     --color-rule: #48484A;
     --color-fill: rgba(120, 120, 128, 0.24);
-    --color-tint: #0A84FF;
+    --color-tint: #3D9BFF;
     --color-brand: #1B3563;
     --color-brand-ink: #0B1830;
     --color-success: #30D158;
@@ -70,7 +70,7 @@
   --color-separator: #38383A;
   --color-rule: #48484A;
   --color-fill: rgba(120, 120, 128, 0.24);
-  --color-tint: #0A84FF;
+  --color-tint: #3D9BFF;
   --color-brand: #1B3563;
   --color-brand-ink: #0B1830;
   --color-on-brand: #FFFFFF;

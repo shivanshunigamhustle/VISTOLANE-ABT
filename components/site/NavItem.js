@@ -47,7 +47,11 @@ export default function NavItem({ item, onBrand = false }) {
       href={item.href}
       className={`block py-1.5 text-sm no-underline underline-offset-2
         transition-colors duration-200 motion-reduce:transition-none hover:underline
-        focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint ${linkText}`}
+        focus-visible:outline-2 focus-visible:outline-offset-2 ${
+          onBrand
+            ? "focus-visible:outline-on-brand"
+            : "focus-visible:outline-tint"
+        } ${linkText}`}
     >
       {item.label}
     </Link>

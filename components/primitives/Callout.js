@@ -57,13 +57,19 @@ const TONES = {
 export default function Callout({ tone = "note", title, sources, children }) {
   const { hue, icon, fallbackTitle } = TONES[tone] ?? TONES.note;
   const heading = title ?? fallbackTitle;
+  // The sources block carries links, and an 8% tint over the inset band pushed
+  // them to 4.36:1. It keeps the rail and drops the fill so the links sit on the
+  // band itself, where they clear AA.
+  const filled = tone !== "source";
 
   return (
     <aside
       className="my-6 rounded-r-[var(--radius-card)] border-l-2 p-4 text-label"
       style={{
         borderLeftColor: hue,
-        backgroundColor: `color-mix(in srgb, ${hue} 8%, transparent)`,
+        ...(filled
+          ? { backgroundColor: `color-mix(in srgb, ${hue} 8%, transparent)` }
+          : {}),
       }}
     >
       <p className="flex items-center gap-2 font-ui text-sm font-semibold">

@@ -119,7 +119,7 @@ export default async function CountryPage({ params }) {
                 <Link
                   href="/destinations"
                   className="text-on-brand/70 underline underline-offset-4 hover:text-on-brand
-                    focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                    focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-on-brand"
                 >
                   Destinations
                 </Link>

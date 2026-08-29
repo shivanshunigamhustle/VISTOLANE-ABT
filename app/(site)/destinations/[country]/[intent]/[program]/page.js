@@ -160,7 +160,7 @@ export default async function ProgramPage({ params }) {
                   <Link
                     href={crumb.href}
                     className="text-on-brand/70 underline underline-offset-4 hover:text-on-brand
-                      focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                      focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-on-brand"
                   >
                     {crumb.label}
                   </Link>

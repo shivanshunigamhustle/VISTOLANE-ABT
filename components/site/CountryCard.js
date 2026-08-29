@@ -36,17 +36,25 @@ export default function CountryCard({ country, programCount }) {
         </p>
       </div>
 
+      {/*
+        Every card has the same anatomy: figure, eyebrow, then a quiet line. The
+        zero state fills the figure slot with an em dash rather than leaving a
+        hole, so a grid of mostly-empty countries still reads as a grid.
+      */}
       <div>
+        <p
+          className={`t-figure ${programCount === 0 ? "text-label-2" : "text-label"}`}
+        >
+          {programCount === 0 ? "—" : programCount}
+        </p>
+        <p className="t-eyebrow mt-1.5">
+          {programCount === 1 ? "route guide" : "route guides"}
+        </p>
         {programCount === 0 ? (
-          <p className="font-ui text-[0.9375rem] text-label-2">No guides yet</p>
-        ) : (
-          <>
-            <p className="t-figure text-label">{programCount}</p>
-            <p className="t-eyebrow mt-1.5">
-              {programCount === 1 ? "route guide" : "route guides"}
-            </p>
-          </>
-        )}
+          <p className="mt-2 font-ui text-[0.9375rem] text-label-2">
+            No guides yet
+          </p>
+        ) : null}
       </div>
     </Link>
   );
