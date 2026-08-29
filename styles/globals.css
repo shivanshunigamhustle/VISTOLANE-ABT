@@ -42,6 +42,8 @@
   --color-brand: var(--color-brand);
   --color-brand-ink: var(--color-brand-ink);
   --color-on-brand: var(--color-on-brand);
+  --color-accent: var(--color-accent);
+  --color-on-accent: var(--color-on-accent);
 
   --color-success: var(--color-success);
   --color-warning: var(--color-warning);
@@ -53,6 +55,34 @@
   --color-intent-family: var(--intent-family);
   --color-intent-investor: var(--intent-investor);
   --color-intent-residence: var(--intent-residence);
+
+  /*
+   * Label colours for the intent cards. The raw hues fail AA as text on their
+   * own tinted card — visitor 2.39:1, study 2.42:1 — so these are darkened in
+   * light and lifted in dark until each clears 4.5:1 against
+   * color-mix(in srgb, var(--intent-*) 7%, var(--color-surface)).
+   *
+   * That mix base is load-bearing. These values are only valid against
+   * --color-surface; moving an intent card onto another ground invalidates them.
+   */
+  --color-intent-visitor-text: var(--intent-visitor-text);
+  --color-intent-work-text: var(--intent-work-text);
+  --color-intent-study-text: var(--intent-study-text);
+  --color-intent-family-text: var(--intent-family-text);
+  --color-intent-investor-text: var(--intent-investor-text);
+  --color-intent-residence-text: var(--intent-residence-text);
+
+  /*
+   * Radii become real utilities (rounded-card, rounded-control, rounded-media,
+   * rounded-inline) rather than arbitrary values. The reset keeps the tokens the
+   * only radius scale, matching how colour and type are handled above.
+   */
+  --radius-*: initial;
+  --radius-card: var(--radius-card);
+  --radius-control: var(--radius-control);
+  --radius-media: var(--radius-media);
+  --radius-inline: var(--radius-inline);
+  --radius-pill: var(--radius-pill);
 }
 
 /* Preflight defaults, pointed at the same token stacks. */
@@ -199,5 +229,32 @@
   .band-ink {
     background-color: var(--color-brand-ink);
     color: var(--color-on-brand);
+  }
+
+  /*
+   * Elevation for elements that paint their own background — the intent cards
+   * set a per-hue tint, so they cannot use .surface-raised, which hard-sets
+   * background-color.
+   */
+  .elevate-soft {
+    box-shadow:
+      0 1px 2px rgb(0 0 0 / 0.04),
+      0 6px 18px rgb(0 0 0 / 0.05);
+  }
+
+  /*
+   * A shadow of 4% black is invisible on a black page ground, which would leave
+   * a dark-appearance card with no edge at all. Dark gets a hairline instead.
+   */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .elevate-soft,
+    :root:not([data-theme="light"]) .surface-raised {
+      box-shadow: inset 0 0 0 1px var(--color-rule);
+    }
+  }
+
+  :root[data-theme="dark"] .elevate-soft,
+  :root[data-theme="dark"] .surface-raised {
+    box-shadow: inset 0 0 0 1px var(--color-rule);
   }
 }

@@ -94,7 +94,7 @@ export default async function SiteFooter() {
           must be agreed with the client and, given what this site publishes,
           reviewed by someone qualified. Do not launch with this text.
         */}
-        <div className="mt-14 rounded-[var(--radius-card)] border border-on-brand/30 p-5">
+        <div className="mt-14 rounded-card border border-on-brand/30 p-5">
           <h2 className="t-subsection">
             Advisory disclaimer — placeholder, not for launch
           </h2>

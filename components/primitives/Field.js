@@ -37,7 +37,7 @@ export default function Field({
   const errorId = error ? `${id}-error` : undefined;
   const describedBy = [hintId, errorId].filter(Boolean).join(" ") || undefined;
 
-  const controlClasses = `w-full rounded-[var(--radius-control)] border bg-surface px-3 py-2 text-sm text-label
+  const controlClasses = `w-full rounded-control border bg-surface px-3 py-2 text-sm text-label
     transition-[border-color,box-shadow] duration-200 motion-reduce:transition-none
     placeholder:text-label-3
     focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint

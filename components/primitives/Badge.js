@@ -86,7 +86,7 @@ export default function Badge({ tone = "neutral", children, onInk = false }) {
 
   return (
     <span
-      className={`inline-flex max-w-full items-center gap-1.5 rounded-[var(--radius-control)] px-2 py-1 text-xs font-medium [overflow-wrap:anywhere] ${
+      className={`inline-flex max-w-full items-center gap-1.5 rounded-control px-2 py-1 text-xs font-medium [overflow-wrap:anywhere] ${
         onInk ? "text-on-brand" : "text-label"
       }`}
       style={{

@@ -1,79 +1,98 @@
 import Link from "next/link";
 
+import IntentIcon from "@/components/site/IntentIcon";
+
 /**
  * One intent.
  *
- * The hue is restated rather than washed across the card: a 3px rule along the
- * top edge and a dot beside the label. Text stays on --color-label, which is the
- * same rule Badge follows and the reason these hues are legible at all.
+ * The card is a 7% wash of its own hue over --color-surface, with the label in
+ * a darkened (light) or lifted (dark) variant of that hue. Those label values
+ * are computed against exactly this ground — see the note in globals.css. The
+ * mix base is --color-surface and is not a prop: change it and the labels stop
+ * clearing AA.
  *
- * An intent with nothing behind it is shown muted and inert rather than hidden.
- * Someone looking for a study route needs to know it is not covered yet, not to
- * be left wondering whether they missed it.
+ * Body copy stays on --color-label. Only the label takes the hue.
  *
- * `href` overrides the default country-scoped target, which is what the home
- * page needs: there are no global intent hubs yet, so an intent card there
- * points at the filtered destination grid instead.
+ * An intent with nothing behind it is shown quietly and inert rather than
+ * hidden — someone looking for a study route needs to know it is not covered
+ * yet, not to wonder whether they missed it.
  *
  * @param {{
  *   intent: import("@/lib/content/intents").Intent,
  *   countrySlug?: string,
  *   href?: string,
  *   count: number,
+ *   description?: string,
  * }} props
  * @returns {JSX.Element}
  */
-export default function IntentCard({ intent, countrySlug, href, count }) {
+export default function IntentCard({
+  intent,
+  countrySlug,
+  href,
+  count,
+  description,
+}) {
   const hue = `var(${intent.token})`;
-  // An empty intent is quietened with colour, not with opacity. Opacity on the
-  // whole card dragged its label to 3.7:1; muting the tokens keeps the text
-  // legible while still reading as inactive.
-  const muted = count === 0;
+  const labelColour = `var(--intent-${intent.slug}-text)`;
+  const empty = count === 0;
+
+  const background = `color-mix(in srgb, ${hue} 7%, var(--color-surface))`;
 
   const inner = (
     <>
-      <span
-        aria-hidden="true"
-        className="absolute inset-x-0 top-0 h-[3px]"
-        style={{
-          backgroundColor: muted
-            ? `color-mix(in srgb, ${hue} 45%, transparent)`
-            : hue,
-        }}
+      <IntentIcon
+        slug={intent.slug}
+        hue={empty ? `color-mix(in srgb, ${hue} 55%, transparent)` : hue}
       />
-      <span className="flex items-center gap-2.5">
+
+      <span className="mt-4 block">
         <span
-          aria-hidden="true"
-          className="size-1.5 shrink-0 rounded-full"
-          style={{
-            backgroundColor: muted
-              ? `color-mix(in srgb, ${hue} 45%, transparent)`
-              : hue,
-          }}
-        />
-        <span
-          className={`t-subsection ${muted ? "text-label-2" : "text-label"}`}
+          className="block font-ui text-[1.0625rem] font-semibold leading-snug"
+          style={{ color: labelColour }}
         >
           {intent.label}
         </span>
+        {description ? (
+          <span className="mt-1.5 block font-ui text-[0.875rem] leading-snug text-label">
+            {description}
+          </span>
+        ) : null}
       </span>
-      {count === 0 ? (
-        <span className="mt-2 block font-ui text-[0.8125rem] text-label-2">
-          Coming soon
-        </span>
-      ) : (
-        <span className="t-data mt-2 block text-label-2">
-          {count} {count === 1 ? "guide" : "guides"}
-        </span>
-      )}
+
+      <span className="mt-4 flex items-center gap-1.5 font-ui text-[0.8125rem] text-label-2">
+        {empty ? (
+          "Not covered yet"
+        ) : (
+          <>
+            {count} {count === 1 ? "guide" : "guides"}
+            <svg
+              aria-hidden="true"
+              focusable="false"
+              viewBox="0 0 16 16"
+              width="13"
+              height="13"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="shrink-0"
+            >
+              <path d="M3.5 8h9M9 4.5 12.5 8 9 11.5" />
+            </svg>
+          </>
+        )}
+      </span>
     </>
   );
 
-  if (count === 0) {
+  if (empty) {
     return (
       <div
         aria-disabled="true"
-        className="relative overflow-hidden rounded-[var(--radius-card)] border border-rule bg-transparent p-5"
+        className="elevate-soft flex flex-col rounded-card p-5"
+        style={{ background }}
       >
         {inner}
       </div>
@@ -83,10 +102,11 @@ export default function IntentCard({ intent, countrySlug, href, count }) {
   return (
     <Link
       href={href ?? `/destinations/${countrySlug}/${intent.slug}`}
-      className="surface-raised relative block overflow-hidden p-5 no-underline
+      className="elevate-soft flex flex-col rounded-card p-5 no-underline
         transition-shadow duration-200 motion-reduce:transition-none
-        hover:shadow-[0_2px_4px_rgb(0_0_0/0.06),0_8px_24px_rgb(0_0_0/0.08)]
+        hover:shadow-[0_2px_6px_rgb(0_0_0/0.06),0_12px_28px_rgb(0_0_0/0.08)]
         focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+      style={{ background }}
     >
       {inner}
     </Link>

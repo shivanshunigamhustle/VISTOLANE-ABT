@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import AttributedLink from "@/components/site/AttributedLink";
 import NavItem from "@/components/site/NavItem";
 import PortalLink from "@/components/site/PortalLink";
 import { NAV } from "@/components/site/navigation";
@@ -27,7 +28,7 @@ function NavGroup({ group, panelClassName }) {
     return (
       <Link
         href={group.href}
-        className="block rounded-[var(--radius-control)] px-3 py-2 font-ui text-sm font-medium text-label no-underline
+        className="block rounded-control px-3 py-2 font-ui text-sm font-medium text-label no-underline
           transition-colors duration-200 motion-reduce:transition-none hover:bg-fill
           focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
       >
@@ -39,7 +40,7 @@ function NavGroup({ group, panelClassName }) {
   return (
     <details className="group/nav relative">
       <summary
-        className="flex cursor-pointer list-none items-center gap-1.5 rounded-[var(--radius-control)] px-3 py-2 font-ui text-sm font-medium text-label
+        className="flex cursor-pointer list-none items-center gap-1.5 rounded-control px-3 py-2 font-ui text-sm font-medium text-label
           transition-colors duration-200 motion-reduce:transition-none hover:bg-fill
           focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint
           [&::-webkit-details-marker]:hidden"
@@ -95,24 +96,60 @@ export default function SiteHeader() {
 
         <nav
           aria-label="Primary"
-          className="hidden md:flex md:items-center md:gap-1"
+          className="hidden lg:flex lg:items-center lg:gap-1"
         >
           {NAV.map((group) => (
             <NavGroup
               key={group.label}
               group={group}
-              panelClassName="absolute z-40 mt-1 min-w-56 rounded-[var(--radius-card)] border border-rule bg-surface p-3 shadow-[0_1px_2px_rgb(0_0_0/0.04),0_4px_12px_rgb(0_0_0/0.04)]"
+              panelClassName="absolute z-40 mt-1 min-w-56 rounded-card border border-rule bg-surface p-3 shadow-[0_1px_2px_rgb(0_0_0/0.04),0_4px_12px_rgb(0_0_0/0.04)]"
             />
           ))}
         </nav>
 
-        <div className="hidden md:block">
+        <div className="hidden items-center gap-3 lg:flex">
+          {/*
+            A labelled link, not a bare magnifier. The site has no free-text
+            search — lib/seo/schema.js refuses to emit a SearchAction for exactly
+            that reason — so an unlabelled search icon would promise a feature
+            that does not exist, and an icon with no accessible name fails 4.1.2.
+          */}
+          <Link
+            href="/destinations"
+            className="inline-flex items-center gap-1.5 rounded-control px-3 py-2 font-ui text-sm font-medium text-label no-underline
+              transition-colors duration-200 motion-reduce:transition-none hover:bg-fill
+              focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+          >
+            <svg
+              aria-hidden="true"
+              focusable="false"
+              viewBox="0 0 16 16"
+              width="14"
+              height="14"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.75"
+              strokeLinecap="round"
+            >
+              <circle cx="7" cy="7" r="4.5" />
+              <path d="m10.5 10.5 3 3" />
+            </svg>
+            Browse
+          </Link>
           <PortalLink />
+          <AttributedLink
+            source="header-cta"
+            className="inline-flex cursor-pointer items-center justify-center rounded-control border border-transparent bg-accent px-5 py-2.5 font-ui text-sm font-medium text-on-accent no-underline
+              transition-opacity duration-200 motion-reduce:transition-none hover:opacity-90
+              focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+          >
+            Get started
+          </AttributedLink>
         </div>
 
-        <details className="md:hidden">
+        <details className="lg:hidden">
           <summary
-            className="flex cursor-pointer list-none items-center gap-2 rounded-[var(--radius-control)] border border-rule px-3 py-2
+            className="flex cursor-pointer list-none items-center gap-2 rounded-control border border-rule px-3 py-2
               font-ui text-sm font-medium text-label
               focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint
               [&::-webkit-details-marker]:hidden"
@@ -146,8 +183,15 @@ export default function SiteHeader() {
                 ))}
               </ul>
             </nav>
-            <div className="mt-4 border-t border-rule pt-4">
+            <div className="mt-4 flex flex-col gap-3 border-t border-rule pt-4">
               <PortalLink />
+              <AttributedLink
+                source="header-cta"
+                className="inline-flex cursor-pointer items-center justify-center rounded-control border border-transparent bg-accent px-5 py-2.5 font-ui text-sm font-medium text-on-accent no-underline
+                  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+              >
+                Get started
+              </AttributedLink>
             </div>
           </div>
         </details>

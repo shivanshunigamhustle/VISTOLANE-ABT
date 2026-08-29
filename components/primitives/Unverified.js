@@ -24,7 +24,7 @@ export default function Unverified({ reason, onInk = false }) {
   // 1.47:1. The ink variant flips to --color-on-brand over a lifted fill.
   return (
     <span
-      className={`inline-flex max-w-full items-center gap-1.5 rounded-[var(--radius-control)] px-2 py-0.5 align-middle font-ui text-xs font-medium ${
+      className={`inline-flex max-w-full items-center gap-1.5 rounded-control px-2 py-0.5 align-middle font-ui text-xs font-medium ${
         onInk ? "bg-on-brand/15 text-on-brand" : "bg-fill text-label-2"
       }`}
       title={reason || undefined}

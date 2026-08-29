@@ -222,7 +222,7 @@ export default async function CountryPage({ params }) {
             />
           </div>
         ) : (
-          <div className="mt-6 rounded-[var(--radius-card)] border border-separator bg-surface p-8">
+          <div className="mt-6 rounded-card border border-separator bg-surface p-8">
             <h3 className="font-ui text-xl font-semibold">
               Programme guides for {country.name} are being written
             </h3>

@@ -70,7 +70,7 @@ export default function SoftBridge({
         applying for anything by using it.
       </p>
       <div className="mt-7">
-        <Button href={href} variant={onInk ? "onInk" : "primary"}>
+        <Button href={href} variant={onInk ? "primaryInk" : "primary"}>
           Check if you qualify
         </Button>
       </div>

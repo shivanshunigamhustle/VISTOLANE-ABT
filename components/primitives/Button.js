@@ -1,23 +1,37 @@
 /**
- * @typedef {"primary" | "tint" | "quiet" | "onInk"} ButtonVariant
+ * @typedef {"primary" | "primaryInk" | "secondary" | "quiet" | "quietInk" | "tint"} ButtonVariant
  */
 
-/** @type {Record<ButtonVariant, string>} */
+/**
+ * The ring colour lives on the variant, never on BASE.
+ *
+ * Two `focus-visible:outline-*` utilities in one class list are resolved by
+ * stylesheet order, not by which was written last — that is how an ink button
+ * once shipped a 2.97:1 ring. Each variant states its own, and each pairing is
+ * measured against the ground the ring actually sits on (outline-offset puts it
+ * on the parent, not on the button fill).
+ *
+ * @type {Record<ButtonVariant, string>}
+ */
 const VARIANTS = {
+  // The amber accent is reserved for primary calls to action.
   primary:
+    "border-transparent bg-accent text-on-accent hover:opacity-90 focus-visible:outline-tint",
+  // Same accent on a brand-ink ground, where a tint ring measures 2.92:1.
+  primaryInk:
+    "border-transparent bg-accent text-on-accent hover:opacity-90 focus-visible:outline-on-brand",
+  secondary:
     "border-transparent bg-brand text-on-brand hover:opacity-90 focus-visible:outline-tint",
-  tint: "border-transparent bg-transparent text-tint hover:bg-fill focus-visible:outline-tint",
   quiet:
     "border-rule bg-transparent text-label hover:bg-fill focus-visible:outline-tint",
-  // For the brand-ink grounds, where a navy fill would disappear and a tint ring
-  // measures only 2.97:1 against the ink.
-  onInk:
-    "border-transparent bg-on-brand text-brand-ink hover:opacity-90 focus-visible:outline-on-brand",
+  quietInk:
+    "border-on-brand/40 bg-transparent text-on-brand hover:bg-on-brand/10 focus-visible:outline-on-brand",
+  tint: "border-transparent bg-transparent text-tint hover:bg-fill focus-visible:outline-tint",
 };
 
 const BASE =
-  "inline-flex cursor-pointer items-center justify-center gap-2 rounded-[var(--radius-control)] border " +
-  "px-4 py-2 text-sm font-medium no-underline " +
+  "inline-flex cursor-pointer items-center justify-center gap-2 rounded-control border " +
+  "px-5 py-2.5 text-sm font-medium no-underline " +
   "transition-[background-color,opacity,color] duration-200 motion-reduce:transition-none " +
   "focus-visible:outline-2 focus-visible:outline-offset-2 " +
   "disabled:cursor-not-allowed disabled:opacity-50";

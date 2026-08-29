@@ -1,34 +1,36 @@
 import Link from "next/link";
 
 import Button from "@/components/primitives/Button";
-import CountryCard from "@/components/site/CountryCard";
+import AttributedLink from "@/components/site/AttributedLink";
+import DestinationPhotoCard from "@/components/site/DestinationPhotoCard";
 import IntentCard from "@/components/site/IntentCard";
 import JsonLd from "@/components/site/JsonLd";
+import Media from "@/components/site/Media";
 import SectionHeading from "@/components/site/SectionHeading";
 import SoftBridge from "@/components/site/SoftBridge";
 import { INTENTS } from "@/lib/content/intents";
 import { getAllCountries, getAllPrograms } from "@/lib/content/loader";
+import {
+  formatReviewDate,
+  latestReview,
+  sourceHosts,
+} from "@/lib/content/provenance";
+import { eligibilityPath } from "@/lib/bridge";
 import { pageMetadata, SITE_NAME } from "@/lib/seo/metadata";
 import { breadcrumbList, webSite } from "@/lib/seo/schema";
 
 /**
  * Home.
  *
- * Section grounds alternate so the page has a rhythm rather than five identical
- * bands: ink, page ground, inset, page ground, inset, ink. The hero and the
- * closing bridge share the brand ground, which opens and closes the page on the
- * same note.
+ * Stays statically prerendered: nothing here reads searchParams. The hero tabs
+ * are links, not state — "Find your option" is the active state on this page and
+ * "Explore countries" is a real link to /destinations, which already is the
+ * country explorer. Two tabs, two URLs, no JavaScript, no dynamic deopt.
  *
- * Everything factual is counted from the loader. The only invented strings are
- * structural labels, the headline, and the trust placeholder — which says on its
- * face that it is one.
- *
- * TODO(content): a news / latest-updates section belongs between the trust block
- * and the soft bridge. It is omitted rather than stubbed because no NewsUpdate
- * content exists yet, and an empty carousel reads worse than no carousel.
+ * Every factual line is counted or derived from the loader. The only invented
+ * strings are structural labels and the intent descriptions.
  */
 
-/** The application's own tagline. */
 const TAGLINE = "A clear path to your next move abroad";
 
 export const metadata = pageMetadata({
@@ -36,6 +38,81 @@ export const metadata = pageMetadata({
   description: `${TAGLINE}. Immigration routes explained in full, with every figure traced to an official government source or marked as unverified.`,
   path: "/",
 });
+
+/** One plain-language line per intent. Structural copy, not a claim. */
+const INTENT_BLURB = {
+  visitor: "Short stays, tourism and family visits.",
+  work: "Employer-sponsored routes and work permits.",
+  study: "Student permits and what follows graduation.",
+  family: "Joining a partner, parent or child.",
+  investor: "Investment, start-up and business routes.",
+  residence: "Permanent residence and citizenship.",
+};
+
+/**
+ * What the site can actually stand behind, and nothing else. Each line is a
+ * property the content schema enforces on every record — not a claim about
+ * volume, speed, outcomes or satisfaction, none of which we can evidence.
+ */
+const TRUST = [
+  {
+    title: "Official sources only",
+    body: "Every guide is written from government publications, not from secondary summaries.",
+    icon: (
+      <>
+        <path d="M4 10.5 12 5l8 5.5" />
+        <path d="M6.5 12.5v7M12 12.5v7M17.5 12.5v7" />
+        <path d="M4 19.5h16" />
+      </>
+    ),
+  },
+  {
+    title: "Cited and dated",
+    body: "Each record carries its sources with the date each one was checked.",
+    icon: (
+      <>
+        <path d="M6 3.5h8l4 4v13H6z" />
+        <path d="M14 3.5v4h4" />
+        <path d="M9 12.5h6M9 16h4" />
+      </>
+    ),
+  },
+  {
+    title: "Gaps are marked, not filled",
+    body: "Where a figure could not be confirmed it is labelled unverified rather than estimated.",
+    icon: (
+      <>
+        <circle cx="12" cy="12" r="8.5" />
+        <path d="M12 16.4v.4" />
+        <path d="M9.9 9.6a2.2 2.2 0 0 1 4.3.7c0 1.5-2.2 1.9-2.2 3.2" />
+      </>
+    ),
+  },
+];
+
+/** Only tools that exist, plus the ones actually on the roadmap. */
+const TOOLS = [
+  {
+    name: "Check your eligibility",
+    body: "Answer a few questions and see which routes may fit. No account needed.",
+    live: true,
+  },
+  {
+    name: "Processing times",
+    body: "Current published timescales for each route, side by side.",
+    live: false,
+  },
+  {
+    name: "Document checklist",
+    body: "A per-route list of what to gather, and what each item must show.",
+    live: false,
+  },
+  {
+    name: "Cost estimator",
+    body: "Government fees and the third-party costs that sit alongside them.",
+    live: false,
+  },
+];
 
 /**
  * @returns {Promise<JSX.Element>}
@@ -45,278 +122,361 @@ export default async function HomePage() {
     getAllCountries(),
     getAllPrograms(),
   ]);
+  const records = [...countries, ...programs];
+
+  const reviewedOn = latestReview(records);
+  const reviewedLabel = formatReviewDate(reviewedOn);
+  const hosts = sourceHosts(records);
 
   const programsPerCountry = programs.reduce((counts, program) => {
     counts.set(program.countrySlug, (counts.get(program.countrySlug) ?? 0) + 1);
     return counts;
   }, new Map());
 
-  const countFor = (intentSlug) =>
-    programs.filter((program) => program.intent === intentSlug).length;
+  const countFor = (slug) =>
+    programs.filter((program) => program.intent === slug).length;
 
-  // Countries that actually have guides come first, so the section never leads
-  // with an empty destination.
   const ordered = [...countries].sort(
     (a, b) =>
       (programsPerCountry.get(b.slug) ?? 0) -
         (programsPerCountry.get(a.slug) ?? 0) || a.name.localeCompare(b.name)
   );
 
-  const regions = [
-    ...new Set(countries.map((country) => country.region)),
-  ].sort();
+  const regions = [...new Set(countries.map((c) => c.region))].sort();
 
   return (
     <main id="main-content">
       <JsonLd schema={webSite({ description: TAGLINE })} />
       <JsonLd schema={breadcrumbList([{ name: "Home", path: "/" }])} />
 
-      {/* 1. Hero — the brand ground, and the whole first screen. */}
-      <section aria-labelledby="hero-heading" className="band-ink">
-        <div className="mx-auto grid w-full max-w-6xl gap-14 px-5 py-24 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-20">
-          <div>
-            <p className="t-eyebrow text-on-brand opacity-70">
-              Immigration and global mobility
+      {/* 1. Utility strip */}
+      <div className="border-b border-rule bg-surface">
+        <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-1 px-5 py-2">
+          <p className="font-ui text-[0.8125rem] text-label-2">
+            Immigration guidance built from official government sources.
+          </p>
+          {reviewedOn ? (
+            <p className="font-ui text-[0.8125rem] text-label-2">
+              Content last reviewed{" "}
+              <time dateTime={reviewedOn} className="t-data">
+                {reviewedLabel}
+              </time>
             </p>
+          ) : null}
+        </div>
+      </div>
 
-            <h1
-              id="hero-heading"
-              className="t-display mt-6 max-w-[16ch] text-on-brand"
-            >
+      {/* 2. Hero */}
+      <section aria-labelledby="hero-heading" className="relative bg-bg">
+        {/* The photograph occupies the right two-thirds from lg up. */}
+        <Media
+          slot="hero"
+          className="pointer-events-none absolute inset-y-0 right-0 hidden w-[58%] lg:block"
+        >
+          <div
+            aria-hidden="true"
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(to right, var(--color-bg) 0%, var(--color-bg) 20%, color-mix(in srgb, var(--color-bg) 60%, transparent) 45%, transparent 78%)",
+            }}
+          />
+        </Media>
+
+        <div className="relative mx-auto w-full max-w-6xl px-5 pb-16 pt-14 lg:min-h-[520px]">
+          <div className="lg:max-w-[36rem]">
+            <p className="t-eyebrow">Immigration and global mobility</p>
+            <h1 id="hero-heading" className="t-display mt-5 text-label">
               Immigration routes, explained in full
             </h1>
-
-            <p className="t-lede mt-7 max-w-[52ch] text-on-brand opacity-85">
-              {TAGLINE}.
-            </p>
-
-            <hr className="mt-10 max-w-md border-0 border-t border-on-brand/25" />
-
-            <p className="mt-5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <span className="t-data text-on-brand opacity-80">
-                {countries.length}{" "}
-                {countries.length === 1 ? "destination" : "destinations"} ·{" "}
-                {programs.length} route{" "}
-                {programs.length === 1 ? "guide" : "guides"}
-              </span>
-              <span className="font-ui text-[0.9375rem] text-on-brand opacity-70">
-                Every figure sourced or marked unverified.
-              </span>
-            </p>
+            <p className="t-lede mt-6 max-w-[46ch]">{TAGLINE}.</p>
           </div>
 
-          {/*
-            The right column is an index, not decoration: the six intents with
-            their real guide counts, each a link straight to its filtered view.
-          */}
-          <nav aria-label="Browse by intent" className="lg:pt-2">
-            <p className="t-eyebrow text-on-brand opacity-70">
-              Browse by intent
-            </p>
-            <ul className="mt-5 border-t border-on-brand/20">
-              {INTENTS.map((intent) => {
-                const count = countFor(intent.slug);
-                return (
-                  <li key={intent.slug} className="border-b border-on-brand/20">
-                    <Link
-                      href={`/destinations?intent=${intent.slug}`}
-                      className="flex items-baseline justify-between gap-4 py-3.5 no-underline
-                        transition-opacity duration-200 motion-reduce:transition-none
-                        hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-on-brand"
-                    >
-                      <span className="flex items-baseline gap-2.5">
-                        <span
-                          aria-hidden="true"
-                          className="size-1.5 shrink-0 rounded-full"
-                          style={{ backgroundColor: `var(${intent.token})` }}
-                        />
-                        <span className="font-ui text-[0.9375rem] text-on-brand">
-                          {intent.label}
-                        </span>
-                      </span>
-                      <span className="t-data shrink-0 text-on-brand opacity-70">
-                        {count === 0 ? "—" : count}
-                      </span>
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </nav>
+          {/* Photograph on small screens, where the absolute slot is hidden. */}
+          <Media
+            slot="hero"
+            className="mt-8 h-[380px] w-full rounded-media lg:hidden"
+          />
 
-          {/*
-            The white panel on the deep navy is the hero's whole visual idea.
-            It is also a plain GET form: the search works with JavaScript off,
-            because the destination grid already filters from searchParams.
-          */}
-          <form
-            action="/destinations"
-            method="get"
-            className="surface-raised flex flex-col gap-5 p-6 sm:flex-row sm:items-end lg:col-span-2 lg:mt-4"
-          >
-            <div className="flex flex-1 flex-col gap-2">
-              <label htmlFor="home-intent" className="t-eyebrow">
-                What do you want to do?
-              </label>
-              <select
-                id="home-intent"
-                name="intent"
-                defaultValue=""
-                className="w-full rounded-[var(--radius-control)] border border-rule bg-surface px-3 py-2.5 text-sm text-label
-                  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+          {/* Tabs are links. The active one is this page. */}
+          <div className="mt-10 lg:max-w-[42rem]">
+            <nav aria-label="Search" className="flex flex-wrap gap-1">
+              <span
+                aria-current="page"
+                className="rounded-t-control border-b-2 border-accent px-4 py-2.5 font-ui text-sm font-semibold text-label"
               >
-                <option value="">Any intent</option>
-                {INTENTS.map((intent) => (
-                  <option key={intent.slug} value={intent.slug}>
-                    {intent.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="flex flex-1 flex-col gap-2">
-              <label htmlFor="home-region" className="t-eyebrow">
-                Where?
-              </label>
-              <select
-                id="home-region"
-                name="region"
-                defaultValue=""
-                className="w-full rounded-[var(--radius-control)] border border-rule bg-surface px-3 py-2.5 text-sm text-label
-                  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
-              >
-                <option value="">Anywhere</option>
-                {regions.map((region) => (
-                  <option key={region} value={region}>
-                    {region}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <Button type="submit" variant="primary">
-              Find destinations
-            </Button>
-          </form>
-        </div>
-      </section>
-
-      {/* 2. Audience fork — two blocks divided by a rule, not two cards. */}
-      <section
-        aria-labelledby="audience-heading"
-        className="mx-auto w-full max-w-6xl px-5 py-24"
-      >
-        <SectionHeading id="audience-heading" eyebrow="Start here">
-          Where do you fit?
-        </SectionHeading>
-
-        <div className="mt-10 grid gap-10 md:grid-cols-2 md:divide-x md:divide-rule">
-          <div className="md:pr-10">
-            <h3 className="t-subsection text-label">For Individuals</h3>
-            <p className="t-body mt-3 text-label">
-              Moving for work, study, family, investment or to settle. Start
-              from what you want to do and see which routes fit.
-            </p>
-            <p className="mt-5">
+                Find your option
+              </span>
               <Link
                 href="/destinations"
-                className="text-sm text-tint underline underline-offset-4
+                className="rounded-t-control border-b-2 border-transparent px-4 py-2.5 font-ui text-sm font-medium text-label-2 no-underline
+                  transition-colors duration-200 motion-reduce:transition-none hover:text-label
                   focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
               >
-                Browse destinations
+                Explore countries
               </Link>
-            </p>
-          </div>
+            </nav>
 
-          <div aria-disabled="true" className="md:pl-10">
-            <h3 className="t-subsection flex flex-wrap items-center gap-3 text-label">
-              For Business
-              <span className="rounded-[var(--radius-control)] bg-fill px-1.5 py-0.5 font-ui text-[0.6875rem] font-medium text-label-2">
-                Coming soon
-              </span>
-            </h3>
-            <p className="t-body mt-3 text-label">
-              Hiring global talent, posting roles and partnering with us. These
-              pages are not written yet.
-            </p>
+            <form
+              action="/destinations"
+              method="get"
+              className="surface-raised flex flex-col gap-4 p-5 sm:flex-row sm:items-end"
+            >
+              <div className="flex flex-1 flex-col gap-2">
+                <label htmlFor="home-intent" className="t-eyebrow">
+                  What do you want to do?
+                </label>
+                <select
+                  id="home-intent"
+                  name="intent"
+                  defaultValue=""
+                  className="w-full rounded-control border border-rule bg-surface px-3 py-2.5 text-sm text-label
+                    focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                >
+                  <option value="">Any intent</option>
+                  {INTENTS.map((intent) => (
+                    <option key={intent.slug} value={intent.slug}>
+                      {intent.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="flex flex-1 flex-col gap-2">
+                <label htmlFor="home-region" className="t-eyebrow">
+                  Where?
+                </label>
+                <select
+                  id="home-region"
+                  name="region"
+                  defaultValue=""
+                  className="w-full rounded-control border border-rule bg-surface px-3 py-2.5 text-sm text-label
+                    focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                >
+                  <option value="">Anywhere</option>
+                  {regions.map((region) => (
+                    <option key={region} value={region}>
+                      {region}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <Button type="submit" variant="primary">
+                Find destinations
+              </Button>
+            </form>
           </div>
         </div>
       </section>
 
-      {/* 3. Intents — inset band. */}
-      <section aria-labelledby="intents-heading" className="band-inset">
-        <div className="mx-auto w-full max-w-6xl px-5 py-24">
+      {/* 3. Trust bar */}
+      <section
+        aria-labelledby="trust-heading"
+        className="border-y border-rule bg-surface"
+      >
+        <h2 id="trust-heading" className="sr-only">
+          How this site is written
+        </h2>
+        <ul className="mx-auto grid w-full max-w-6xl gap-8 px-5 py-8 sm:grid-cols-3">
+          {TRUST.map((item) => (
+            <li key={item.title} className="flex gap-3">
+              <svg
+                aria-hidden="true"
+                focusable="false"
+                viewBox="0 0 24 24"
+                width="22"
+                height="22"
+                fill="none"
+                stroke="var(--color-tint)"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="mt-0.5 shrink-0"
+              >
+                {item.icon}
+              </svg>
+              <div>
+                <p className="font-ui text-[0.9375rem] font-semibold text-label">
+                  {item.title}
+                </p>
+                <p className="mt-1 font-ui text-[0.875rem] leading-snug text-label-2">
+                  {item.body}
+                </p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* 4. Intents */}
+      <section aria-labelledby="intents-heading" className="bg-bg">
+        <div className="mx-auto w-full max-w-6xl px-5 py-20">
           <SectionHeading id="intents-heading" eyebrow="By intent">
-            What do you want to do?
+            Explore by what matters to you
           </SectionHeading>
-          <div className="mt-10 grid auto-rows-fr gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {/*
+            Six across only where six fit. At max-w-6xl a 6-column row gives each
+            card ~172px, which will not hold "Settle & Citizenship" beside a 28px
+            icon — so it is 2 up on mobile, 3 from md, and 6 only at 2xl.
+          */}
+          <div className="mt-10 grid auto-rows-fr grid-cols-2 gap-4 md:grid-cols-3 2xl:grid-cols-6">
             {INTENTS.map((intent) => (
               <IntentCard
                 key={intent.slug}
                 intent={intent}
                 href={`/destinations?intent=${intent.slug}`}
                 count={countFor(intent.slug)}
+                description={INTENT_BLURB[intent.slug]}
               />
             ))}
           </div>
         </div>
       </section>
 
-      {/* 4. Destinations — raised cards on the page ground. */}
-      <section
-        aria-labelledby="destinations-heading"
-        className="mx-auto w-full max-w-6xl px-5 py-24"
-      >
-        <SectionHeading
-          id="destinations-heading"
-          eyebrow="By country"
-          trailing={
-            <Link
-              href="/destinations"
-              className="text-sm text-tint underline underline-offset-4
-                focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
-            >
-              See all {countries.length}
-            </Link>
-          }
-        >
-          Destinations
-        </SectionHeading>
-
-        <div
-          className={`mt-10 grid auto-rows-fr gap-5 sm:grid-cols-2 ${
-            countries.length > 4 ? "lg:grid-cols-3" : "lg:grid-cols-2"
-          }`}
-        >
-          {ordered.slice(0, 6).map((country) => (
-            <CountryCard
-              key={country.slug}
-              country={country}
-              programCount={programsPerCountry.get(country.slug) ?? 0}
-            />
-          ))}
+      {/* 5. Destinations */}
+      <section aria-labelledby="destinations-heading" className="band-inset">
+        <div className="mx-auto w-full max-w-6xl px-5 py-20">
+          <SectionHeading
+            id="destinations-heading"
+            eyebrow="By country"
+            trailing={
+              <Link
+                href="/destinations"
+                className="text-sm text-tint underline underline-offset-4
+                  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+              >
+                See all {countries.length}
+              </Link>
+            }
+          >
+            Most covered destinations
+          </SectionHeading>
+          {/*
+            Ordered by how many guides exist, which is what the heading says.
+            Horizontal scroll on mobile; the vertical padding keeps focus rings
+            from being clipped by the scroll container.
+          */}
+          <ul className="-mx-5 mt-10 flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 py-2 [overscroll-behavior-x:contain] sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 lg:grid-cols-3">
+            {ordered.slice(0, 6).map((country) => (
+              <li key={country.slug} className="snap-start">
+                <DestinationPhotoCard
+                  country={country}
+                  programCount={programsPerCountry.get(country.slug) ?? 0}
+                />
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
-      {/*
-        TODO(content): verified trust content — testimonials with consent,
-        metrics the client can evidence, and any certification or regulator
-        registration they actually hold — is owed by the client. Nothing here may
-        be replaced with an approximation: an unevidenced statistic on an
-        immigration site is a legal exposure for them, not a design detail. A
-        titled section holding one sentence read as a hole, so the sentence sits
-        above the closing bridge until there is something real to fill a section.
-      */}
-      <section className="band-ink">
-        <div className="mx-auto w-full max-w-6xl px-5 pb-12 pt-20">
-          <p className="border-b border-on-brand/20 pb-8 font-ui text-[0.9375rem] text-on-brand opacity-70">
-            Verified testimonials, success metrics and regulator registrations
-            are pending from the client. Nothing on this page is
-            placeholder-filled in the meantime.
-          </p>
-          <div className="pt-12">
-            <SoftBridge tone="ink" />
+      {/* 6. Tools */}
+      <section aria-labelledby="tools-heading" className="bg-bg">
+        <div className="mx-auto w-full max-w-6xl px-5 py-20">
+          <SectionHeading id="tools-heading" eyebrow="Practical">
+            Tools &amp; resources
+          </SectionHeading>
+          <ul className="mt-10 grid auto-rows-fr gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {TOOLS.map((tool) => (
+              <li key={tool.name} className="surface-raised flex flex-col p-5">
+                <p className="font-ui text-[1.0625rem] font-semibold text-label">
+                  {tool.name}
+                </p>
+                <p className="mt-2 flex-1 font-ui text-[0.875rem] leading-snug text-label-2">
+                  {tool.body}
+                </p>
+                <p className="mt-4">
+                  {tool.live ? (
+                    <AttributedLink
+                      path={eligibilityPath() || undefined}
+                      source="home-tools"
+                      className="font-ui text-sm text-tint underline underline-offset-4
+                        focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                    >
+                      Open the checker
+                    </AttributedLink>
+                  ) : (
+                    <span className="font-ui text-[0.8125rem] text-label-2">
+                      In development
+                    </span>
+                  )}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* 7. Consultation */}
+      <section aria-labelledby="consult-heading" className="band-ink">
+        <div className="mx-auto grid w-full max-w-6xl gap-0 px-0 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
+          <Media slot="consultation" className="h-[260px] w-full lg:h-full" />
+
+          <div className="px-5 py-16 lg:px-12">
+            <p className="t-eyebrow text-on-brand opacity-70">
+              Talk to someone
+            </p>
+            <h2 id="consult-heading" className="t-section mt-4 text-on-brand">
+              Book a consultation
+            </h2>
+            <p className="t-body mt-4 text-on-brand opacity-85">
+              Every guide on this site is general information. A consultation is
+              where someone looks at your circumstances and tells you which of
+              these routes actually applies to you.
+            </p>
+            <div className="mt-7">
+              <Button href="#" variant="primaryInk">
+                Book a consultation
+              </Button>
+            </div>
+
+            {/*
+              TODO(content): success stories need testimonials supplied by the
+              client with the consent of the people quoted. Nothing may be
+              written here in the meantime — an invented outcome on an
+              immigration site is a legal exposure, not filler.
+            */}
+            <div className="mt-10 rounded-card border border-dashed border-on-brand/35 p-5">
+              <p className="font-ui text-[0.9375rem] font-semibold text-on-brand">
+                Success stories
+              </p>
+              <p className="mt-2 font-ui text-[0.875rem] leading-snug text-on-brand opacity-75">
+                Pending — awaiting testimonials the client can evidence, with
+                the consent of the people quoted. Nothing is written here until
+                then.
+              </p>
+            </div>
           </div>
+        </div>
+      </section>
+
+      {/* 8. Sources */}
+      <section
+        aria-labelledby="sources-heading"
+        className="border-t border-rule bg-surface"
+      >
+        <div className="mx-auto w-full max-w-6xl px-5 py-12">
+          <h2 id="sources-heading" className="t-eyebrow">
+            Official sources we rely on
+          </h2>
+          <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-2">
+            {hosts.map((host) => (
+              <li key={host} className="t-data text-label-2">
+                {host}
+              </li>
+            ))}
+          </ul>
+          <p className="mt-4 font-ui text-[0.8125rem] text-label-2">
+            Every figure on a guide links to the page it came from, with the
+            date it was checked.
+          </p>
+        </div>
+      </section>
+
+      {/* 9. Closing bridge */}
+      <section className="band-ink">
+        <div className="mx-auto w-full max-w-6xl px-5 py-20">
+          <SoftBridge tone="ink" />
         </div>
       </section>
     </main>

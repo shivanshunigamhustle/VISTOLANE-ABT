@@ -20,7 +20,7 @@ export default function PortalLink({ onInk = false } = {}) {
   return (
     <Button
       href={buildPortalUrl({ path: "/" })}
-      variant={onInk ? "onInk" : "quiet"}
+      variant={onInk ? "quietInk" : "quiet"}
     >
       Sign in to your portal
     </Button>
