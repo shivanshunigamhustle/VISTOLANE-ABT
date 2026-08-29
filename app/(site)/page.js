@@ -2,10 +2,13 @@ import Link from "next/link";
 
 import Button from "@/components/primitives/Button";
 import CountryCard from "@/components/site/CountryCard";
+import JsonLd from "@/components/site/JsonLd";
 import IntentCard from "@/components/site/IntentCard";
 import SoftBridge from "@/components/site/SoftBridge";
 import { INTENTS } from "@/lib/content/intents";
 import { getAllCountries, getAllPrograms } from "@/lib/content/loader";
+import { pageMetadata, SITE_NAME } from "@/lib/seo/metadata";
+import { breadcrumbList, webSite } from "@/lib/seo/schema";
 
 /**
  * Home.
@@ -22,10 +25,11 @@ import { getAllCountries, getAllPrograms } from "@/lib/content/loader";
 /** The application's own tagline. */
 const TAGLINE = "A clear path to your next move abroad";
 
-export const metadata = {
-  title: "Vistolane",
-  description: TAGLINE,
-};
+export const metadata = pageMetadata({
+  title: `${SITE_NAME} — ${TAGLINE}`,
+  description: `${TAGLINE}. Immigration routes explained in full, with every figure traced to an official government source or marked as unverified.`,
+  path: "/",
+});
 
 /**
  * @returns {Promise<JSX.Element>}
@@ -58,6 +62,9 @@ export default async function HomePage() {
 
   return (
     <main id="main-content">
+      <JsonLd schema={webSite({ description: TAGLINE })} />
+      <JsonLd schema={breadcrumbList([{ name: "Home", path: "/" }])} />
+
       {/* 1. Hero */}
       <section
         aria-labelledby="hero-heading"

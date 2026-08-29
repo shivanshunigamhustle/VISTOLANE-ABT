@@ -7,6 +7,7 @@ import DataTable from "@/components/primitives/DataTable";
 import { FieldValue } from "@/components/primitives/Unverified";
 import CountryCard from "@/components/site/CountryCard";
 import IntentCard from "@/components/site/IntentCard";
+import JsonLd from "@/components/site/JsonLd";
 import SoftBridge from "@/components/site/SoftBridge";
 import { INTENTS } from "@/lib/content/intents";
 import {
@@ -15,6 +16,8 @@ import {
   getCountry,
   getPrograms,
 } from "@/lib/content/loader";
+import { pageMetadata } from "@/lib/seo/metadata";
+import { breadcrumbList } from "@/lib/seo/schema";
 
 /**
  * A country overview.
@@ -39,7 +42,12 @@ export async function generateMetadata({ params }) {
   const { country: slug } = await params;
   const country = await getCountry(slug);
   if (!country) return {};
-  return { title: country.name, description: country.summary };
+
+  return pageMetadata({
+    title: `${country.name} immigration routes | Vistolane`,
+    description: country.summary,
+    path: `/destinations/${country.slug}`,
+  });
 }
 
 /**
@@ -94,6 +102,14 @@ export default async function CountryPage({ params }) {
 
   return (
     <main id="main-content" className="mx-auto w-full max-w-6xl px-5 py-16">
+      <JsonLd
+        schema={breadcrumbList([
+          { name: "Home", path: "/" },
+          { name: "Destinations", path: "/destinations" },
+          { name: country.name, path: `/destinations/${country.slug}` },
+        ])}
+      />
+
       <nav aria-label="Breadcrumb" className="mb-8">
         <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-label-2">
           <li className="flex items-center gap-2">

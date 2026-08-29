@@ -4,11 +4,15 @@ import "@/styles/globals.css";
 import Attribution from "@/components/site/Attribution";
 import SiteFooter from "@/components/site/SiteFooter";
 import SiteHeader from "@/components/site/SiteHeader";
+import { SITE_NAME, siteUrl } from "@/lib/seo/metadata";
 
 export const metadata = {
+  // Resolves any relative URL Next emits (OpenGraph, canonicals) against the
+  // real origin. Pages set their own absolute canonical on top of this.
+  metadataBase: siteUrl() ? new URL(siteUrl()) : undefined,
   title: {
-    default: "Vistolane",
-    template: "%s — Vistolane",
+    default: SITE_NAME,
+    template: `%s | ${SITE_NAME}`,
   },
   description: "A clear path to your next move abroad.",
 };

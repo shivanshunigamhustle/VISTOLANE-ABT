@@ -12,6 +12,7 @@ import Unverified, {
   FieldValue,
   splitUnverified,
 } from "@/components/primitives/Unverified";
+import JsonLd from "@/components/site/JsonLd";
 import LeadForm from "@/components/site/LeadForm";
 import ProgramBridge from "@/components/site/ProgramBridge";
 import {
@@ -21,6 +22,8 @@ import {
   getProgram,
   getPrograms,
 } from "@/lib/content/loader";
+import { pageMetadata } from "@/lib/seo/metadata";
+import { breadcrumbList, faqPage, howTo } from "@/lib/seo/schema";
 
 /**
  * The program reference page.
@@ -69,11 +72,21 @@ export async function generateMetadata({ params }) {
   const program = await getProgram(country, intent, slug);
   if (!program) return {};
 
+  const [countryRecord, intentRecord] = await Promise.all([
+    getCountry(program.countrySlug),
+    getIntent(program.intent),
+  ]);
+
+  const countryName = countryRecord?.name ?? program.countrySlug;
+  const intentLabel = intentRecord?.label ?? program.intent;
   const { text } = splitUnverified(program.whoItsFor);
-  return {
-    title: program.name,
+
+  return pageMetadata({
+    title: `${program.name} — ${countryName} ${intentLabel} | Vistolane`,
     description: text ?? program.officialName,
-  };
+    path: `/destinations/${program.countrySlug}/${program.intent}/${program.slug}`,
+    type: "article",
+  });
 }
 
 /**
@@ -95,6 +108,7 @@ export default async function ProgramPage({ params }) {
   const countryName = countryRecord?.name ?? program.countrySlug;
   const intentLabel = intentRecord?.label ?? program.intent;
 
+  const pagePath = `/destinations/${program.countrySlug}/${program.intent}/${program.slug}`;
   const bodyHeadings = tocFromMdx(program.body);
   const contents = [
     ...SECTIONS.map((section) => ({ id: section.id, text: section.label })),
@@ -109,6 +123,21 @@ export default async function ProgramPage({ params }) {
 
   return (
     <main id="main-content" className="mx-auto w-full max-w-5xl px-5 py-10">
+      <JsonLd
+        schema={breadcrumbList([
+          { name: "Home", path: "/" },
+          { name: "Destinations", path: "/destinations" },
+          { name: countryName, path: `/destinations/${program.countrySlug}` },
+          {
+            name: intentLabel,
+            path: `/destinations/${program.countrySlug}/${program.intent}`,
+          },
+          { name: program.name, path: pagePath },
+        ])}
+      />
+      <JsonLd schema={faqPage(program)} />
+      <JsonLd schema={howTo(program, pagePath)} />
+
       {/* 1. Breadcrumb */}
       <nav aria-label="Breadcrumb" className="mb-8">
         <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-label-2">

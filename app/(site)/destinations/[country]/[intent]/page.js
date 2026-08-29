@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 
 import DataTable from "@/components/primitives/DataTable";
 import { FieldValue } from "@/components/primitives/Unverified";
+import JsonLd from "@/components/site/JsonLd";
 import ProgramCard from "@/components/site/ProgramCard";
 import SoftBridge from "@/components/site/SoftBridge";
 import { INTENTS, INTENT_SLUGS } from "@/lib/content/intents";
@@ -12,6 +13,8 @@ import {
   getIntent,
   getPrograms,
 } from "@/lib/content/loader";
+import { pageMetadata } from "@/lib/seo/metadata";
+import { breadcrumbList } from "@/lib/seo/schema";
 
 /**
  * The routes available for one country and one intent.
@@ -42,10 +45,12 @@ export async function generateMetadata({ params }) {
     getIntent(intentSlug),
   ]);
   if (!country || !intent) return {};
-  return {
-    title: `${intent.label} in ${country.name}`,
-    description: `Routes for ${intent.label.toLowerCase()} in ${country.name}.`,
-  };
+
+  return pageMetadata({
+    title: `${intent.label} in ${country.name} | Vistolane`,
+    description: `Routes for ${intent.label.toLowerCase()} in ${country.name}, with requirements, documents, fees and processing times for each.`,
+    path: `/destinations/${country.slug}/${intent.slug}`,
+  });
 }
 
 /**
@@ -80,6 +85,18 @@ export default async function CountryIntentPage({ params }) {
 
   return (
     <main id="main-content" className="mx-auto w-full max-w-6xl px-5 py-16">
+      <JsonLd
+        schema={breadcrumbList([
+          { name: "Home", path: "/" },
+          { name: "Destinations", path: "/destinations" },
+          { name: country.name, path: `/destinations/${country.slug}` },
+          {
+            name: intent.label,
+            path: `/destinations/${country.slug}/${intent.slug}`,
+          },
+        ])}
+      />
+
       <nav aria-label="Breadcrumb" className="mb-8">
         <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-label-2">
           {[

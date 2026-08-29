@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { Chip } from "@/components/primitives/Chip";
 import CountryCard from "@/components/site/CountryCard";
+import JsonLd from "@/components/site/JsonLd";
 import { INTENTS } from "@/lib/content/intents";
 import { getAllCountries, getAllPrograms } from "@/lib/content/loader";
+import { pageMetadata } from "@/lib/seo/metadata";
+import { breadcrumbList } from "@/lib/seo/schema";
 
 /**
  * The destination grid.
@@ -14,10 +17,16 @@ import { getAllCountries, getAllPrograms } from "@/lib/content/loader";
  * only exists in client state would be a filter that does not exist.
  */
 
-export const metadata = {
-  title: "Destinations",
-  description: "Countries covered, and the routes available in each.",
-};
+const TITLE = "Destinations";
+const DESCRIPTION = "Countries covered, and the routes available in each.";
+
+export const metadata = pageMetadata({
+  title: `${TITLE} | Vistolane`,
+  description: DESCRIPTION,
+  // Canonical is the unfiltered grid. Filtered views share this canonical
+  // rather than competing with it for the same query.
+  path: "/destinations",
+});
 
 /** Cost bands in their natural order, for the filter row. */
 const COST_BANDS = [
@@ -118,12 +127,16 @@ export default async function DestinationsPage({ searchParams }) {
 
   return (
     <main id="main-content" className="mx-auto w-full max-w-6xl px-5 py-16">
+      <JsonLd
+        schema={breadcrumbList([
+          { name: "Home", path: "/" },
+          { name: TITLE, path: "/destinations" },
+        ])}
+      />
       <header className="max-w-[68ch]">
-        <h1 className="text-4xl font-semibold leading-tight">
-          {metadata.title}
-        </h1>
+        <h1 className="text-4xl font-semibold leading-tight">{TITLE}</h1>
         <p className="mt-4 font-read text-lg leading-relaxed text-label-2">
-          {metadata.description}
+          {DESCRIPTION}
         </p>
       </header>
 

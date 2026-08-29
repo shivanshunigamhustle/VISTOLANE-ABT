@@ -11,38 +11,9 @@
  * a caveat. Both are handled: confirmed text is kept and the chip is appended.
  */
 
-const MARKER = "Verify before publish";
+import { splitUnverified } from "@/lib/content/unverified";
 
-/**
- * Split a field into the part that was confirmed and the reason it was not.
- *
- * @param {unknown} value
- * @returns {{ text: string | null, reason: string | null }}
- */
-export function splitUnverified(value) {
-  if (typeof value !== "string") {
-    return {
-      text: value === null || value === undefined ? null : String(value),
-      reason: null,
-    };
-  }
-
-  const index = value.indexOf(MARKER);
-  if (index === -1) return { text: value, reason: null };
-
-  const text = value
-    .slice(0, index)
-    .trim()
-    .replace(/[—–-]\s*$/u, "")
-    .trim();
-  const reason = value
-    .slice(index + MARKER.length)
-    .trim()
-    .replace(/^[—–-]\s*/u, "")
-    .trim();
-
-  return { text: text || null, reason: reason || null };
-}
+export { splitUnverified };
 
 /**
  * @param {{ reason?: string | null }} props
