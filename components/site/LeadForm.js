@@ -92,10 +92,7 @@ export default function LeadForm({ program }) {
 
   if (status === "sent") {
     return (
-      <div
-        role="status"
-        className="rounded-xl border border-separator bg-surface p-5 text-sm text-label"
-      >
+      <div role="status" className="surface-raised p-6 text-sm text-label">
         Thank you. Your enquiry about {program.name} has been received and
         someone will be in touch.
       </div>
@@ -107,9 +104,9 @@ export default function LeadForm({ program }) {
       onSubmit={onSubmit}
       noValidate
       aria-labelledby="lead-form-heading"
-      className="rounded-xl border border-separator bg-surface p-5"
+      className="surface-raised p-6"
     >
-      <h2 id="lead-form-heading" className="font-ui text-lg font-semibold">
+      <h2 id="lead-form-heading" className="t-subsection">
         Enquire about {program.name}
       </h2>
 

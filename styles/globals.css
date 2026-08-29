@@ -36,8 +36,11 @@
   --color-separator: var(--color-separator);
   --color-fill: var(--color-fill);
 
+  --color-rule: var(--color-rule);
+
   --color-tint: var(--color-tint);
   --color-brand: var(--color-brand);
+  --color-brand-ink: var(--color-brand-ink);
   --color-on-brand: var(--color-on-brand);
 
   --color-success: var(--color-success);
@@ -70,4 +73,115 @@
 
 :root[data-theme="dark"] {
   color-scheme: dark;
+}
+
+/*
+ * Editorial layer.
+ *
+ * The type scale and the three shape treatments live here rather than being
+ * spelled out as utility strings on every element. The scale uses clamp() and
+ * tracking values Tailwind cannot express without arbitrary values on every
+ * heading, and defining them once is what stops the scale drifting the third
+ * time someone adds a section.
+ *
+ * Every value below resolves to a token. Nothing here introduces a colour, a
+ * font or a radius of its own.
+ */
+@layer components {
+  /* ---- Type scale ---- */
+
+  .t-display {
+    font-family: var(--font-read);
+    font-size: clamp(2.5rem, 5.5vw, 4rem);
+    font-weight: 600;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+  }
+
+  .t-page-title {
+    font-family: var(--font-read);
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-weight: 600;
+    line-height: 1.08;
+    letter-spacing: -0.015em;
+  }
+
+  .t-section {
+    font-family: var(--font-read);
+    font-size: 1.625rem;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  .t-subsection {
+    font-family: var(--font-ui);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .t-eyebrow {
+    font-family: var(--font-ui);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: 0.13em;
+    color: var(--color-label-2);
+  }
+
+  /*
+   * The lede is set on --color-label rather than --color-label-2. Apple's
+   * secondary label measures 3.44:1 on white, and at 20px regular this is not
+   * "large text" under WCAG, so label-2 would fail AA. The hierarchy is carried
+   * by size and measure instead.
+   */
+  .t-lede {
+    font-family: var(--font-read);
+    font-size: 1.25rem;
+    line-height: 1.5;
+    color: var(--color-label);
+  }
+
+  .t-body {
+    font-family: var(--font-read);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    max-width: 68ch;
+  }
+
+  .t-data {
+    font-family: var(--font-data);
+    font-size: 0.8125rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ---- Shape treatments ---- */
+
+  /*
+   * (b) Raised surface. For things you click through to. A shadow does the
+   * lifting, not a border — a border plus a radius plus a fill on every group is
+   * what flattened the old design into one repeated object.
+   */
+  .surface-raised {
+    background-color: var(--color-surface);
+    border-radius: var(--radius-card);
+    box-shadow:
+      0 1px 2px rgb(0 0 0 / 0.04),
+      0 4px 12px rgb(0 0 0 / 0.04);
+  }
+
+  /* (c) Inset band. Full-bleed, ruled top and bottom, sits back from the page. */
+  .band-inset {
+    background-color: var(--color-bg-grouped);
+    border-top: 1px solid var(--color-rule);
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  /* The brand ground, used for the hero, the mastheads and the footer. */
+  .band-ink {
+    background-color: var(--color-brand-ink);
+    color: var(--color-on-brand);
+  }
 }

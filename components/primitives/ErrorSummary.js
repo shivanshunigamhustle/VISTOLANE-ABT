@@ -41,7 +41,7 @@ export default function ErrorSummary({
       ref={ref}
       role="alert"
       tabIndex={-1}
-      className="rounded-xl border-l-2 p-4 text-label focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+      className="rounded-[var(--radius-card)] border-l-2 p-4 text-label focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
       style={{
         borderLeftColor: "var(--color-danger)",
         backgroundColor:

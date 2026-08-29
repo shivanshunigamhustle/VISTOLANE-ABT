@@ -3,17 +3,19 @@
   --font-read: ui-serif, "New York", Georgia, "Times New Roman", serif;
   --font-data: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
 
-  --color-bg: #FFFFFF;
-  --color-bg-grouped: #F2F2F7;
+  --color-bg: #F2F2F7;
+  --color-bg-grouped: #E7E7EC;
   --color-surface: #FFFFFF;
   --color-label: #000000;
   --color-label-2: rgba(60, 60, 67, 0.60);
   --color-label-3: rgba(60, 60, 67, 0.30);
   --color-separator: #D1D1D6;
+  --color-rule: #C6C6C8;
   --color-fill: rgba(120, 120, 128, 0.12);
 
   --color-tint: #007AFF;
   --color-brand: #13274D;
+  --color-brand-ink: #0B1830;
   --color-on-brand: #FFFFFF;
 
   --color-success: #34C759;
@@ -26,20 +28,26 @@
   --intent-family: #FF2D55;
   --intent-investor: #A2845E;
   --intent-residence: #AF52DE;
+
+  --radius-card: 4px;
+  --radius-control: 6px;
+  --radius-pill: 999px;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --color-bg: #000000;
-    --color-bg-grouped: #1C1C1E;
+    --color-bg-grouped: #2C2C2E;
     --color-surface: #1C1C1E;
     --color-label: #FFFFFF;
     --color-label-2: rgba(235, 235, 245, 0.60);
     --color-label-3: rgba(235, 235, 245, 0.30);
     --color-separator: #38383A;
+    --color-rule: #48484A;
     --color-fill: rgba(120, 120, 128, 0.24);
     --color-tint: #0A84FF;
     --color-brand: #1B3563;
+    --color-brand-ink: #0B1830;
     --color-success: #30D158;
     --color-warning: #FF9F0A;
     --color-danger: #FF453A;
@@ -54,15 +62,18 @@
 
 :root[data-theme="dark"] {
   --color-bg: #000000;
-  --color-bg-grouped: #1C1C1E;
+  --color-bg-grouped: #2C2C2E;
   --color-surface: #1C1C1E;
   --color-label: #FFFFFF;
   --color-label-2: rgba(235, 235, 245, 0.60);
   --color-label-3: rgba(235, 235, 245, 0.30);
   --color-separator: #38383A;
+  --color-rule: #48484A;
   --color-fill: rgba(120, 120, 128, 0.24);
   --color-tint: #0A84FF;
   --color-brand: #1B3563;
+  --color-brand-ink: #0B1830;
+  --color-on-brand: #FFFFFF;
   --color-success: #30D158;
   --color-warning: #FF9F0A;
   --color-danger: #FF453A;

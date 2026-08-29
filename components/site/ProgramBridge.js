@@ -34,7 +34,7 @@ export default function ProgramBridge({ program }) {
   });
 
   return (
-    <div className="rounded-xl border border-separator bg-bg-grouped p-5">
+    <div className="border-y border-rule py-8">
       <Button href={href} variant="primary">
         Start your {program.name} application
       </Button>

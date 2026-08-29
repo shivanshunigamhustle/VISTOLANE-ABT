@@ -18,7 +18,7 @@ import { Children, useState } from "react";
  * @returns {JSX.Element}
  */
 export function Chip({ pressed = false, onToggle, href, children, ...rest }) {
-  const className = `inline-flex cursor-pointer items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm no-underline
+  const className = `inline-flex cursor-pointer items-center gap-1.5 rounded-[var(--radius-pill)] border px-3 py-1.5 text-sm no-underline
         transition-[background-color,border-color] duration-200 motion-reduce:transition-none
         focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint
         ${
@@ -127,7 +127,7 @@ export function ChipGroup({ label, visibleCount, children }) {
           type="button"
           aria-expanded={expanded}
           onClick={() => setExpanded((open) => !open)}
-          className="inline-flex cursor-pointer items-center rounded-full border border-separator px-3 py-1.5
+          className="inline-flex cursor-pointer items-center rounded-[var(--radius-pill)] border border-separator px-3 py-1.5
             text-sm text-label underline underline-offset-2
             transition-[background-color] duration-200 motion-reduce:transition-none
             hover:bg-fill focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"

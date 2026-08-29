@@ -7,7 +7,7 @@ import Badge from "@/components/primitives/Badge";
 import Callout from "@/components/primitives/Callout";
 import DataTable from "@/components/primitives/DataTable";
 import Prose from "@/components/primitives/Prose";
-import Toc, { tocFromMdx } from "@/components/primitives/Toc";
+import Toc from "@/components/primitives/Toc";
 import Unverified, {
   FieldValue,
   splitUnverified,
@@ -15,6 +15,7 @@ import Unverified, {
 import JsonLd from "@/components/site/JsonLd";
 import LeadForm from "@/components/site/LeadForm";
 import ProgramBridge from "@/components/site/ProgramBridge";
+import SectionHeading from "@/components/site/SectionHeading";
 import {
   getAllPrograms,
   getCountry,
@@ -22,6 +23,7 @@ import {
   getProgram,
   getPrograms,
 } from "@/lib/content/loader";
+import { tocFromMdx } from "@/lib/content/toc";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { breadcrumbList, faqPage, howTo } from "@/lib/seo/schema";
 
@@ -41,15 +43,15 @@ import { breadcrumbList, faqPage, howTo } from "@/lib/seo/schema";
 
 /** Section anchors, also used to build the contents list. */
 const SECTIONS = [
-  { id: "eligibility", label: "Eligibility" },
-  { id: "documents", label: "Documents" },
-  { id: "process", label: "Process" },
-  { id: "fees", label: "Fees" },
-  { id: "pitfalls", label: "Common pitfalls" },
-  { id: "faqs", label: "Questions" },
-  { id: "about", label: "About this route" },
-  { id: "sources", label: "Sources" },
-  { id: "related", label: "Related programs" },
+  { id: "eligibility", label: "Eligibility", eyebrow: "Who qualifies" },
+  { id: "documents", label: "Documents", eyebrow: "What to gather" },
+  { id: "process", label: "Process", eyebrow: "What happens" },
+  { id: "fees", label: "Fees", eyebrow: "What it costs" },
+  { id: "pitfalls", label: "Common pitfalls", eyebrow: "What goes wrong" },
+  { id: "faqs", label: "Questions", eyebrow: "Asked often" },
+  { id: "about", label: "About this route", eyebrow: "In depth" },
+  { id: "sources", label: "Sources", eyebrow: "Provenance" },
+  { id: "related", label: "Related programs", eyebrow: "Nearby" },
 ];
 
 /**
@@ -122,7 +124,7 @@ export default async function ProgramPage({ params }) {
   }));
 
   return (
-    <main id="main-content" className="mx-auto w-full max-w-5xl px-5 py-10">
+    <main id="main-content">
       <JsonLd
         schema={breadcrumbList([
           { name: "Home", path: "/" },
@@ -138,86 +140,82 @@ export default async function ProgramPage({ params }) {
       <JsonLd schema={faqPage(program)} />
       <JsonLd schema={howTo(program, pagePath)} />
 
-      {/* 1. Breadcrumb */}
-      <nav aria-label="Breadcrumb" className="mb-8">
-        <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-label-2">
-          {[
-            { href: "/destinations", label: "Destinations" },
-            {
-              href: `/destinations/${program.countrySlug}`,
-              label: countryName,
-            },
-            {
-              href: `/destinations/${program.countrySlug}/${program.intent}`,
-              label: intentLabel,
-            },
-          ].map((crumb) => (
-            <li key={crumb.href} className="flex items-center gap-2">
-              <Link
-                href={crumb.href}
-                className="underline underline-offset-2 hover:text-label focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
-              >
-                {crumb.label}
-              </Link>
-              <span aria-hidden="true" className="text-label-3">
-                /
-              </span>
-            </li>
-          ))}
-          <li aria-current="page" className="text-label">
+      {/* Masthead. Chrome and identification, separated from the argument. */}
+      <div className="band-ink">
+        <div className="mx-auto w-full max-w-6xl px-5 py-12">
+          <nav aria-label="Breadcrumb">
+            <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 font-ui text-sm text-on-brand/70">
+              {[
+                { href: "/destinations", label: "Destinations" },
+                {
+                  href: `/destinations/${program.countrySlug}`,
+                  label: countryName,
+                },
+                {
+                  href: `/destinations/${program.countrySlug}/${program.intent}`,
+                  label: intentLabel,
+                },
+              ].map((crumb) => (
+                <li key={crumb.href} className="flex items-center gap-2">
+                  <Link
+                    href={crumb.href}
+                    className="text-on-brand/70 underline underline-offset-4 hover:text-on-brand
+                      focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                  >
+                    {crumb.label}
+                  </Link>
+                  <span aria-hidden="true" className="text-on-brand/40">
+                    /
+                  </span>
+                </li>
+              ))}
+              <li aria-current="page" className="text-on-brand">
+                {program.name}
+              </li>
+            </ol>
+          </nav>
+
+          <h1 className="t-page-title mt-8 max-w-[22ch] text-on-brand">
             {program.name}
-          </li>
-        </ol>
-      </nav>
+          </h1>
+          <p className="mt-3 font-read text-lg text-on-brand opacity-75">
+            {program.officialName}
+          </p>
+          <p className="t-body mt-6 text-on-brand opacity-85">
+            <FieldValue value={program.whoItsFor} />
+          </p>
 
-      {/* 2. Title, official name, standfirst */}
-      <header>
-        <h1 className="text-3xl font-semibold leading-tight sm:text-4xl">
-          {program.name}
-        </h1>
-        <p className="mt-2 font-read text-lg text-label-2">
-          {program.officialName}
-        </p>
-        <p className="mt-4 max-w-[68ch] font-read text-lg leading-relaxed text-label">
-          <FieldValue value={program.whoItsFor} />
-        </p>
-      </header>
-
-      {/* 3. Meta strip */}
-      <dl className="mt-8 grid gap-x-10 gap-y-5 border-y border-separator py-5 font-data text-sm tabular-nums sm:grid-cols-2">
-        {[
-          { label: "Processing time", value: program.processingTime },
-          { label: "Validity", value: program.validity },
-        ].map((entry) => (
-          <div key={entry.label}>
-            <dt className="font-ui text-xs uppercase tracking-wide text-label-3">
-              {entry.label}
-            </dt>
-            <dd className="mt-1 text-label [overflow-wrap:anywhere]">
-              <FieldValue value={entry.value} />
-            </dd>
-          </div>
-        ))}
-        <div>
-          <dt className="font-ui text-xs uppercase tracking-wide text-label-3">
-            Extendable
-          </dt>
-          <dd className="mt-1 text-label">
-            {program.extendable ? "Yes" : "No"}
-          </dd>
+          <dl className="mt-10 grid gap-x-10 gap-y-6 border-t border-on-brand/25 pt-6 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              { label: "Processing time", value: program.processingTime },
+              { label: "Validity", value: program.validity },
+            ].map((entry) => (
+              <div key={entry.label}>
+                <dt className="t-eyebrow text-on-brand opacity-60">
+                  {entry.label}
+                </dt>
+                <dd className="t-data mt-2 text-on-brand [overflow-wrap:anywhere]">
+                  <FieldValue value={entry.value} />
+                </dd>
+              </div>
+            ))}
+            <div>
+              <dt className="t-eyebrow text-on-brand opacity-60">Extendable</dt>
+              <dd className="t-data mt-2 text-on-brand">
+                {program.extendable ? "Yes" : "No"}
+              </dd>
+            </div>
+            <div>
+              <dt className="t-eyebrow text-on-brand opacity-60">Intent</dt>
+              <dd className="mt-2">
+                <Badge tone={program.intent}>{intentLabel}</Badge>
+              </dd>
+            </div>
+          </dl>
         </div>
-        <div>
-          <dt className="font-ui text-xs uppercase tracking-wide text-label-3">
-            Intent
-          </dt>
-          <dd className="mt-1">
-            <Badge tone={program.intent}>{intentLabel}</Badge>
-          </dd>
-        </div>
-      </dl>
+      </div>
 
-      {/* 4. Lead capture, immediately after the introduction */}
-      <div className="mt-8">
+      <div className="mx-auto w-full max-w-6xl px-5 py-12">
         <LeadForm
           program={{
             slug: program.slug,
@@ -228,19 +226,25 @@ export default async function ProgramPage({ params }) {
         />
       </div>
 
-      <div className="mt-12 grid grid-cols-[minmax(0,1fr)] gap-12 md:grid-cols-[minmax(0,1fr)_14rem]">
-        <div className="min-w-0 space-y-14">
+      <div className="mx-auto grid w-full max-w-6xl grid-cols-[minmax(0,1fr)] gap-10 px-5 pb-16 xl:grid-cols-[15rem_minmax(0,1fr)]">
+        {/* Contents rail, left of the column on xl. */}
+        <div className="xl:order-first">
+          <Toc headings={contents} />
+        </div>
+
+        <div className="surface-raised min-w-0 space-y-14 p-6 sm:p-10">
           {/* 6. Eligibility */}
           <section aria-labelledby="eligibility">
-            <h2
+            <SectionHeading
               id="eligibility"
-              className="mb-4 scroll-mt-8 text-2xl font-semibold"
+              eyebrow={SECTIONS[0].eyebrow}
+              className="mb-6"
             >
               {SECTIONS[0].label}
-            </h2>
+            </SectionHeading>
             <DataTable
               columns={[
-                { key: "requirement", label: "Requirement" },
+                { key: "requirement", label: "Requirement", width: "28%" },
                 { key: "detail", label: "Detail" },
               ]}
               rows={program.eligibility.map((item) => ({
@@ -252,16 +256,22 @@ export default async function ProgramPage({ params }) {
 
           {/* 7. Documents */}
           <section aria-labelledby="documents">
-            <h2
+            <SectionHeading
               id="documents"
-              className="mb-4 scroll-mt-8 text-2xl font-semibold"
+              eyebrow={SECTIONS[1].eyebrow}
+              className="mb-6"
             >
               {SECTIONS[1].label}
-            </h2>
+            </SectionHeading>
             <DataTable
               columns={[
-                { key: "name", label: "Document" },
-                { key: "required", label: "Required" },
+                { key: "name", label: "Document", width: "26%" },
+                {
+                  key: "required",
+                  label: "Required",
+                  width: "14%",
+                  nowrap: true,
+                },
                 { key: "note", label: "Note" },
               ]}
               rows={program.documents.map((document) => ({
@@ -280,12 +290,13 @@ export default async function ProgramPage({ params }) {
 
           {/* 8. Process */}
           <section aria-labelledby="process">
-            <h2
+            <SectionHeading
               id="process"
-              className="mb-4 scroll-mt-8 text-2xl font-semibold"
+              eyebrow={SECTIONS[2].eyebrow}
+              className="mb-6"
             >
               {SECTIONS[2].label}
-            </h2>
+            </SectionHeading>
             <ol className="space-y-6">
               {program.processSteps.map((step) => (
                 <li key={step.step} className="flex gap-4">
@@ -316,14 +327,25 @@ export default async function ProgramPage({ params }) {
 
           {/* 10. Fees */}
           <section aria-labelledby="fees">
-            <h2 id="fees" className="mb-4 scroll-mt-8 text-2xl font-semibold">
+            <SectionHeading
+              id="fees"
+              eyebrow={SECTIONS[3].eyebrow}
+              className="mb-6"
+            >
               {SECTIONS[3].label}
-            </h2>
+            </SectionHeading>
             <DataTable
               columns={[
-                { key: "item", label: "Item" },
-                { key: "amount", label: "Amount", align: "right", mono: true },
-                { key: "payableBy", label: "Payable by" },
+                { key: "item", label: "Item", width: "24%" },
+                {
+                  key: "amount",
+                  label: "Amount",
+                  align: "right",
+                  mono: true,
+                  width: "16%",
+                  nowrap: true,
+                },
+                { key: "payableBy", label: "Payable by", width: "22%" },
                 { key: "note", label: "Note" },
               ]}
               rows={program.fees.map((fee) => ({
@@ -350,12 +372,13 @@ export default async function ProgramPage({ params }) {
 
           {/* 11. Pitfalls */}
           <section aria-labelledby="pitfalls">
-            <h2
+            <SectionHeading
               id="pitfalls"
-              className="mb-4 scroll-mt-8 text-2xl font-semibold"
+              eyebrow={SECTIONS[4].eyebrow}
+              className="mb-6"
             >
               {SECTIONS[4].label}
-            </h2>
+            </SectionHeading>
             {program.pitfalls.map((pitfall) => (
               <Callout key={pitfall.title} tone="warning" title={pitfall.title}>
                 <FieldValue value={pitfall.detail} />
@@ -365,10 +388,14 @@ export default async function ProgramPage({ params }) {
 
           {/* 12. FAQs */}
           <section aria-labelledby="faqs">
-            <h2 id="faqs" className="mb-4 scroll-mt-8 text-2xl font-semibold">
+            <SectionHeading
+              id="faqs"
+              eyebrow={SECTIONS[5].eyebrow}
+              className="mb-6"
+            >
               {SECTIONS[5].label}
-            </h2>
-            <div className="divide-y divide-separator border-y border-separator">
+            </SectionHeading>
+            <div className="divide-y divide-rule border-y border-rule">
               {program.faqs.map((faq) => (
                 <details key={faq.question} className="group py-4">
                   <summary className="cursor-pointer font-ui font-medium text-label focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint">
@@ -384,9 +411,13 @@ export default async function ProgramPage({ params }) {
 
           {/* 13. Body */}
           <section aria-labelledby="about">
-            <h2 id="about" className="mb-4 scroll-mt-8 text-2xl font-semibold">
+            <SectionHeading
+              id="about"
+              eyebrow={SECTIONS[6].eyebrow}
+              className="mb-6"
+            >
               {SECTIONS[6].label}
-            </h2>
+            </SectionHeading>
             <Prose>
               <MDXRemote
                 source={program.body}
@@ -394,32 +425,39 @@ export default async function ProgramPage({ params }) {
               />
             </Prose>
           </section>
+        </div>
+      </div>
 
+      {/* Provenance sits back from the argument it supports. */}
+      <div className="band-inset">
+        <div className="mx-auto w-full max-w-6xl space-y-14 px-5 py-16">
           {/* 14. Sources */}
           <section aria-labelledby="sources">
-            <h2
+            <SectionHeading
               id="sources"
-              className="mb-4 scroll-mt-8 text-2xl font-semibold"
+              eyebrow={SECTIONS[7].eyebrow}
+              className="mb-6"
             >
               {SECTIONS[7].label}
-            </h2>
+            </SectionHeading>
             <Callout tone="source" sources={program.sources} />
           </section>
 
           {/* 15. Review line */}
-          <p className="border-y border-separator py-4 font-data text-sm text-label">
+          <p className="border-y border-rule py-4 font-data text-sm text-label">
             Last reviewed {program.lastReviewed} — {program.author.name},{" "}
             {program.author.credentials}
           </p>
 
           {/* 16. Related */}
           <section aria-labelledby="related">
-            <h2
+            <SectionHeading
               id="related"
-              className="mb-4 scroll-mt-8 text-2xl font-semibold"
+              eyebrow={SECTIONS[8].eyebrow}
+              className="mb-6"
             >
               {SECTIONS[8].label}
-            </h2>
+            </SectionHeading>
             <ul className="space-y-3">
               {related.map((entry) => (
                 <li key={entry.slug}>
@@ -440,11 +478,6 @@ export default async function ProgramPage({ params }) {
 
           {/* 17. Bridge */}
           <ProgramBridge program={program} />
-        </div>
-
-        {/* 5. Contents */}
-        <div className="order-first md:order-none">
-          <Toc headings={contents} />
         </div>
       </div>
     </main>

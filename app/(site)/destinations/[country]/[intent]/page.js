@@ -5,6 +5,7 @@ import DataTable from "@/components/primitives/DataTable";
 import { FieldValue } from "@/components/primitives/Unverified";
 import JsonLd from "@/components/site/JsonLd";
 import ProgramCard from "@/components/site/ProgramCard";
+import SectionHeading from "@/components/site/SectionHeading";
 import SoftBridge from "@/components/site/SoftBridge";
 import { INTENTS, INTENT_SLUGS } from "@/lib/content/intents";
 import {
@@ -122,10 +123,10 @@ export default async function CountryIntentPage({ params }) {
       </nav>
 
       <header className="max-w-[68ch]">
-        <h1 className="text-4xl font-semibold leading-tight">
+        <h1 className="t-page-title">
           {intent.label} in {country.name}
         </h1>
-        <p className="mt-5 font-read text-lg leading-relaxed text-label-2">
+        <p className="t-lede mt-6">
           {programs.length > 0
             ? `${programs.length} ${programs.length === 1 ? "route" : "routes"} covered so far. Each guide sets out who it suits, what it requires and what it costs, with every figure traced to an official source or marked as unverified.`
             : `No routes for this intent have been written yet.`}
@@ -143,9 +144,9 @@ export default async function CountryIntentPage({ params }) {
       {programs.length > 0 ? (
         <>
           <section aria-labelledby="compare" className="mt-14">
-            <h2 id="compare" className="text-2xl font-semibold">
+            <SectionHeading id="compare" eyebrow="Side by side">
               Compare
-            </h2>
+            </SectionHeading>
             <div className="mt-6">
               <DataTable
                 columns={[
@@ -181,10 +182,10 @@ export default async function CountryIntentPage({ params }) {
           </section>
 
           <section aria-labelledby="routes" className="mt-14">
-            <h2 id="routes" className="text-2xl font-semibold">
+            <SectionHeading id="routes" eyebrow="Guides">
               Routes
-            </h2>
-            <div className="mt-6 grid gap-6 lg:grid-cols-2">
+            </SectionHeading>
+            <div className="mt-8 grid gap-5 lg:grid-cols-2">
               {programs.map((program) => (
                 <ProgramCard
                   key={program.slug}
@@ -196,8 +197,8 @@ export default async function CountryIntentPage({ params }) {
           </section>
         </>
       ) : (
-        <div className="mt-12 rounded-2xl border border-separator bg-surface p-8">
-          <h2 className="font-ui text-xl font-semibold">
+        <div className="surface-raised mt-12 p-8">
+          <h2 className="t-section text-label">
             Guides for {intent.label.toLowerCase()} in {country.name} are being
             written
           </h2>

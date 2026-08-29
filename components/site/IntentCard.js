@@ -1,9 +1,11 @@
 import Link from "next/link";
+
 /**
- * One intent on a country page.
+ * One intent.
  *
- * The intent hue fills the card and paints a rail down its left edge, and never
- * touches the text — the same rule the Badge follows, for the same reason.
+ * The hue is restated rather than washed across the card: a 3px rule along the
+ * top edge and a dot beside the label. Text stays on --color-label, which is the
+ * same rule Badge follows and the reason these hues are legible at all.
  *
  * An intent with nothing behind it is shown muted and inert rather than hidden.
  * Someone looking for a study route needs to know it is not covered yet, not to
@@ -23,17 +25,23 @@ import Link from "next/link";
  */
 export default function IntentCard({ intent, countrySlug, href, count }) {
   const hue = `var(${intent.token})`;
-  const style = {
-    borderLeftColor: hue,
-    backgroundColor: `color-mix(in srgb, ${hue} 8%, transparent)`,
-  };
 
   const inner = (
     <>
-      <span className="font-ui text-base font-semibold text-label">
-        {intent.label}
+      <span
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 h-[3px]"
+        style={{ backgroundColor: hue }}
+      />
+      <span className="flex items-center gap-2.5">
+        <span
+          aria-hidden="true"
+          className="size-1.5 shrink-0 rounded-full"
+          style={{ backgroundColor: hue }}
+        />
+        <span className="t-subsection text-label">{intent.label}</span>
       </span>
-      <span className="mt-1 block font-data text-sm tabular-nums text-label-2">
+      <span className="t-data mt-2 block text-label-2">
         {count === 0
           ? "Coming soon"
           : `${count} ${count === 1 ? "guide" : "guides"}`}
@@ -45,8 +53,7 @@ export default function IntentCard({ intent, countrySlug, href, count }) {
     return (
       <div
         aria-disabled="true"
-        className="rounded-xl border border-separator border-l-2 p-5 opacity-60"
-        style={style}
+        className="surface-raised relative overflow-hidden p-5 opacity-55"
       >
         {inner}
       </div>
@@ -56,10 +63,10 @@ export default function IntentCard({ intent, countrySlug, href, count }) {
   return (
     <Link
       href={href ?? `/destinations/${countrySlug}/${intent.slug}`}
-      className="block rounded-xl border border-separator border-l-2 p-5 no-underline
-        transition-opacity duration-200 motion-reduce:transition-none hover:opacity-90
+      className="surface-raised relative block overflow-hidden p-5 no-underline
+        transition-shadow duration-200 motion-reduce:transition-none
+        hover:shadow-[0_2px_4px_rgb(0_0_0/0.06),0_8px_24px_rgb(0_0_0/0.08)]
         focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
-      style={style}
     >
       {inner}
     </Link>

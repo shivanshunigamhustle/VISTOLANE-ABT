@@ -6,9 +6,9 @@ import { LEGAL, NAV } from "@/components/site/navigation";
 /**
  * The site footer.
  *
- * It carries the brand fill, which is the one place --color-brand is safe as a
- * surface: --color-on-brand is white in both appearances, so the pairing holds
- * whichever way the OS is set.
+ * It carries the brand-ink ground, which is the one place the deep navy is safe:
+ * --color-on-brand is white in both appearances, so the pairing holds whichever
+ * way the OS is set.
  *
  * The navigation mirrors the header because both read the same tree.
  */
@@ -18,12 +18,12 @@ import { LEGAL, NAV } from "@/components/site/navigation";
  */
 export default function SiteFooter() {
   return (
-    <footer className="mt-24 bg-brand text-on-brand">
+    <footer className="band-ink mt-0">
       <div className="mx-auto w-full max-w-6xl px-5 py-14">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {NAV.map((group) => (
             <nav key={group.label} aria-label={group.label}>
-              <h2 className="font-ui text-sm font-semibold text-on-brand">
+              <h2 className="t-eyebrow text-on-brand opacity-70">
                 {group.href ? (
                   <Link
                     href={group.href}
@@ -54,11 +54,11 @@ export default function SiteFooter() {
           must be agreed with the client and, given what this site publishes,
           reviewed by someone qualified. Do not launch with this text.
         */}
-        <div className="mt-12 rounded-xl border border-on-brand/30 p-5">
-          <h2 className="font-ui text-sm font-semibold">
+        <div className="mt-12 rounded-[var(--radius-card)] border border-on-brand/30 p-5">
+          <h2 className="t-subsection">
             Advisory disclaimer — placeholder, not for launch
           </h2>
-          <p className="mt-2 max-w-[68ch] font-read leading-relaxed opacity-80">
+          <p className="t-body mt-2 opacity-80">
             The wording of this disclaimer has not been agreed. It needs to
             state what this site is and is not — general information rather than
             legal advice, and no advisory relationship created by reading it —

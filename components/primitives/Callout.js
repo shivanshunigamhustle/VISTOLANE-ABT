@@ -60,7 +60,7 @@ export default function Callout({ tone = "note", title, sources, children }) {
 
   return (
     <aside
-      className="my-6 rounded-r-xl border-l-2 p-4 text-label"
+      className="my-6 rounded-r-[var(--radius-card)] border-l-2 p-4 text-label"
       style={{
         borderLeftColor: hue,
         backgroundColor: `color-mix(in srgb, ${hue} 8%, transparent)`,

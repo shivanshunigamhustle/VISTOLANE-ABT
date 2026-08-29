@@ -30,15 +30,16 @@ export default function CountryCard({ country, programCount }) {
   return (
     <Link
       href={`/destinations/${country.slug}`}
-      className="group flex flex-col rounded-2xl border border-separator bg-surface p-6 no-underline
-        transition-colors duration-200 motion-reduce:transition-none hover:bg-bg-grouped
+      className="surface-raised group flex flex-col p-6 no-underline
+        transition-shadow duration-200 motion-reduce:transition-none
+        hover:shadow-[0_2px_4px_rgb(0_0_0/0.06),0_8px_24px_rgb(0_0_0/0.08)]
         focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
     >
-      <h3 className="font-ui text-xl font-semibold text-label group-hover:underline">
+      <h3 className="t-subsection text-label group-hover:underline">
         {country.name}
       </h3>
 
-      <dl className="mt-4 space-y-2 text-sm">
+      <dl className="t-data mt-4 space-y-2">
         <div className="flex flex-wrap items-baseline gap-x-2">
           <dt className="text-label-3">Region</dt>
           <dd className="text-label">{country.region}</dd>

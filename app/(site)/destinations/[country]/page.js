@@ -7,6 +7,7 @@ import DataTable from "@/components/primitives/DataTable";
 import { FieldValue } from "@/components/primitives/Unverified";
 import CountryCard from "@/components/site/CountryCard";
 import IntentCard from "@/components/site/IntentCard";
+import SectionHeading from "@/components/site/SectionHeading";
 import JsonLd from "@/components/site/JsonLd";
 import SoftBridge from "@/components/site/SoftBridge";
 import { INTENTS } from "@/lib/content/intents";
@@ -101,7 +102,7 @@ export default async function CountryPage({ params }) {
   ];
 
   return (
-    <main id="main-content" className="mx-auto w-full max-w-6xl px-5 py-16">
+    <main id="main-content">
       <JsonLd
         schema={breadcrumbList([
           { name: "Home", path: "/" },
@@ -110,54 +111,61 @@ export default async function CountryPage({ params }) {
         ])}
       />
 
-      <nav aria-label="Breadcrumb" className="mb-8">
-        <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-label-2">
-          <li className="flex items-center gap-2">
-            <Link
-              href="/destinations"
-              className="underline underline-offset-2 hover:text-label focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+      <div className="band-ink">
+        <div className="mx-auto w-full max-w-6xl px-5 py-14">
+          <nav aria-label="Breadcrumb">
+            <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 font-ui text-sm text-on-brand/70">
+              <li className="flex items-center gap-2">
+                <Link
+                  href="/destinations"
+                  className="text-on-brand/70 underline underline-offset-4 hover:text-on-brand
+                    focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                >
+                  Destinations
+                </Link>
+                <span aria-hidden="true" className="text-on-brand/40">
+                  /
+                </span>
+              </li>
+              <li aria-current="page" className="text-on-brand">
+                {country.name}
+              </li>
+            </ol>
+          </nav>
+
+          <h1 className="t-page-title mt-8 text-on-brand">{country.name}</h1>
+          <p className="t-body mt-6 text-on-brand opacity-85">
+            {country.summary}
+          </p>
+        </div>
+      </div>
+
+      {/* At a glance — a mono row of pairs divided by rules, not a card. */}
+      <div className="mx-auto w-full max-w-6xl px-5">
+        <dl className="grid divide-y divide-rule border-b border-rule sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+          {glance.map((entry) => (
+            <div
+              key={entry.label}
+              className="py-6 sm:px-6 sm:first:pl-0 sm:last:pr-0"
             >
-              Destinations
-            </Link>
-            <span aria-hidden="true" className="text-label-3">
-              /
-            </span>
-          </li>
-          <li aria-current="page" className="text-label">
-            {country.name}
-          </li>
-        </ol>
-      </nav>
-
-      {/* 1. Hero */}
-      <header className="max-w-[68ch]">
-        <h1 className="text-4xl font-semibold leading-tight sm:text-5xl">
-          {country.name}
-        </h1>
-        <p className="mt-5 font-read text-lg leading-relaxed text-label">
-          {country.summary}
-        </p>
-      </header>
-
-      <dl className="mt-10 grid gap-x-10 gap-y-6 border-y border-separator py-6 sm:grid-cols-3">
-        {glance.map((entry) => (
-          <div key={entry.label}>
-            <dt className="font-ui text-xs uppercase tracking-wide text-label-3">
-              {entry.label}
-            </dt>
-            <dd className="mt-2 font-read leading-relaxed text-label [overflow-wrap:anywhere]">
-              <FieldValue value={entry.value} />
-            </dd>
-          </div>
-        ))}
-      </dl>
+              <dt className="t-eyebrow">{entry.label}</dt>
+              <dd className="t-data mt-3 leading-relaxed text-label [overflow-wrap:anywhere]">
+                <FieldValue value={entry.value} />
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </div>
 
       {/* 2. Intents */}
-      <section aria-labelledby="intents" className="mt-16">
-        <h2 id="intents" className="text-2xl font-semibold">
+      <section
+        aria-labelledby="intents"
+        className="mx-auto w-full max-w-6xl px-5 pt-16"
+      >
+        <SectionHeading id="intents" eyebrow="By intent">
           What do you want to do here?
-        </h2>
-        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        </SectionHeading>
+        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {INTENTS.map((intent) => (
             <IntentCard
               key={intent.slug}
@@ -169,15 +177,18 @@ export default async function CountryPage({ params }) {
         </div>
       </section>
 
-      <div className="mt-14">
+      <div className="mx-auto w-full max-w-6xl px-5 pt-16">
         <SoftBridge country={country.slug} />
       </div>
 
       {/* 3. All programs */}
-      <section aria-labelledby="programs" className="mt-16">
-        <h2 id="programs" className="text-2xl font-semibold">
+      <section
+        aria-labelledby="programs"
+        className="mx-auto w-full max-w-6xl px-5 pt-16"
+      >
+        <SectionHeading id="programs" eyebrow="Every route">
           All routes
-        </h2>
+        </SectionHeading>
         {programs.length > 0 ? (
           <div className="mt-6">
             <DataTable
@@ -211,7 +222,7 @@ export default async function CountryPage({ params }) {
             />
           </div>
         ) : (
-          <div className="mt-6 rounded-2xl border border-separator bg-surface p-8">
+          <div className="mt-6 rounded-[var(--radius-card)] border border-separator bg-surface p-8">
             <h3 className="font-ui text-xl font-semibold">
               Programme guides for {country.name} are being written
             </h3>
@@ -237,10 +248,13 @@ export default async function CountryPage({ params }) {
       </section>
 
       {/* 4. Common requirements */}
-      <section aria-labelledby="requirements" className="mt-16">
-        <h2 id="requirements" className="text-2xl font-semibold">
+      <section
+        aria-labelledby="requirements"
+        className="mx-auto w-full max-w-6xl px-5 pt-16"
+      >
+        <SectionHeading id="requirements" eyebrow="Paperwork">
           Common requirements
-        </h2>
+        </SectionHeading>
         {country.commonDocuments.length > 0 ? (
           <div className="mt-6">
             <DataTable
@@ -264,10 +278,13 @@ export default async function CountryPage({ params }) {
       </section>
 
       {/* 5. Living there */}
-      <section aria-labelledby="living" className="mt-16">
-        <h2 id="living" className="text-2xl font-semibold">
+      <section
+        aria-labelledby="living"
+        className="mx-auto w-full max-w-6xl px-5 pt-16"
+      >
+        <SectionHeading id="living" eyebrow="On arrival">
           Living there
-        </h2>
+        </SectionHeading>
         <dl className="mt-6 grid gap-8 sm:grid-cols-2">
           {living.map((entry) => (
             <div key={entry.label}>
@@ -282,24 +299,29 @@ export default async function CountryPage({ params }) {
         </dl>
       </section>
 
-      {/* 6. Sources and review line */}
-      <section aria-labelledby="sources" className="mt-16">
-        <h2 id="sources" className="text-2xl font-semibold">
-          Sources
-        </h2>
-        <Callout tone="source" sources={country.sources} />
-        <p className="mt-4 border-y border-separator py-4 font-data text-sm text-label">
-          Last reviewed {country.lastReviewed} — {country.author.name},{" "}
-          {country.author.credentials}
-        </p>
+      {/* 6. Sources and review line, set back on the inset band */}
+      <section aria-labelledby="sources" className="band-inset mt-20">
+        <div className="mx-auto w-full max-w-6xl px-5 py-16">
+          <SectionHeading id="sources" eyebrow="Provenance">
+            Sources
+          </SectionHeading>
+          <Callout tone="source" sources={country.sources} />
+          <p className="t-data mt-6 border-t border-rule pt-6 text-label">
+            Last reviewed {country.lastReviewed} — {country.author.name},{" "}
+            {country.author.credentials}
+          </p>
+        </div>
       </section>
 
       {/* 7. Related countries */}
       {related.length > 0 ? (
-        <section aria-labelledby="related" className="mt-16">
-          <h2 id="related" className="text-2xl font-semibold">
+        <section
+          aria-labelledby="related"
+          className="mx-auto w-full max-w-6xl px-5 py-16"
+        >
+          <SectionHeading id="related" eyebrow="Nearby">
             Related countries
-          </h2>
+          </SectionHeading>
           <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {related.map((candidate) => (
               <CountryCard

@@ -22,7 +22,7 @@ export { splitUnverified };
 export default function Unverified({ reason }) {
   return (
     <span
-      className="inline-flex max-w-full items-center gap-1.5 rounded-md bg-fill px-2 py-0.5 align-middle font-ui text-xs font-medium text-label-2"
+      className="inline-flex max-w-full items-center gap-1.5 rounded-[var(--radius-control)] bg-fill px-2 py-0.5 align-middle font-ui text-xs font-medium text-label-2"
       title={reason || undefined}
     >
       <svg

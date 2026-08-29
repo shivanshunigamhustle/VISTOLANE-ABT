@@ -7,8 +7,9 @@ import Button from "@/components/primitives/Button";
 import Callout from "@/components/primitives/Callout";
 import DataTable from "@/components/primitives/DataTable";
 import Prose from "@/components/primitives/Prose";
-import Toc, { tocFromMdx } from "@/components/primitives/Toc";
+import Toc from "@/components/primitives/Toc";
 import { INTENTS } from "@/lib/content/intents";
+import { tocFromMdx } from "@/lib/content/toc";
 import { getProgram } from "@/lib/content/loader";
 
 import InteractiveDemo from "./InteractiveDemo";

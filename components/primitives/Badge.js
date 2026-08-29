@@ -80,7 +80,7 @@ export default function Badge({ tone = "neutral", children }) {
 
   return (
     <span
-      className="inline-flex max-w-full items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium text-label [overflow-wrap:anywhere]"
+      className="inline-flex max-w-full items-center gap-1.5 rounded-[var(--radius-control)] px-2 py-1 text-xs font-medium text-label [overflow-wrap:anywhere]"
       style={{
         backgroundColor: `color-mix(in srgb, ${hue} 14%, transparent)`,
       }}

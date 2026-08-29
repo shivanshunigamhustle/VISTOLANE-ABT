@@ -1,99 +1,106 @@
-import GithubSlugger from "github-slugger";
+"use client";
+
+import { useEffect, useState } from "react";
 
 /**
- * In-page contents, built from the top-level headings of a body.
+ * In-page contents.
  *
- * Ids come from github-slugger, which is the slugger rehype-slug uses, so the
- * anchors here match the ids rehype-slug will put on the rendered headings. If
- * the MDX pipeline ever changes its slug plugin, this has to change with it.
- */
-
-/**
- * @typedef {Object} TocHeading
- * @property {string} id
- * @property {string} text
- */
-
-/**
- * Extract the h2 headings from raw MDX, skipping anything inside a code fence
- * so a commented-out heading in an example does not appear in the contents.
+ * A sticky rail beside the content on xl screens, a collapsed disclosure below
+ * it. The disclosure is a <details>, so it opens without JavaScript exactly as
+ * the site navigation does.
  *
- * @param {string} body  Raw MDX body, without frontmatter.
- * @returns {TocHeading[]}
+ * The active-section marker is the one part that needs JavaScript. It is
+ * progressive enhancement: with scripting off every link still resolves, nothing
+ * is hidden, and the only thing missing is the highlight.
  */
-export function tocFromMdx(body) {
-  const slugger = new GithubSlugger();
-  /** @type {TocHeading[]} */
-  const headings = [];
-  let inFence = false;
-
-  for (const line of String(body ?? "").split("\n")) {
-    if (/^\s*(?:```|~~~)/.test(line)) {
-      inFence = !inFence;
-      continue;
-    }
-    if (inFence) continue;
-
-    const match = /^##[^#]\s*(.+?)\s*$/.exec(line);
-    if (match) {
-      const text = match[1].trim();
-      headings.push({ id: slugger.slug(text), text });
-    }
-  }
-
-  return headings;
-}
 
 /**
- * @param {{ headings: TocHeading[] }} props
- * @returns {JSX.Element | null}
+ * @param {{ headings: import("@/lib/content/toc").TocHeading[], activeId: string | null }} props
+ * @returns {JSX.Element}
  */
-function TocList({ headings }) {
+function TocList({ headings, activeId }) {
   return (
-    <ol className="space-y-2 text-sm">
-      {headings.map((heading) => (
-        <li key={heading.id}>
-          <a
-            href={`#${heading.id}`}
-            className="block text-label-2 underline-offset-2 transition-colors duration-200
-              motion-reduce:transition-none hover:text-label hover:underline
-              focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
-          >
-            {heading.text}
-          </a>
-        </li>
-      ))}
+    <ol className="space-y-0.5">
+      {headings.map((heading) => {
+        const active = heading.id === activeId;
+        return (
+          <li key={heading.id}>
+            <a
+              href={`#${heading.id}`}
+              aria-current={active ? "location" : undefined}
+              className={`block border-l py-1.5 pl-3 font-ui text-[0.8125rem] leading-snug no-underline
+                transition-colors duration-200 motion-reduce:transition-none
+                hover:text-label focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint
+                ${
+                  active
+                    ? "border-label font-medium text-label"
+                    : "border-rule text-label-2"
+                }`}
+            >
+              {heading.text}
+            </a>
+          </li>
+        );
+      })}
     </ol>
   );
 }
 
 /**
- * Sticky beside the body on desktop, a collapsed disclosure on small screens.
- *
- * @param {{ headings: TocHeading[], label?: string }} props
+ * @param {{
+ *   headings: import("@/lib/content/toc").TocHeading[],
+ *   label?: string,
+ * }} props
  * @returns {JSX.Element | null}
  */
 export default function Toc({ headings, label = "On this page" }) {
+  const [activeId, setActiveId] = useState(null);
+
+  useEffect(() => {
+    if (!headings || headings.length === 0) return undefined;
+    if (typeof IntersectionObserver === "undefined") return undefined;
+
+    const targets = headings
+      .map((heading) => document.getElementById(heading.id))
+      .filter(Boolean);
+    if (targets.length === 0) return undefined;
+
+    const seen = new Map();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          seen.set(entry.target.id, entry.isIntersecting);
+        }
+        const firstVisible = headings.find((heading) => seen.get(heading.id));
+        if (firstVisible) setActiveId(firstVisible.id);
+      },
+      // Bias the band towards the top of the viewport, so the marker follows the
+      // heading being read rather than whatever is lowest on screen.
+      { rootMargin: "-10% 0px -70% 0px", threshold: 0 }
+    );
+
+    for (const target of targets) observer.observe(target);
+    return () => observer.disconnect();
+  }, [headings]);
+
   if (!headings || headings.length === 0) return null;
 
   return (
     <>
       <nav
         aria-label={label}
-        className="hidden md:sticky md:top-8 md:block md:self-start"
+        className="hidden xl:sticky xl:top-10 xl:block xl:self-start"
       >
-        <p className="mb-3 font-ui text-xs font-semibold uppercase tracking-wide text-label-3">
-          {label}
-        </p>
-        <TocList headings={headings} />
+        <p className="t-eyebrow mb-4">{label}</p>
+        <TocList headings={headings} activeId={activeId} />
       </nav>
 
-      <details className="rounded-xl border border-separator bg-surface p-4 md:hidden">
-        <summary className="cursor-pointer font-ui text-sm font-semibold text-label focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint">
+      <details className="border-y border-rule py-4 xl:hidden">
+        <summary className="t-subsection cursor-pointer text-label focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint">
           {label}
         </summary>
-        <div className="mt-3">
-          <TocList headings={headings} />
+        <div className="mt-4">
+          <TocList headings={headings} activeId={activeId} />
         </div>
       </details>
     </>

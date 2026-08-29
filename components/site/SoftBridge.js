@@ -22,10 +22,16 @@ import { buildPortalUrl, eligibilityPath } from "@/lib/bridge";
  *   country?: string,
  *   intent?: string,
  *   intentLabel?: string,
+ *   tone?: "ink" | "plain",
  * }} props
  * @returns {JSX.Element}
  */
-export default function SoftBridge({ country, intent, intentLabel }) {
+export default function SoftBridge({
+  country,
+  intent,
+  intentLabel,
+  tone = "plain",
+}) {
   const [attribution, setAttribution] = useState(null);
 
   useEffect(() => {
@@ -41,20 +47,30 @@ export default function SoftBridge({ country, intent, intentLabel }) {
     attribution: attribution ?? undefined,
   });
 
+  const onInk = tone === "ink";
+  const heading = intentLabel
+    ? `Check if you qualify to ${intentLabel.toLowerCase()}`
+    : "Check if you qualify";
+
   return (
-    <aside className="rounded-2xl border border-separator bg-bg-grouped p-6">
-      <h2 className="font-ui text-lg font-semibold text-label">
-        {intentLabel
-          ? `Check if you qualify to ${intentLabel.toLowerCase()}`
-          : "Check if you qualify"}
+    <aside className={onInk ? "" : "border-y border-rule py-10"}>
+      <p className={`t-eyebrow ${onInk ? "text-on-brand opacity-70" : ""}`}>
+        Before you commit
+      </p>
+      <h2
+        className={`t-section mt-3 ${onInk ? "text-on-brand" : "text-label"}`}
+      >
+        {heading}
       </h2>
-      <p className="mt-2 max-w-[68ch] font-read leading-relaxed text-label-2">
+      <p
+        className={`t-body mt-4 ${onInk ? "text-on-brand opacity-85" : "text-label-2"}`}
+      >
         The eligibility checker asks a few questions and tells you which routes
         you may be able to use. You do not need an account, and you are not
         applying for anything by using it.
       </p>
-      <div className="mt-5">
-        <Button href={href} variant="primary">
+      <div className="mt-7">
+        <Button href={href} variant={onInk ? "onInk" : "primary"}>
           Check if you qualify
         </Button>
       </div>

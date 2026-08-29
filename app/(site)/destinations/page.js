@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Chip } from "@/components/primitives/Chip";
 import CountryCard from "@/components/site/CountryCard";
 import JsonLd from "@/components/site/JsonLd";
+import SectionHeading from "@/components/site/SectionHeading";
 import { INTENTS } from "@/lib/content/intents";
 import { getAllCountries, getAllPrograms } from "@/lib/content/loader";
 import { pageMetadata } from "@/lib/seo/metadata";
@@ -126,109 +127,108 @@ export default async function DestinationsPage({ searchParams }) {
   ];
 
   return (
-    <main id="main-content" className="mx-auto w-full max-w-6xl px-5 py-16">
+    <main id="main-content">
       <JsonLd
         schema={breadcrumbList([
           { name: "Home", path: "/" },
           { name: TITLE, path: "/destinations" },
         ])}
       />
-      <header className="max-w-[68ch]">
-        <h1 className="text-4xl font-semibold leading-tight">{TITLE}</h1>
-        <p className="mt-4 font-read text-lg leading-relaxed text-label-2">
-          {DESCRIPTION}
-        </p>
-      </header>
-
-      <div className="mt-12 space-y-6">
-        {filterGroups.map((group) => (
-          <div key={group.key}>
-            <h2
-              id={`filter-${group.key}`}
-              className="mb-3 font-ui text-xs font-semibold uppercase tracking-wide text-label-3"
-            >
-              {group.label}
-            </h2>
-            <div
-              role="group"
-              aria-labelledby={`filter-${group.key}`}
-              className="flex flex-wrap items-center gap-2"
-            >
-              {group.options.map((option) => (
-                <Chip
-                  key={option.value}
-                  href={toggledHref(active, group.key, option.value)}
-                  pressed={active[group.key] === option.value}
-                >
-                  {option.label}
-                </Chip>
-              ))}
-            </div>
-          </div>
-        ))}
-
-        {filterCount > 0 ? (
-          <p className="text-sm">
-            <Link
-              href="/destinations"
-              className="text-tint underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
-            >
-              Clear filters
-            </Link>
-          </p>
-        ) : null}
+      <div className="band-ink">
+        <div className="mx-auto w-full max-w-6xl px-5 py-14">
+          <p className="t-eyebrow text-on-brand opacity-70">Coverage</p>
+          <h1 className="t-page-title mt-6 text-on-brand">{TITLE}</h1>
+          <p className="t-lede mt-5 text-on-brand opacity-85">{DESCRIPTION}</p>
+        </div>
       </div>
 
-      <p
-        aria-live="polite"
-        className="mt-10 font-data text-sm tabular-nums text-label-2"
-      >
-        {matches.length} of {countries.length}{" "}
-        {countries.length === 1 ? "destination" : "destinations"}
-      </p>
-
-      {matches.length > 0 ? (
-        <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {matches.map((country) => (
-            <CountryCard
-              key={country.slug}
-              country={country}
-              programCount={(byCountry.get(country.slug) ?? []).length}
-            />
-          ))}
-        </div>
-      ) : (
-        <div className="mt-6 rounded-2xl border border-separator bg-surface p-8">
-          <h2 className="font-ui text-xl font-semibold">
-            No destination matches those filters yet
-          </h2>
-          <p className="mt-3 max-w-[68ch] font-read leading-relaxed text-label-2">
-            Coverage is still being written, so a filter can exclude everything.
-            These destinations have guides today:
-          </p>
-          <ul className="mt-4 flex flex-wrap gap-3">
-            {countries
-              .filter(
-                (country) => (byCountry.get(country.slug) ?? []).length > 0
-              )
-              .map((country) => (
-                <li key={country.slug}>
-                  <Chip href={`/destinations/${country.slug}`}>
-                    {country.name}
+      <div className="band-inset">
+        <div className="mx-auto w-full max-w-6xl space-y-6 px-5 py-10">
+          {filterGroups.map((group) => (
+            <div key={group.key}>
+              <h2 id={`filter-${group.key}`} className="t-eyebrow mb-3">
+                {group.label}
+              </h2>
+              <div
+                role="group"
+                aria-labelledby={`filter-${group.key}`}
+                className="flex flex-wrap items-center gap-2"
+              >
+                {group.options.map((option) => (
+                  <Chip
+                    key={option.value}
+                    href={toggledHref(active, group.key, option.value)}
+                    pressed={active[group.key] === option.value}
+                  >
+                    {option.label}
                   </Chip>
-                </li>
-              ))}
-          </ul>
-          <p className="mt-5 text-sm">
-            <Link
-              href="/destinations"
-              className="text-tint underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
-            >
-              Clear filters
-            </Link>
-          </p>
+                ))}
+              </div>
+            </div>
+          ))}
+
+          {filterCount > 0 ? (
+            <p className="text-sm">
+              <Link
+                href="/destinations"
+                className="text-tint underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+              >
+                Clear filters
+              </Link>
+            </p>
+          ) : null}
         </div>
-      )}
+      </div>
+
+      <div className="mx-auto w-full max-w-6xl px-5 py-16">
+        <p aria-live="polite" className="t-data text-label-2">
+          {matches.length} of {countries.length}{" "}
+          {countries.length === 1 ? "destination" : "destinations"}
+        </p>
+
+        {matches.length > 0 ? (
+          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {matches.map((country) => (
+              <CountryCard
+                key={country.slug}
+                country={country}
+                programCount={(byCountry.get(country.slug) ?? []).length}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="surface-raised mt-8 p-8">
+            <h2 className="t-section text-label">
+              No destination matches those filters yet
+            </h2>
+            <p className="t-body mt-4 text-label">
+              Coverage is still being written, so a filter can exclude
+              everything. These destinations have guides today:
+            </p>
+            <ul className="mt-4 flex flex-wrap gap-3">
+              {countries
+                .filter(
+                  (country) => (byCountry.get(country.slug) ?? []).length > 0
+                )
+                .map((country) => (
+                  <li key={country.slug}>
+                    <Chip href={`/destinations/${country.slug}`}>
+                      {country.name}
+                    </Chip>
+                  </li>
+                ))}
+            </ul>
+            <p className="mt-6 text-sm">
+              <Link
+                href="/destinations"
+                className="text-tint underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+              >
+                Clear filters
+              </Link>
+            </p>
+          </div>
+        )}
+      </div>
     </main>
   );
 }

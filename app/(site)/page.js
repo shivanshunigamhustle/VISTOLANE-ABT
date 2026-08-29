@@ -2,8 +2,9 @@ import Link from "next/link";
 
 import Button from "@/components/primitives/Button";
 import CountryCard from "@/components/site/CountryCard";
-import JsonLd from "@/components/site/JsonLd";
 import IntentCard from "@/components/site/IntentCard";
+import JsonLd from "@/components/site/JsonLd";
+import SectionHeading from "@/components/site/SectionHeading";
 import SoftBridge from "@/components/site/SoftBridge";
 import { INTENTS } from "@/lib/content/intents";
 import { getAllCountries, getAllPrograms } from "@/lib/content/loader";
@@ -13,9 +14,14 @@ import { breadcrumbList, webSite } from "@/lib/seo/schema";
 /**
  * Home.
  *
- * Everything factual on this page is counted from the loader. The only invented
- * strings are structural labels, the headline, and the trust placeholders — and
- * the placeholders say so on their face.
+ * Section grounds alternate so the page has a rhythm rather than five identical
+ * bands: ink, page ground, inset, page ground, inset, ink. The hero and the
+ * closing bridge share the brand ground, which opens and closes the page on the
+ * same note.
+ *
+ * Everything factual is counted from the loader. The only invented strings are
+ * structural labels, the headline, and the trust placeholder — which says on its
+ * face that it is one.
  *
  * TODO(content): a news / latest-updates section belongs between the trust block
  * and the soft bridge. It is omitted rather than stubbed because no NewsUpdate
@@ -48,8 +54,8 @@ export default async function HomePage() {
   const countFor = (intentSlug) =>
     programs.filter((program) => program.intent === intentSlug).length;
 
-  // Countries that actually have guides come first; the rest follow, so the
-  // section never leads with an empty destination.
+  // Countries that actually have guides come first, so the section never leads
+  // with an empty destination.
   const ordered = [...countries].sort(
     (a, b) =>
       (programsPerCountry.get(b.slug) ?? 0) -
@@ -65,51 +71,52 @@ export default async function HomePage() {
       <JsonLd schema={webSite({ description: TAGLINE })} />
       <JsonLd schema={breadcrumbList([{ name: "Home", path: "/" }])} />
 
-      {/* 1. Hero */}
-      <section
-        aria-labelledby="hero-heading"
-        className="border-b border-separator"
-      >
-        <div className="mx-auto w-full max-w-6xl px-5 py-20">
+      {/* 1. Hero — the brand ground, and the whole first screen. */}
+      <section aria-labelledby="hero-heading" className="band-ink">
+        <div className="mx-auto w-full max-w-6xl px-5 py-24">
+          <p className="t-eyebrow text-on-brand opacity-70">
+            Immigration and global mobility
+          </p>
+
           <h1
             id="hero-heading"
-            className="max-w-[20ch] text-4xl font-semibold leading-tight sm:text-5xl"
+            className="t-display mt-6 max-w-[16ch] text-on-brand"
           >
             Immigration routes, explained in full
           </h1>
-          <p className="mt-5 max-w-[68ch] font-read text-xl leading-relaxed text-label-2">
+
+          <p className="t-lede mt-7 max-w-[52ch] text-on-brand opacity-85">
             {TAGLINE}.
           </p>
-          <p className="mt-4 max-w-[68ch] font-read leading-relaxed text-label-2">
+
+          <hr className="mt-10 max-w-md border-0 border-t border-on-brand/25" />
+
+          <p className="t-data mt-5 text-on-brand opacity-70">
             {countries.length}{" "}
-            {countries.length === 1 ? "destination" : "destinations"} and{" "}
+            {countries.length === 1 ? "destination" : "destinations"} ·{" "}
             {programs.length} route {programs.length === 1 ? "guide" : "guides"}{" "}
-            so far. Every figure is either traced to an official government
-            source or marked on the page as unverified.
+            · every figure sourced or marked unverified
           </p>
 
           {/*
-            Plain GET form. It submits to the destination grid, which already
-            filters from searchParams, so the whole search works with JavaScript
-            switched off.
+            The white panel on the deep navy is the hero's whole visual idea.
+            It is also a plain GET form: the search works with JavaScript off,
+            because the destination grid already filters from searchParams.
           */}
           <form
             action="/destinations"
             method="get"
-            className="mt-10 flex flex-col gap-4 rounded-2xl border border-separator bg-surface p-5 sm:flex-row sm:items-end"
+            className="surface-raised mt-12 flex max-w-3xl flex-col gap-5 p-6 sm:flex-row sm:items-end"
           >
-            <div className="flex flex-1 flex-col gap-1.5">
-              <label
-                htmlFor="home-intent"
-                className="font-ui text-sm font-medium text-label"
-              >
+            <div className="flex flex-1 flex-col gap-2">
+              <label htmlFor="home-intent" className="t-eyebrow">
                 What do you want to do?
               </label>
               <select
                 id="home-intent"
                 name="intent"
                 defaultValue=""
-                className="w-full rounded-lg border border-separator bg-surface px-3 py-2 text-sm text-label
+                className="w-full rounded-[var(--radius-control)] border border-rule bg-surface px-3 py-2.5 text-sm text-label
                   focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
               >
                 <option value="">Any intent</option>
@@ -121,18 +128,15 @@ export default async function HomePage() {
               </select>
             </div>
 
-            <div className="flex flex-1 flex-col gap-1.5">
-              <label
-                htmlFor="home-region"
-                className="font-ui text-sm font-medium text-label"
-              >
+            <div className="flex flex-1 flex-col gap-2">
+              <label htmlFor="home-region" className="t-eyebrow">
                 Where?
               </label>
               <select
                 id="home-region"
                 name="region"
                 defaultValue=""
-                className="w-full rounded-lg border border-separator bg-surface px-3 py-2 text-sm text-label
+                className="w-full rounded-[var(--radius-control)] border border-rule bg-surface px-3 py-2.5 text-sm text-label
                   focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
               >
                 <option value="">Anywhere</option>
@@ -151,41 +155,41 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 2. Audience fork */}
+      {/* 2. Audience fork — two blocks divided by a rule, not two cards. */}
       <section
         aria-labelledby="audience-heading"
-        className="mx-auto w-full max-w-6xl px-5 py-20"
+        className="mx-auto w-full max-w-6xl px-5 py-24"
       >
-        <h2 id="audience-heading" className="text-2xl font-semibold">
+        <SectionHeading id="audience-heading" eyebrow="Start here">
           Where do you fit?
-        </h2>
-        <div className="mt-8 grid gap-6 md:grid-cols-2">
-          <Link
-            href="/destinations"
-            className="group flex flex-col rounded-2xl border border-separator bg-surface p-8 no-underline
-              transition-colors duration-200 motion-reduce:transition-none hover:bg-bg-grouped
-              focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
-          >
-            <h3 className="font-ui text-xl font-semibold text-label group-hover:underline">
-              For Individuals
-            </h3>
-            <p className="mt-3 max-w-[68ch] font-read leading-relaxed text-label-2">
+        </SectionHeading>
+
+        <div className="mt-10 grid gap-10 md:grid-cols-2 md:divide-x md:divide-rule">
+          <div className="md:pr-10">
+            <h3 className="t-subsection text-label">For Individuals</h3>
+            <p className="t-body mt-3 text-label">
               Moving for work, study, family, investment or to settle. Start
               from what you want to do and see which routes fit.
             </p>
-          </Link>
+            <p className="mt-5">
+              <Link
+                href="/destinations"
+                className="text-sm text-tint underline underline-offset-4
+                  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+              >
+                Browse destinations
+              </Link>
+            </p>
+          </div>
 
-          <div
-            aria-disabled="true"
-            className="flex flex-col rounded-2xl border border-separator bg-surface p-8 opacity-70"
-          >
-            <h3 className="flex flex-wrap items-center gap-3 font-ui text-xl font-semibold text-label">
+          <div aria-disabled="true" className="md:pl-10">
+            <h3 className="t-subsection flex flex-wrap items-center gap-3 text-label">
               For Business
-              <span className="rounded bg-fill px-1.5 py-0.5 font-ui text-[0.6875rem] font-medium text-label-2">
+              <span className="rounded-[var(--radius-control)] bg-fill px-1.5 py-0.5 font-ui text-[0.6875rem] font-medium text-label-2">
                 Coming soon
               </span>
             </h3>
-            <p className="mt-3 max-w-[68ch] font-read leading-relaxed text-label-2">
+            <p className="t-body mt-3 text-label">
               Hiring global talent, posting roles and partnering with us. These
               pages are not written yet.
             </p>
@@ -193,44 +197,47 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 3. Intents */}
-      <section
-        aria-labelledby="intents-heading"
-        className="mx-auto w-full max-w-6xl px-5 pb-20"
-      >
-        <h2 id="intents-heading" className="text-2xl font-semibold">
-          What do you want to do?
-        </h2>
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {INTENTS.map((intent) => (
-            <IntentCard
-              key={intent.slug}
-              intent={intent}
-              href={`/destinations?intent=${intent.slug}`}
-              count={countFor(intent.slug)}
-            />
-          ))}
+      {/* 3. Intents — inset band. */}
+      <section aria-labelledby="intents-heading" className="band-inset">
+        <div className="mx-auto w-full max-w-6xl px-5 py-24">
+          <SectionHeading id="intents-heading" eyebrow="By intent">
+            What do you want to do?
+          </SectionHeading>
+          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {INTENTS.map((intent) => (
+              <IntentCard
+                key={intent.slug}
+                intent={intent}
+                href={`/destinations?intent=${intent.slug}`}
+                count={countFor(intent.slug)}
+              />
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* 4. Destinations */}
+      {/* 4. Destinations — raised cards on the page ground. */}
       <section
         aria-labelledby="destinations-heading"
-        className="mx-auto w-full max-w-6xl px-5 pb-20"
+        className="mx-auto w-full max-w-6xl px-5 py-24"
       >
-        <div className="flex flex-wrap items-baseline justify-between gap-4">
-          <h2 id="destinations-heading" className="text-2xl font-semibold">
-            Destinations
-          </h2>
-          <Link
-            href="/destinations"
-            className="text-sm text-tint underline underline-offset-2
-              focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
-          >
-            See all {countries.length}
-          </Link>
-        </div>
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <SectionHeading
+          id="destinations-heading"
+          eyebrow="By country"
+          trailing={
+            <Link
+              href="/destinations"
+              className="text-sm text-tint underline underline-offset-4
+                focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+            >
+              See all {countries.length}
+            </Link>
+          }
+        >
+          Destinations
+        </SectionHeading>
+
+        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {ordered.slice(0, 6).map((country) => (
             <CountryCard
               key={country.slug}
@@ -241,52 +248,35 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 5. Trust */}
-      <section
-        aria-labelledby="trust-heading"
-        className="mx-auto w-full max-w-6xl px-5 pb-20"
-      >
-        <h2 id="trust-heading" className="text-2xl font-semibold">
-          Why people use Vistolane
-        </h2>
-        {/*
-          TODO(content): every tile below is a placeholder and says so on its
-          face. Verified trust content — testimonials with consent, metrics the
-          client can evidence, and any certification or membership they actually
-          hold — is owed by the client. Nothing here may be replaced with an
-          approximation: an unevidenced statistic on an immigration site is a
-          legal exposure for them, not a design detail.
-        */}
-        <p className="mt-3 max-w-[68ch] font-read leading-relaxed text-label-2">
-          This section is deliberately unfilled. Nothing below is real content.
-        </p>
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {[
-            "Client testimonial pending",
-            "Client testimonial pending",
-            "Success metric pending",
-            "Success metric pending",
-            "Certification or membership pending",
-            "Regulator registration pending",
-          ].map((placeholder, index) => (
-            <div
-              key={`${placeholder}-${index}`}
-              className="flex min-h-32 flex-col justify-center rounded-2xl border border-dashed border-separator bg-bg-grouped p-6"
-            >
-              <p className="font-ui text-sm font-medium text-label-2">
-                {placeholder}
-              </p>
-              <p className="mt-2 font-data text-xs text-label-3">
-                Awaiting verified content from the client
-              </p>
-            </div>
-          ))}
+      {/* 5. Trust — one honest sentence, not six empty boxes. */}
+      <section aria-labelledby="trust-heading" className="band-inset">
+        <div className="mx-auto w-full max-w-6xl px-5 py-16">
+          <SectionHeading id="trust-heading" eyebrow="Standing">
+            Why people use Vistolane
+          </SectionHeading>
+          {/*
+            TODO(content): verified trust content — testimonials with consent,
+            metrics the client can evidence, and any certification or regulator
+            registration they actually hold — is owed by the client. Nothing here
+            may be replaced with an approximation: an unevidenced statistic on an
+            immigration site is a legal exposure for them, not a design detail.
+            One honest sentence reads as deliberate; six empty boxes read as
+            unfinished.
+          */}
+          <p className="t-body mt-8 text-label">
+            Verified testimonials, success metrics and regulator registrations
+            are pending from the client and will appear here once they can be
+            evidenced. Nothing on this page is placeholder-filled in the
+            meantime.
+          </p>
         </div>
       </section>
 
-      {/* 6. Soft bridge */}
-      <section className="mx-auto w-full max-w-6xl px-5 pb-24">
-        <SoftBridge />
+      {/* 6. Soft bridge — closes on the ground the page opened on. */}
+      <section className="band-ink">
+        <div className="mx-auto w-full max-w-6xl px-5 py-24">
+          <SoftBridge tone="ink" />
+        </div>
       </section>
     </main>
   );

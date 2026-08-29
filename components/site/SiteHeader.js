@@ -13,9 +13,9 @@ import { NAV } from "@/components/site/navigation";
  * from crawlers and from people on poor connections, and a navigation that
  * needs a bundle to open is a navigation that sometimes does not.
  *
- * Brand chrome is the rule at the top edge in var(--color-brand). The wordmark
- * itself stays on --color-label: the brand navy does not carry enough contrast
- * against the dark surface to be used as text in both appearances.
+ * The wordmark is set in var(--font-read) so the serif signature is the first
+ * thing on the page. It stays on --color-label rather than the brand navy, which
+ * does not carry enough contrast against the dark surface in both appearances.
  */
 
 /**
@@ -27,7 +27,7 @@ function NavGroup({ group, panelClassName }) {
     return (
       <Link
         href={group.href}
-        className="block rounded-lg px-3 py-2 font-ui text-sm font-medium text-label no-underline
+        className="block rounded-[var(--radius-control)] px-3 py-2 font-ui text-sm font-medium text-label no-underline
           transition-colors duration-200 motion-reduce:transition-none hover:bg-fill
           focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
       >
@@ -39,7 +39,7 @@ function NavGroup({ group, panelClassName }) {
   return (
     <details className="group/nav relative">
       <summary
-        className="flex cursor-pointer list-none items-center gap-1.5 rounded-lg px-3 py-2 font-ui text-sm font-medium text-label
+        className="flex cursor-pointer list-none items-center gap-1.5 rounded-[var(--radius-control)] px-3 py-2 font-ui text-sm font-medium text-label
           transition-colors duration-200 motion-reduce:transition-none hover:bg-fill
           focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint
           [&::-webkit-details-marker]:hidden"
@@ -79,10 +79,7 @@ function NavGroup({ group, panelClassName }) {
  */
 export default function SiteHeader() {
   return (
-    <header className="relative border-b border-separator bg-surface">
-      {/* Brand chrome. */}
-      <div aria-hidden="true" className="h-1 w-full bg-brand" />
-
+    <header className="relative border-b border-rule bg-surface">
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-5 py-3">
         {/*
           TODO(OPN-09): text lockup standing in for the real logo, which is still
@@ -90,7 +87,7 @@ export default function SiteHeader() {
         */}
         <Link
           href="/"
-          className="font-ui text-lg font-semibold tracking-tight text-label no-underline
+          className="font-read text-xl font-semibold tracking-tight text-label no-underline
             focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
         >
           Vistolane
@@ -104,7 +101,7 @@ export default function SiteHeader() {
             <NavGroup
               key={group.label}
               group={group}
-              panelClassName="absolute z-40 mt-1 min-w-56 rounded-xl border border-separator bg-surface p-3 shadow-sm"
+              panelClassName="absolute z-40 mt-1 min-w-56 rounded-[var(--radius-card)] border border-rule bg-surface p-3 shadow-[0_1px_2px_rgb(0_0_0/0.04),0_4px_12px_rgb(0_0_0/0.04)]"
             />
           ))}
         </nav>
@@ -115,7 +112,7 @@ export default function SiteHeader() {
 
         <details className="md:hidden">
           <summary
-            className="flex cursor-pointer list-none items-center gap-2 rounded-lg border border-separator px-3 py-2
+            className="flex cursor-pointer list-none items-center gap-2 rounded-[var(--radius-control)] border border-rule px-3 py-2
               font-ui text-sm font-medium text-label
               focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint
               [&::-webkit-details-marker]:hidden"
@@ -136,7 +133,7 @@ export default function SiteHeader() {
             Menu
           </summary>
 
-          <div className="absolute left-0 right-0 top-full z-40 max-h-[80vh] overflow-y-auto border-b border-separator bg-surface px-5 py-4">
+          <div className="absolute left-0 right-0 top-full z-40 max-h-[80vh] overflow-y-auto border-b border-rule bg-surface px-5 py-4">
             <nav aria-label="Primary, mobile">
               <ul className="space-y-1">
                 {NAV.map((group) => (
@@ -149,7 +146,7 @@ export default function SiteHeader() {
                 ))}
               </ul>
             </nav>
-            <div className="mt-4 border-t border-separator pt-4">
+            <div className="mt-4 border-t border-rule pt-4">
               <PortalLink />
             </div>
           </div>

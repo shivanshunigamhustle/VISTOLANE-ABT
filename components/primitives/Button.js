@@ -1,16 +1,18 @@
 /**
- * @typedef {"primary" | "tint" | "quiet"} ButtonVariant
+ * @typedef {"primary" | "tint" | "quiet" | "onInk"} ButtonVariant
  */
 
 /** @type {Record<ButtonVariant, string>} */
 const VARIANTS = {
   primary: "border-transparent bg-brand text-on-brand hover:opacity-90",
   tint: "border-transparent bg-transparent text-tint hover:bg-fill",
-  quiet: "border-separator bg-transparent text-label hover:bg-fill",
+  quiet: "border-rule bg-transparent text-label hover:bg-fill",
+  // For the brand-ink grounds, where a navy fill would disappear.
+  onInk: "border-transparent bg-on-brand text-brand-ink hover:opacity-90",
 };
 
 const BASE =
-  "inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg border " +
+  "inline-flex cursor-pointer items-center justify-center gap-2 rounded-[var(--radius-control)] border " +
   "px-4 py-2 text-sm font-medium no-underline " +
   "transition-[background-color,opacity,color] duration-200 motion-reduce:transition-none " +
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint " +

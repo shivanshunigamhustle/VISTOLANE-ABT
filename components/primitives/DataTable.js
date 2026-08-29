@@ -33,7 +33,7 @@ const ALIGN = {
  */
 export default function DataTable({ columns, rows, caption }) {
   return (
-    <div className="w-full overflow-x-auto rounded-xl border border-separator">
+    <div className="w-full overflow-x-auto border-y border-rule">
       <table className="w-full border-collapse text-sm">
         {caption ? (
           <caption className="caption-top px-4 pb-3 pt-4 text-left text-label-2">
@@ -47,7 +47,7 @@ export default function DataTable({ columns, rows, caption }) {
                 key={column.key}
                 scope="col"
                 style={column.width ? { width: column.width } : undefined}
-                className={`border-b border-separator px-4 py-2.5 font-ui text-xs font-semibold uppercase tracking-wide text-label-2 ${
+                className={`border-b border-rule px-4 py-2.5 font-ui text-[0.6875rem] font-semibold uppercase tracking-[0.09em] text-label-2 ${
                   ALIGN[column.align] ?? ALIGN.left
                 } ${column.nowrap ? "whitespace-nowrap" : ""}`}
               >

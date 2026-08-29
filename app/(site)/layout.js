@@ -47,7 +47,7 @@ export default function SiteLayout({ children }) {
         */}
         <a
           href="#main-content"
-          className="absolute left-4 top-4 z-50 -translate-y-20 rounded-md border border-separator bg-surface px-4 py-2 text-label underline underline-offset-2 transition-transform focus:translate-y-0"
+          className="absolute left-4 top-4 z-50 -translate-y-20 rounded-[var(--radius-control)] border border-separator bg-surface px-4 py-2 text-label underline underline-offset-2 transition-transform focus:translate-y-0"
         >
           Skip to content
         </a>
