@@ -25,27 +25,47 @@ import Link from "next/link";
  */
 export default function IntentCard({ intent, countrySlug, href, count }) {
   const hue = `var(${intent.token})`;
+  // An empty intent is quietened with colour, not with opacity. Opacity on the
+  // whole card dragged its label to 3.7:1; muting the tokens keeps the text
+  // legible while still reading as inactive.
+  const muted = count === 0;
 
   const inner = (
     <>
       <span
         aria-hidden="true"
         className="absolute inset-x-0 top-0 h-[3px]"
-        style={{ backgroundColor: hue }}
+        style={{
+          backgroundColor: muted
+            ? `color-mix(in srgb, ${hue} 45%, transparent)`
+            : hue,
+        }}
       />
       <span className="flex items-center gap-2.5">
         <span
           aria-hidden="true"
           className="size-1.5 shrink-0 rounded-full"
-          style={{ backgroundColor: hue }}
+          style={{
+            backgroundColor: muted
+              ? `color-mix(in srgb, ${hue} 45%, transparent)`
+              : hue,
+          }}
         />
-        <span className="t-subsection text-label">{intent.label}</span>
+        <span
+          className={`t-subsection ${muted ? "text-label-2" : "text-label"}`}
+        >
+          {intent.label}
+        </span>
       </span>
-      <span className="t-data mt-2 block text-label-2">
-        {count === 0
-          ? "Coming soon"
-          : `${count} ${count === 1 ? "guide" : "guides"}`}
-      </span>
+      {count === 0 ? (
+        <span className="mt-2 block font-ui text-[0.8125rem] text-label-2">
+          Coming soon
+        </span>
+      ) : (
+        <span className="t-data mt-2 block text-label-2">
+          {count} {count === 1 ? "guide" : "guides"}
+        </span>
+      )}
     </>
   );
 
@@ -53,7 +73,7 @@ export default function IntentCard({ intent, countrySlug, href, count }) {
     return (
       <div
         aria-disabled="true"
-        className="surface-raised relative overflow-hidden p-5 opacity-55"
+        className="relative overflow-hidden rounded-[var(--radius-card)] border border-rule bg-transparent p-5"
       >
         {inner}
       </div>

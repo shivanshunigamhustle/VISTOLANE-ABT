@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import NavItem from "@/components/site/NavItem";
-import { LEGAL, NAV } from "@/components/site/navigation";
+import { NAV } from "@/components/site/navigation";
 
 /**
  * The site footer.
@@ -10,7 +10,10 @@ import { LEGAL, NAV } from "@/components/site/navigation";
  * --color-on-brand is white in both appearances, so the pairing holds whichever
  * way the OS is set.
  *
- * The navigation mirrors the header because both read the same tree.
+ * The navigation mirrors the header, but only the parts that exist. An unbuilt
+ * route is omitted here rather than listed with a "Coming soon" chip: the header
+ * already tells someone the section is planned, and repeating that eleven times
+ * in the footer turns the whole page into a list of things we have not done.
  */
 
 /**
@@ -21,32 +24,41 @@ export default function SiteFooter() {
     <footer className="band-ink mt-0">
       <div className="mx-auto w-full max-w-6xl px-5 py-14">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-          {NAV.map((group) => (
-            <nav key={group.label} aria-label={group.label}>
-              <h2 className="t-eyebrow text-on-brand opacity-70">
-                {group.href ? (
-                  <Link
-                    href={group.href}
-                    className="text-on-brand no-underline hover:underline underline-offset-2
+          {/*
+            Only groups with at least one built child become a column. A heading
+            with nothing under it — which is what "Destinations" was — reads as a
+            missing section rather than a nav item.
+          */}
+          {NAV.filter((group) => group.items?.some((item) => item.href)).map(
+            (group) => (
+              <nav key={group.label} aria-label={group.label}>
+                <h2 className="t-eyebrow text-on-brand opacity-70">
+                  {group.href ? (
+                    <Link
+                      href={group.href}
+                      className="text-on-brand no-underline hover:underline underline-offset-2
                       focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
-                  >
-                    {group.label}
-                  </Link>
-                ) : (
-                  group.label
-                )}
-              </h2>
-              {group.items ? (
-                <ul className="mt-3">
-                  {group.items.map((item) => (
-                    <li key={item.label}>
-                      <NavItem item={item} onBrand />
-                    </li>
-                  ))}
-                </ul>
-              ) : null}
-            </nav>
-          ))}
+                    >
+                      {group.label}
+                    </Link>
+                  ) : (
+                    group.label
+                  )}
+                </h2>
+                {group.items ? (
+                  <ul className="mt-3">
+                    {group.items
+                      .filter((item) => item.href)
+                      .map((item) => (
+                        <li key={item.label}>
+                          <NavItem item={item} onBrand />
+                        </li>
+                      ))}
+                  </ul>
+                ) : null}
+              </nav>
+            )
+          )}
         </div>
 
         {/*
@@ -68,13 +80,11 @@ export default function SiteFooter() {
 
         <div className="mt-10 flex flex-col gap-4 border-t border-on-brand/20 pt-6 sm:flex-row sm:items-center sm:justify-between">
           <p className="font-ui text-sm opacity-80">Vistolane</p>
-          <ul className="flex flex-wrap gap-x-6">
-            {LEGAL.map((item) => (
-              <li key={item.label}>
-                <NavItem item={item} onBrand />
-              </li>
-            ))}
-          </ul>
+          {/*
+            TODO(legal): Privacy, Terms, Cookies and Accessibility pages are not
+            written. They are omitted rather than listed as absent — a footer of
+            "Coming soon" chips reads as an unfinished site.
+          */}
         </div>
       </div>
     </footer>

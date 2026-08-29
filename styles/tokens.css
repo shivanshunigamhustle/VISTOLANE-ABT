@@ -7,7 +7,7 @@
   --color-bg-grouped: #E7E7EC;
   --color-surface: #FFFFFF;
   --color-label: #000000;
-  --color-label-2: rgba(60, 60, 67, 0.60);
+  --color-label-2: rgba(60, 60, 67, 0.82);
   --color-label-3: rgba(60, 60, 67, 0.30);
   --color-separator: #D1D1D6;
   --color-rule: #C6C6C8;
@@ -40,7 +40,7 @@
     --color-bg-grouped: #2C2C2E;
     --color-surface: #1C1C1E;
     --color-label: #FFFFFF;
-    --color-label-2: rgba(235, 235, 245, 0.60);
+    --color-label-2: rgba(235, 235, 245, 0.78);
     --color-label-3: rgba(235, 235, 245, 0.30);
     --color-separator: #38383A;
     --color-rule: #48484A;
@@ -65,7 +65,7 @@
   --color-bg-grouped: #2C2C2E;
   --color-surface: #1C1C1E;
   --color-label: #FFFFFF;
-  --color-label-2: rgba(235, 235, 245, 0.60);
+  --color-label-2: rgba(235, 235, 245, 0.78);
   --color-label-3: rgba(235, 235, 245, 0.30);
   --color-separator: #38383A;
   --color-rule: #48484A;

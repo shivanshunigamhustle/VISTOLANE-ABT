@@ -1,18 +1,16 @@
 import Link from "next/link";
-import Unverified, {
-  splitUnverified,
-} from "@/components/primitives/Unverified";
-
-/** Structural labels for the cost band enum. */
-const COST_BAND = { low: "Low", medium: "Medium", high: "High" };
 
 /**
- * A country on the destination grid, carrying real data rather than an icon.
+ * A country on the destination grid.
  *
- * The cost band is an editorial classification rather than an official figure,
- * so it is shown with the unverified chip wherever the record's own
- * cost-of-living field is still flagged. That keeps the grid from asserting a
- * band the research does not support.
+ * The card answers two questions and stops: where is this, and is there anything
+ * here to read. The guide count is the card's data point and is set as a figure;
+ * everything else is quiet.
+ *
+ * Cost band is deliberately absent. It is an editorial classification the
+ * research does not yet support, and an unverified field does not belong on a
+ * summary card — it belongs on the country page, where it can carry its caveat.
+ * Putting it here meant four "Not yet verified" chips on a grid of five.
  *
  * @param {{
  *   country: import("@/lib/content/schema").Country,
@@ -21,47 +19,35 @@ const COST_BAND = { low: "Low", medium: "Medium", high: "High" };
  * @returns {JSX.Element}
  */
 export default function CountryCard({ country, programCount }) {
-  // An unknown band has no label to show — the chip is the whole answer. A known
-  // band still shows the chip while the record's cost-of-living field is flagged,
-  // because the band is an editorial call rather than an official figure.
-  const bandIsUnknown = country.costBand === "unknown";
-  const costReason = splitUnverified(country.living.costOfLiving).reason;
-
   return (
     <Link
       href={`/destinations/${country.slug}`}
-      className="surface-raised group flex flex-col p-6 no-underline
+      className="surface-raised group flex h-full flex-col justify-between gap-8 p-6 no-underline
         transition-shadow duration-200 motion-reduce:transition-none
         hover:shadow-[0_2px_4px_rgb(0_0_0/0.06),0_8px_24px_rgb(0_0_0/0.08)]
         focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
     >
-      <h3 className="t-subsection text-label group-hover:underline">
-        {country.name}
-      </h3>
+      <div>
+        <h3 className="font-read text-[1.375rem] font-semibold leading-tight text-label group-hover:underline">
+          {country.name}
+        </h3>
+        <p className="mt-1.5 font-ui text-[0.9375rem] text-label-2">
+          {country.region}
+        </p>
+      </div>
 
-      <dl className="t-data mt-4 space-y-2">
-        <div className="flex flex-wrap items-baseline gap-x-2">
-          <dt className="text-label-3">Region</dt>
-          <dd className="text-label">{country.region}</dd>
-        </div>
-        <div className="flex flex-wrap items-baseline gap-x-2">
-          <dt className="text-label-3">Cost band</dt>
-          <dd className="flex flex-wrap items-center gap-2 text-label">
-            {bandIsUnknown
-              ? null
-              : (COST_BAND[country.costBand] ?? country.costBand)}
-            {bandIsUnknown || costReason ? (
-              <Unverified reason={costReason} />
-            ) : null}
-          </dd>
-        </div>
-        <div className="flex flex-wrap items-baseline gap-x-2">
-          <dt className="text-label-3">Guides</dt>
-          <dd className="font-data tabular-nums text-label">
-            {programCount === 0 ? "None yet" : programCount}
-          </dd>
-        </div>
-      </dl>
+      <div>
+        {programCount === 0 ? (
+          <p className="font-ui text-[0.9375rem] text-label-2">No guides yet</p>
+        ) : (
+          <>
+            <p className="t-figure text-label">{programCount}</p>
+            <p className="t-eyebrow mt-1.5">
+              {programCount === 1 ? "route guide" : "route guides"}
+            </p>
+          </>
+        )}
+      </div>
     </Link>
   );
 }

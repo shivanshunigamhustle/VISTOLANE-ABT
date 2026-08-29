@@ -149,7 +149,7 @@ export default async function CountryPage({ params }) {
               className="py-6 sm:px-6 sm:first:pl-0 sm:last:pr-0"
             >
               <dt className="t-eyebrow">{entry.label}</dt>
-              <dd className="t-data mt-3 leading-relaxed text-label [overflow-wrap:anywhere]">
+              <dd className="t-value mt-3 text-label [overflow-wrap:anywhere]">
                 <FieldValue value={entry.value} />
               </dd>
             </div>
@@ -165,7 +165,7 @@ export default async function CountryPage({ params }) {
         <SectionHeading id="intents" eyebrow="By intent">
           What do you want to do here?
         </SectionHeading>
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-10 grid auto-rows-fr gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {INTENTS.map((intent) => (
             <IntentCard
               key={intent.slug}
@@ -177,7 +177,7 @@ export default async function CountryPage({ params }) {
         </div>
       </section>
 
-      <div className="mx-auto w-full max-w-6xl px-5 pt-16">
+      <div className="mx-auto w-full max-w-6xl px-5 pt-20">
         <SoftBridge country={country.slug} />
       </div>
 
@@ -285,13 +285,11 @@ export default async function CountryPage({ params }) {
         <SectionHeading id="living" eyebrow="On arrival">
           Living there
         </SectionHeading>
-        <dl className="mt-6 grid gap-8 sm:grid-cols-2">
+        <dl className="mt-8 grid gap-x-12 gap-y-8 sm:grid-cols-2">
           {living.map((entry) => (
-            <div key={entry.label}>
-              <dt className="font-ui text-sm font-semibold text-label">
-                {entry.label}
-              </dt>
-              <dd className="mt-2 max-w-[68ch] font-read leading-relaxed text-label-2">
+            <div key={entry.label} className="border-t border-rule pt-4">
+              <dt className="t-eyebrow">{entry.label}</dt>
+              <dd className="t-value mt-3 text-label">
                 <FieldValue value={entry.value} />
               </dd>
             </div>
@@ -306,7 +304,7 @@ export default async function CountryPage({ params }) {
             Sources
           </SectionHeading>
           <Callout tone="source" sources={country.sources} />
-          <p className="t-data mt-6 border-t border-rule pt-6 text-label">
+          <p className="t-value mt-6 border-t border-rule pt-6 text-label-2">
             Last reviewed {country.lastReviewed} — {country.author.name},{" "}
             {country.author.credentials}
           </p>

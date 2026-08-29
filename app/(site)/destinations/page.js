@@ -187,7 +187,11 @@ export default async function DestinationsPage({ searchParams }) {
         </p>
 
         {matches.length > 0 ? (
-          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div
+            className={`mt-8 grid auto-rows-fr gap-5 sm:grid-cols-2 ${
+              matches.length > 4 ? "lg:grid-cols-3" : "lg:grid-cols-2"
+            }`}
+          >
             {matches.map((country) => (
               <CountryCard
                 key={country.slug}

@@ -194,14 +194,14 @@ export default async function ProgramPage({ params }) {
                 <dt className="t-eyebrow text-on-brand opacity-60">
                   {entry.label}
                 </dt>
-                <dd className="t-data mt-2 text-on-brand [overflow-wrap:anywhere]">
+                <dd className="t-value mt-2 text-on-brand [overflow-wrap:anywhere]">
                   <FieldValue value={entry.value} />
                 </dd>
               </div>
             ))}
             <div>
               <dt className="t-eyebrow text-on-brand opacity-60">Extendable</dt>
-              <dd className="t-data mt-2 text-on-brand">
+              <dd className="t-value mt-2 text-on-brand">
                 {program.extendable ? "Yes" : "No"}
               </dd>
             </div>
@@ -313,7 +313,7 @@ export default async function ProgramPage({ params }) {
                     <p className="mt-1 max-w-[68ch] font-read leading-relaxed text-label-2">
                       <FieldValue value={step.detail} />
                     </p>
-                    <p className="mt-2 font-data text-xs tabular-nums text-label-3">
+                    <p className="t-value mt-2 text-[0.8125rem] text-label-2">
                       <FieldValue value={step.typicalDuration} />
                     </p>
                   </div>
@@ -444,7 +444,7 @@ export default async function ProgramPage({ params }) {
           </section>
 
           {/* 15. Review line */}
-          <p className="border-y border-rule py-4 font-data text-sm text-label">
+          <p className="t-value border-y border-rule py-4 text-label-2">
             Last reviewed {program.lastReviewed} — {program.author.name},{" "}
             {program.author.credentials}
           </p>

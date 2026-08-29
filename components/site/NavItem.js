@@ -16,7 +16,9 @@ import Link from "next/link";
  * @returns {JSX.Element}
  */
 export default function NavItem({ item, onBrand = false }) {
-  const restingText = onBrand ? "text-on-brand opacity-70" : "text-label-3";
+  // label-3 is a 0.30 alpha and measures ~2.2:1; a "Coming soon" item still has
+  // to be readable, so disabled entries sit on label-2 like other secondary text.
+  const restingText = onBrand ? "text-on-brand opacity-80" : "text-label-2";
   const linkText = onBrand
     ? "text-on-brand opacity-80 hover:opacity-100"
     : "text-label-2 hover:text-label";

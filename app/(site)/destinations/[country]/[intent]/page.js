@@ -111,7 +111,7 @@ export default async function CountryIntentPage({ params }) {
               >
                 {crumb.label}
               </Link>
-              <span aria-hidden="true" className="text-label-3">
+              <span aria-hidden="true" className="text-label-2">
                 /
               </span>
             </li>

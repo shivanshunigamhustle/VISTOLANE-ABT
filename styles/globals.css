@@ -131,17 +131,11 @@
     color: var(--color-label-2);
   }
 
-  /*
-   * The lede is set on --color-label rather than --color-label-2. Apple's
-   * secondary label measures 3.44:1 on white, and at 20px regular this is not
-   * "large text" under WCAG, so label-2 would fail AA. The hierarchy is carried
-   * by size and measure instead.
-   */
   .t-lede {
     font-family: var(--font-read);
     font-size: 1.25rem;
     line-height: 1.5;
-    color: var(--color-label);
+    color: var(--color-label-2);
   }
 
   .t-body {
@@ -155,6 +149,28 @@
     font-family: var(--font-data);
     font-size: 0.8125rem;
     font-variant-numeric: tabular-nums;
+  }
+
+  /*
+   * Field values that are sentences rather than figures.
+   *
+   * var(--font-data) carries numbers, dates, currency, codes and counts. It
+   * must never set a sentence — a paragraph of monospace is slower to read and
+   * signals "machine output" where this site means "considered prose".
+   */
+  .t-value {
+    font-family: var(--font-ui);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+  }
+
+  /* A figure presented as the data point of a card. */
+  .t-figure {
+    font-family: var(--font-data);
+    font-size: 1.75rem;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
   }
 
   /* ---- Shape treatments ---- */

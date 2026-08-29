@@ -54,7 +54,11 @@ export const NAV = [
   },
 ];
 
-/** Legal stubs. None of these pages exist yet. */
+/**
+ * Legal pages. None exist yet, so nothing renders them — the footer omits
+ * unbuilt routes rather than listing them. Wire this back into SiteFooter when
+ * the pages are written.
+ */
 export const LEGAL = [
   { label: "Privacy" },
   { label: "Terms" },

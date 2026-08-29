@@ -53,7 +53,7 @@ export default function SoftBridge({
     : "Check if you qualify";
 
   return (
-    <aside className={onInk ? "" : "border-y border-rule py-10"}>
+    <aside className={onInk ? "" : "surface-raised p-8 sm:p-10"}>
       <p className={`t-eyebrow ${onInk ? "text-on-brand opacity-70" : ""}`}>
         Before you commit
       </p>

@@ -45,9 +45,7 @@ export default async function KitchenSinkPage() {
   return (
     <main className="mx-auto w-full max-w-5xl px-5 py-12">
       <header className="mb-12">
-        <p className="font-data text-xs uppercase tracking-widest text-label-3">
-          Development only
-        </p>
+        <p className="t-eyebrow">Development only</p>
         <h1 className="mt-2 text-3xl font-semibold">Kitchen sink</h1>
         <p className="mt-3 max-w-prose text-label-2">
           Every primitive, rendered against a real record —{" "}

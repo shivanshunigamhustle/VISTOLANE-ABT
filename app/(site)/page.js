@@ -73,30 +73,76 @@ export default async function HomePage() {
 
       {/* 1. Hero — the brand ground, and the whole first screen. */}
       <section aria-labelledby="hero-heading" className="band-ink">
-        <div className="mx-auto w-full max-w-6xl px-5 py-24">
-          <p className="t-eyebrow text-on-brand opacity-70">
-            Immigration and global mobility
-          </p>
+        <div className="mx-auto grid w-full max-w-6xl gap-14 px-5 py-24 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] lg:gap-20">
+          <div>
+            <p className="t-eyebrow text-on-brand opacity-70">
+              Immigration and global mobility
+            </p>
 
-          <h1
-            id="hero-heading"
-            className="t-display mt-6 max-w-[16ch] text-on-brand"
-          >
-            Immigration routes, explained in full
-          </h1>
+            <h1
+              id="hero-heading"
+              className="t-display mt-6 max-w-[16ch] text-on-brand"
+            >
+              Immigration routes, explained in full
+            </h1>
 
-          <p className="t-lede mt-7 max-w-[52ch] text-on-brand opacity-85">
-            {TAGLINE}.
-          </p>
+            <p className="t-lede mt-7 max-w-[52ch] text-on-brand opacity-85">
+              {TAGLINE}.
+            </p>
 
-          <hr className="mt-10 max-w-md border-0 border-t border-on-brand/25" />
+            <hr className="mt-10 max-w-md border-0 border-t border-on-brand/25" />
 
-          <p className="t-data mt-5 text-on-brand opacity-70">
-            {countries.length}{" "}
-            {countries.length === 1 ? "destination" : "destinations"} ·{" "}
-            {programs.length} route {programs.length === 1 ? "guide" : "guides"}{" "}
-            · every figure sourced or marked unverified
-          </p>
+            <p className="mt-5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <span className="t-data text-on-brand opacity-80">
+                {countries.length}{" "}
+                {countries.length === 1 ? "destination" : "destinations"} ·{" "}
+                {programs.length} route{" "}
+                {programs.length === 1 ? "guide" : "guides"}
+              </span>
+              <span className="font-ui text-[0.9375rem] text-on-brand opacity-70">
+                Every figure sourced or marked unverified.
+              </span>
+            </p>
+          </div>
+
+          {/*
+            The right column is an index, not decoration: the six intents with
+            their real guide counts, each a link straight to its filtered view.
+          */}
+          <nav aria-label="Browse by intent" className="lg:pt-2">
+            <p className="t-eyebrow text-on-brand opacity-70">
+              Browse by intent
+            </p>
+            <ul className="mt-5 border-t border-on-brand/20">
+              {INTENTS.map((intent) => {
+                const count = countFor(intent.slug);
+                return (
+                  <li key={intent.slug} className="border-b border-on-brand/20">
+                    <Link
+                      href={`/destinations?intent=${intent.slug}`}
+                      className="flex items-baseline justify-between gap-4 py-3.5 no-underline
+                        transition-opacity duration-200 motion-reduce:transition-none
+                        hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                    >
+                      <span className="flex items-baseline gap-2.5">
+                        <span
+                          aria-hidden="true"
+                          className="size-1.5 shrink-0 rounded-full"
+                          style={{ backgroundColor: `var(${intent.token})` }}
+                        />
+                        <span className="font-ui text-[0.9375rem] text-on-brand">
+                          {intent.label}
+                        </span>
+                      </span>
+                      <span className="t-data shrink-0 text-on-brand opacity-70">
+                        {count === 0 ? "—" : count}
+                      </span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
 
           {/*
             The white panel on the deep navy is the hero's whole visual idea.
@@ -106,7 +152,7 @@ export default async function HomePage() {
           <form
             action="/destinations"
             method="get"
-            className="surface-raised mt-12 flex max-w-3xl flex-col gap-5 p-6 sm:flex-row sm:items-end"
+            className="surface-raised flex flex-col gap-5 p-6 sm:flex-row sm:items-end lg:col-span-2 lg:mt-4"
           >
             <div className="flex flex-1 flex-col gap-2">
               <label htmlFor="home-intent" className="t-eyebrow">
@@ -203,7 +249,7 @@ export default async function HomePage() {
           <SectionHeading id="intents-heading" eyebrow="By intent">
             What do you want to do?
           </SectionHeading>
-          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-10 grid auto-rows-fr gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {INTENTS.map((intent) => (
               <IntentCard
                 key={intent.slug}
@@ -237,7 +283,11 @@ export default async function HomePage() {
           Destinations
         </SectionHeading>
 
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div
+          className={`mt-10 grid auto-rows-fr gap-5 sm:grid-cols-2 ${
+            countries.length > 4 ? "lg:grid-cols-3" : "lg:grid-cols-2"
+          }`}
+        >
           {ordered.slice(0, 6).map((country) => (
             <CountryCard
               key={country.slug}
@@ -248,34 +298,25 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 5. Trust — one honest sentence, not six empty boxes. */}
-      <section aria-labelledby="trust-heading" className="band-inset">
-        <div className="mx-auto w-full max-w-6xl px-5 py-16">
-          <SectionHeading id="trust-heading" eyebrow="Standing">
-            Why people use Vistolane
-          </SectionHeading>
-          {/*
-            TODO(content): verified trust content — testimonials with consent,
-            metrics the client can evidence, and any certification or regulator
-            registration they actually hold — is owed by the client. Nothing here
-            may be replaced with an approximation: an unevidenced statistic on an
-            immigration site is a legal exposure for them, not a design detail.
-            One honest sentence reads as deliberate; six empty boxes read as
-            unfinished.
-          */}
-          <p className="t-body mt-8 text-label">
-            Verified testimonials, success metrics and regulator registrations
-            are pending from the client and will appear here once they can be
-            evidenced. Nothing on this page is placeholder-filled in the
-            meantime.
-          </p>
-        </div>
-      </section>
-
-      {/* 6. Soft bridge — closes on the ground the page opened on. */}
+      {/*
+        TODO(content): verified trust content — testimonials with consent,
+        metrics the client can evidence, and any certification or regulator
+        registration they actually hold — is owed by the client. Nothing here may
+        be replaced with an approximation: an unevidenced statistic on an
+        immigration site is a legal exposure for them, not a design detail. A
+        titled section holding one sentence read as a hole, so the sentence sits
+        above the closing bridge until there is something real to fill a section.
+      */}
       <section className="band-ink">
-        <div className="mx-auto w-full max-w-6xl px-5 py-24">
-          <SoftBridge tone="ink" />
+        <div className="mx-auto w-full max-w-6xl px-5 py-20">
+          <p className="border-b border-on-brand/20 pb-8 font-ui text-[0.9375rem] text-on-brand opacity-70">
+            Verified testimonials, success metrics and regulator registrations
+            are pending from the client. Nothing on this page is
+            placeholder-filled in the meantime.
+          </p>
+          <div className="pt-12">
+            <SoftBridge tone="ink" />
+          </div>
         </div>
       </section>
     </main>
