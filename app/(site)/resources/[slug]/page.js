@@ -108,7 +108,7 @@ export default async function GuidePage({ params }) {
                     {source.label}
                   </a>{" "}
                   <span className="text-label-2">
-                    — retrieved {source.retrieved}
+                    · retrieved {source.retrieved}
                   </span>
                 </li>
               ))}

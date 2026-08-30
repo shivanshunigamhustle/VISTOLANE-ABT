@@ -86,7 +86,7 @@ for (const slug of countrySlugs) {
     if (!country) {
       throw new Error(`Loader returned null for a file that exists.`);
     }
-    console.log(`  ${PASS} ${slug} — ${country.name}`);
+    console.log(`  ${PASS} ${slug} · ${country.name}`);
   } catch (error) {
     report(slug, error);
   }
@@ -125,7 +125,7 @@ for (const country of await entries(PROGRAMS_DIR, (entry) =>
         if (!program) {
           throw new Error(`Loader returned null for a file that exists.`);
         }
-        console.log(`  ${PASS} ${country}/${intent}/${slug} — ${program.name}`);
+        console.log(`  ${PASS} ${country}/${intent}/${slug} · ${program.name}`);
       } catch (error) {
         report(`${country}/${intent}/${slug}`, error);
       }
@@ -152,7 +152,7 @@ for (const slug of termSlugs) {
     if (!term) {
       throw new Error(`Loader returned null for a file that exists.`);
     }
-    console.log(`  ${PASS} ${slug} — ${term.term}`);
+    console.log(`  ${PASS} ${slug} · ${term.term}`);
   } catch (error) {
     report(slug, error);
   }
@@ -174,7 +174,7 @@ for (const slug of guideSlugs) {
     if (!guide) {
       throw new Error(`Loader returned null for a file that exists.`);
     }
-    console.log(`  ${PASS} ${slug} — ${guide.title}`);
+    console.log(`  ${PASS} ${slug} · ${guide.title}`);
   } catch (error) {
     report(slug, error);
   }
@@ -196,7 +196,7 @@ for (const slug of newsSlugs) {
     if (!update) {
       throw new Error(`Loader returned null for a file that exists.`);
     }
-    console.log(`  ${PASS} ${slug} — ${update.title}`);
+    console.log(`  ${PASS} ${slug} · ${update.title}`);
   } catch (error) {
     report(slug, error);
   }

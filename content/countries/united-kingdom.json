@@ -1,5 +1,5 @@
 {
-  "//": "Scaffold pending launch country list — OPN-02",
+  "//": "Scaffold pending launch country list; OPN-02",
   "slug": "united-kingdom",
   "name": "United Kingdom",
   "iso2": "GB",
@@ -9,28 +9,28 @@
   "languages": ["English"],
   "costBand": "unknown",
   "atAGlance": {
-    "processingWindow": "Verify before publish — no processing times have been researched for United Kingdom.",
-    "typicalCostRange": "Verify before publish — no official fee schedule has been read for United Kingdom.",
-    "visaFreeNote": "Verify before publish — visa-free and visa-on-arrival access to United Kingdom has not been researched."
+    "processingWindow": "Verify before publish: no processing times have been researched for United Kingdom.",
+    "typicalCostRange": "Verify before publish: no official fee schedule has been read for United Kingdom.",
+    "visaFreeNote": "Verify before publish: visa-free and visa-on-arrival access to United Kingdom has not been researched."
   },
   "living": {
-    "costOfLiving": "Verify before publish — no cost-of-living figures have been gathered for United Kingdom, so the cost band on this record is recorded as unknown rather than guessed.",
-    "healthcare": "Verify before publish — healthcare entitlement for newcomers to United Kingdom has not been researched.",
-    "schooling": "Verify before publish — schooling access for children of temporary residents in United Kingdom has not been researched.",
-    "bringingFamily": "Verify before publish — dependant and partner eligibility for United Kingdom has not been researched."
+    "costOfLiving": "Verify before publish: no cost-of-living figures have been gathered for United Kingdom, so the cost band on this record is recorded as unknown rather than guessed.",
+    "healthcare": "Verify before publish: healthcare entitlement for newcomers to United Kingdom has not been researched.",
+    "schooling": "Verify before publish: schooling access for children of temporary residents in United Kingdom has not been researched.",
+    "bringingFamily": "Verify before publish: dependant and partner eligibility for United Kingdom has not been researched."
   },
   "commonDocuments": [],
   "relatedCountries": [],
   "sources": [
     {
-      "label": "Visas and immigration — GOV.UK",
+      "label": "Visas and immigration, GOV.UK",
       "url": "https://www.gov.uk/browse/visas-immigration",
       "retrieved": "2026-08-29"
     }
   ],
   "author": {
     "name": "Pending review",
-    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+    "credentials": "Unverified draft, not yet reviewed by a qualified immigration advisor"
   },
   "lastReviewed": "2026-08-29"
 }

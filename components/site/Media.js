@@ -53,7 +53,7 @@ export default function Media({ slot, className = "", children, fallback }) {
       ) : (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 p-4 text-center">
           <p className="font-ui text-[0.8125rem] font-medium text-label-2">
-            Image pending — client asset
+            Image pending, client asset
           </p>
           <p className="t-data text-label-2">{note}</p>
         </div>

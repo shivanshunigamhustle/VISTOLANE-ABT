@@ -3,12 +3,12 @@
   "term": "Labour Market Impact Assessment",
   "aliases": ["LMIA"],
   "definition": "A decision by Employment and Social Development Canada on whether hiring a foreign national for a specific Canadian job would have a positive, neutral or negative effect on the Canadian labour market. The employer applies for it, not the worker.",
-  "longform": "A positive LMIA is required before most employer-sponsored work permits and says nothing about the worker's own qualifications or admissibility — it is a judgement about one position at one employer. A positive assessment issued on an application received on or after 1 May 2024 is valid for a maximum of 6 months, inside which the named worker must apply for their work permit.",
+  "longform": "A positive LMIA is required before most employer-sponsored work permits and says nothing about the worker's own qualifications or admissibility; it is a judgement about one position at one employer. A positive assessment issued on an application received on or after 1 May 2024 is valid for a maximum of 6 months, inside which the named worker must apply for their work permit.",
   "relatedPrograms": ["lmia"],
   "relatedTerms": ["esdc", "tfwp", "transition-plan", "job-bank"],
   "sources": [
     {
-      "label": "Hire a temporary foreign worker with a Labour Market Impact Assessment — Employment and Social Development Canada",
+      "label": "Hire a temporary foreign worker with a Labour Market Impact Assessment, Employment and Social Development Canada",
       "url": "https://www.canada.ca/en/employment-social-development/services/foreign-workers.html",
       "retrieved": "2026-08-29"
     },
@@ -20,7 +20,7 @@
   ],
   "author": {
     "name": "Pending review",
-    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+    "credentials": "Unverified draft, not yet reviewed by a qualified immigration advisor"
   },
   "lastReviewed": "2026-08-29"
 }

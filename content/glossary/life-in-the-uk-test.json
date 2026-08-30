@@ -3,19 +3,19 @@
   "term": "Life in the UK test",
   "aliases": [],
   "definition": "A test on knowledge of UK life, history and institutions, generally required before Indefinite Leave to Remain (settlement) is granted, unless the applicant is exempt.",
-  "longform": "The test is generally expected to be completed ahead of the settlement application itself, not as part of it. Some applicants are exempt — for example, by age — and this should be checked directly for a specific applicant rather than assumed either way.",
+  "longform": "The test is generally expected to be completed ahead of the settlement application itself, not as part of it. Some applicants are exempt: for example, by age, and this should be checked directly for a specific applicant rather than assumed either way.",
   "relatedPrograms": ["indefinite-leave-to-remain"],
   "relatedTerms": ["immigration-health-surcharge"],
   "sources": [
     {
-      "label": "Check if you can get indefinite leave to remain — GOV.UK",
+      "label": "Check if you can get indefinite leave to remain, GOV.UK",
       "url": "https://www.gov.uk/indefinite-leave-to-remain",
       "retrieved": "2026-08-30"
     }
   ],
   "author": {
     "name": "Pending review",
-    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+    "credentials": "Unverified draft, not yet reviewed by a qualified immigration advisor"
   },
   "lastReviewed": "2026-08-30"
 }

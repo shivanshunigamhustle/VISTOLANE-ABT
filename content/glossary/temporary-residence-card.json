@@ -2,20 +2,20 @@
   "slug": "temporary-residence-card",
   "term": "Temporary Residence Card (Vietnam)",
   "aliases": ["TRC"],
-  "definition": "A longer-term Vietnamese residence and re-entry document, available to holders of certain visa categories — including some Investor (DT) and Family (TT) visa tiers — that replaces the need to renew a visa repeatedly.",
+  "definition": "A longer-term Vietnamese residence and re-entry document, available to holders of certain visa categories: including some Investor (DT) and Family (TT) visa tiers, that replaces the need to renew a visa repeatedly.",
   "longform": "Eligibility and length vary considerably by the route behind it: DT1 and DT2 investor visa holders are reported able to reach a card of up to 10 or 5 years respectively, while the smallest DT4 investment tier is reported as having no card option at all. The card is a separate application step after arrival, not an automatic upgrade from the visa.",
   "relatedPrograms": ["investor-visa-dt", "family-visa-tt"],
   "relatedTerms": ["vietnam-e-visa"],
   "sources": [
     {
-      "label": "Vietnam National Electronic Visa system — evisa.gov.vn",
+      "label": "Vietnam National Electronic Visa system, evisa.gov.vn",
       "url": "https://evisa.gov.vn/",
       "retrieved": "2026-08-30"
     }
   ],
   "author": {
     "name": "Pending review",
-    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+    "credentials": "Unverified draft, not yet reviewed by a qualified immigration advisor"
   },
   "lastReviewed": "2026-08-30"
 }

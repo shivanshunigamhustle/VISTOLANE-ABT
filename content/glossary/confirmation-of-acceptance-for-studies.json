@@ -2,20 +2,20 @@
   "slug": "confirmation-of-acceptance-for-studies",
   "term": "Confirmation of Acceptance for Studies",
   "aliases": ["CAS"],
-  "definition": "A record issued by a UK sponsoring education provider once a student's place is confirmed, recording the course, start date, level of study and fees — a hard prerequisite for the Student visa application.",
+  "definition": "A record issued by a UK sponsoring education provider once a student's place is confirmed, recording the course, start date, level of study and fees; a hard prerequisite for the Student visa application.",
   "longform": "A CAS is not the same as an offer letter. It is issued later, generally once any required deposit is paid, and CAS issuance itself has been reported taking anywhere from about 5 working days to 3 or 4 weeks depending on the institution. The visa application cannot proceed without it, which makes CAS timing a common, avoidable bottleneck in a rushed application timeline.",
   "relatedPrograms": ["student-visa"],
   "relatedTerms": ["immigration-health-surcharge"],
   "sources": [
     {
-      "label": "Student visa: Overview — GOV.UK",
+      "label": "Student visa: Overview, GOV.UK",
       "url": "https://www.gov.uk/student-visa",
       "retrieved": "2026-08-30"
     }
   ],
   "author": {
     "name": "Pending review",
-    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+    "credentials": "Unverified draft, not yet reviewed by a qualified immigration advisor"
   },
   "lastReviewed": "2026-08-30"
 }

@@ -119,13 +119,13 @@ export default async function GlossaryTermPage({ params }) {
                     {source.label}
                   </a>{" "}
                   <span className="text-label-2">
-                    — retrieved {source.retrieved}
+                    · retrieved {source.retrieved}
                   </span>
                 </li>
               ))}
             </ul>
             <p className="t-value mt-4 text-label-2">
-              Last reviewed {term.lastReviewed} — {term.author.name},{" "}
+              Last reviewed {term.lastReviewed} · {term.author.name},{" "}
               {term.author.credentials}
             </p>
           </div>

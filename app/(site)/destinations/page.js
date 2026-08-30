@@ -274,7 +274,7 @@ export default async function DestinationsPage({ searchParams }) {
                       >
                         <path d="M4.5 4.5 11.5 11.5M11.5 4.5 4.5 11.5" />
                       </svg>
-                      <span className="sr-only">— remove filter</span>
+                      <span className="sr-only">, remove filter</span>
                     </Link>
                   </li>
                 ))}

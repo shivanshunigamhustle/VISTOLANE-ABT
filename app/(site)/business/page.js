@@ -69,7 +69,7 @@ export default async function BusinessPage({ searchParams }) {
               Employers who need to bring skilled workers in from abroad, and
               agencies and practices who manage immigration cases for their own
               clients. Both work from the same route guides that power the rest
-              of this site — the same eligibility rules, the same documents, the
+              of this site: the same eligibility rules, the same documents, the
               same processing times, traced to the same official sources.
             </p>
           </section>

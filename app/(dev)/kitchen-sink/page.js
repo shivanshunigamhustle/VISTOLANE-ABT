@@ -48,7 +48,7 @@ export default async function KitchenSinkPage() {
         <p className="t-eyebrow">Development only</p>
         <h1 className="mt-2 text-3xl font-semibold">Kitchen sink</h1>
         <p className="mt-3 max-w-prose text-label-2">
-          Every primitive, rendered against a real record —{" "}
+          Every primitive, rendered against a real record:{" "}
           <span className="font-medium text-label">{program.name}</span>. This
           route returns 404 in production.
         </p>
@@ -110,7 +110,7 @@ export default async function KitchenSinkPage() {
             DataTable
           </h2>
           <DataTable
-            caption={`Fees — ${program.name}. An unconfirmed amount is null, never guessed.`}
+            caption={`Fees for ${program.name}. An unconfirmed amount is null, never guessed.`}
             columns={[
               { key: "item", label: "Item" },
               { key: "amount", label: "Amount", align: "right", mono: true },
@@ -121,10 +121,10 @@ export default async function KitchenSinkPage() {
               item: fee.item,
               amount:
                 fee.amount === null
-                  ? "—"
+                  ? "N/A"
                   : `${fee.amount.toLocaleString("en-CA")} ${fee.currency}`,
               payableBy: fee.payableBy,
-              note: fee.note || "—",
+              note: fee.note || "N/A",
             }))}
           />
           <DataTable
@@ -141,7 +141,7 @@ export default async function KitchenSinkPage() {
                   {document.required ? "Required" : "Conditional"}
                 </Badge>
               ),
-              note: document.note || "—",
+              note: document.note || "N/A",
             }))}
           />
         </section>

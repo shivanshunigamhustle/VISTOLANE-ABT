@@ -3,19 +3,19 @@
   "term": "E-visa (Vietnam)",
   "aliases": ["electronic visa"],
   "definition": "Vietnam's direct online visa channel, applied for and approved through the National Immigration Department's own portal, covering tourism and short business trips for up to 90 days.",
-  "longform": "The e-visa is only valid for entry and exit through a defined list of approved checkpoints, not any airport or land border in the country — a detail that matters more than the application form itself for anyone planning a specific route into or out of Vietnam. It should not be confused with visa-exemption, a separate arrangement that lets certain nationalities enter for a short period without any visa at all.",
+  "longform": "The e-visa is only valid for entry and exit through a defined list of approved checkpoints, not any airport or land border in the country; a detail that matters more than the application form itself for anyone planning a specific route into or out of Vietnam. It should not be confused with visa-exemption, a separate arrangement that lets certain nationalities enter for a short period without any visa at all.",
   "relatedPrograms": ["e-visa"],
   "relatedTerms": ["temporary-residence-card"],
   "sources": [
     {
-      "label": "Vietnam National Electronic Visa system — evisa.gov.vn",
+      "label": "Vietnam National Electronic Visa system, evisa.gov.vn",
       "url": "https://evisa.gov.vn/",
       "retrieved": "2026-08-30"
     }
   ],
   "author": {
     "name": "Pending review",
-    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+    "credentials": "Unverified draft, not yet reviewed by a qualified immigration advisor"
   },
   "lastReviewed": "2026-08-30"
 }

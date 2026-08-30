@@ -1,20 +1,20 @@
 {
   "slug": "family-member-open-work-permit-changes",
   "title": "Open work permits for spouses and dependent children of temporary residents narrowed",
-  "body": "As of 21 January 2025, Immigration, Refugees and Citizenship Canada narrowed who qualifies for an open work permit as the family member of a foreign worker or international student. Spouses of foreign workers now generally need their principal applicant to hold a job in a senior or specialised skill level, or a select occupation on IRCC's list, with a meaningful period of work authorisation remaining. Spouses of international students now generally need the student to be enrolled in specific graduate or professional programmes — many undergraduate and college programmes no longer qualify a spouse for an open work permit. Dependent children of foreign workers no longer qualify for an open work permit under this route. Some exemptions apply, including for spouses of workers covered by free trade agreements and for spouses already being sponsored for permanent residence with existing temporary status. This affects planning for the study and work routes on this site: a spouse's ability to work in Canada can no longer be assumed and has to be checked against the current eligibility list for the specific programme and occupation involved.",
+  "body": "As of 21 January 2025, Immigration, Refugees and Citizenship Canada narrowed who qualifies for an open work permit as the family member of a foreign worker or international student. Spouses of foreign workers now generally need their principal applicant to hold a job in a senior or specialised skill level, or a select occupation on IRCC's list, with a meaningful period of work authorisation remaining. Spouses of international students now generally need the student to be enrolled in specific graduate or professional programmes; many undergraduate and college programmes no longer qualify a spouse for an open work permit. Dependent children of foreign workers no longer qualify for an open work permit under this route. Some exemptions apply, including for spouses of workers covered by free trade agreements and for spouses already being sponsored for permanent residence with existing temporary status. This affects planning for the study and work routes on this site: a spouse's ability to work in Canada can no longer be assumed and has to be checked against the current eligibility list for the specific programme and occupation involved.",
   "countries": ["canada"],
   "programs": ["study-permit", "lmia"],
   "effectiveDate": "2025-01-21",
   "sources": [
     {
-      "label": "Changes to open work permits for family members of temporary residents — Immigration, Refugees and Citizenship Canada",
+      "label": "Changes to open work permits for family members of temporary residents, Immigration, Refugees and Citizenship Canada",
       "url": "https://www.canada.ca/en/immigration-refugees-citizenship/news/notices/changes-open-work-permits-family-members-temporary-residents.html",
       "retrieved": "2026-08-29"
     }
   ],
   "author": {
     "name": "Pending review",
-    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+    "credentials": "Unverified draft, not yet reviewed by a qualified immigration advisor"
   },
   "lastReviewed": "2026-08-29"
 }

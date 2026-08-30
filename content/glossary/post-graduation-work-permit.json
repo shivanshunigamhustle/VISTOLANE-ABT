@@ -3,7 +3,7 @@
   "term": "Post-Graduation Work Permit",
   "aliases": ["PGWP"],
   "definition": "An open work permit available to some international students after they graduate from a Canadian programme. Eligibility depends on the institution's designation and the field and level of the programme studied, and the rules governing which programmes qualify have been narrowed in recent years.",
-  "longform": "Because eligibility is tied to the specific programme and institution, it is a decision that has to be checked before enrolling — a genuinely completed Canadian qualification does not automatically carry this entitlement.",
+  "longform": "Because eligibility is tied to the specific programme and institution, it is a decision that has to be checked before enrolling; a genuinely completed Canadian qualification does not automatically carry this entitlement.",
   "relatedPrograms": ["study-permit"],
   "relatedTerms": ["designated-learning-institution"],
   "sources": [
@@ -15,7 +15,7 @@
   ],
   "author": {
     "name": "Pending review",
-    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+    "credentials": "Unverified draft, not yet reviewed by a qualified immigration advisor"
   },
   "lastReviewed": "2026-08-29"
 }

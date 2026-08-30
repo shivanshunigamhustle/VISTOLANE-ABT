@@ -34,7 +34,7 @@ import { breadcrumbList, webSite } from "@/lib/seo/schema";
 const TAGLINE = "A clear path to your next move abroad";
 
 export const metadata = pageMetadata({
-  title: `${SITE_NAME} — ${TAGLINE}`,
+  title: `${SITE_NAME} | ${TAGLINE}`,
   description: `${TAGLINE}. Immigration routes explained in full, with every figure traced to an official government source or marked as unverified.`,
   path: "/",
 });
@@ -505,7 +505,7 @@ export default async function HomePage() {
                 Success stories
               </p>
               <p className="mt-2 font-ui text-[0.875rem] leading-snug text-on-brand opacity-75">
-                Pending — awaiting testimonials the client can evidence, with
+                Pending, awaiting testimonials the client can evidence, with
                 the consent of the people quoted. Nothing is written here until
                 then.
               </p>

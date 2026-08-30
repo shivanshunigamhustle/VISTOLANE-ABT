@@ -12,7 +12,7 @@ import { breadcrumbList } from "@/lib/seo/schema";
 
 const TITLE = "Guides";
 const DESCRIPTION =
-  "Explainers that sit alongside the route guides — how to compare routes across countries, and how to read the figures on them.";
+  "Explainers that sit alongside the route guides: how to compare routes across countries, and how to read the figures on them.";
 
 export const metadata = pageMetadata({
   title: `${TITLE} | Vistolane`,
