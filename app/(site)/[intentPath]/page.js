@@ -140,9 +140,18 @@ export default async function IntentHubPage({ params }) {
           <SectionHeading eyebrow="Coverage">Where this applies</SectionHeading>
 
           {covering.length > 0 ? (
-            <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            // Below sm, an odd or growing country count always leaves the
+            // last grid row short and lopsided, so cards scroll horizontally
+            // instead — a fixed card width plus snap, never full-bleed (it
+            // stays inside the same max-w-6xl/px-5 gutter as everything
+            // else). From sm up there is room for a real grid, and every row
+            // fills evenly enough that a short last row reads fine there.
+            <ul className="mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 sm:grid sm:snap-none sm:grid-cols-2 sm:overflow-visible sm:pb-0 lg:grid-cols-3">
               {covering.map((country) => (
-                <li key={country.slug}>
+                <li
+                  key={country.slug}
+                  className="w-[220px] shrink-0 snap-start sm:w-auto"
+                >
                   <Link
                     href={`/destinations/${country.slug}/${intent.slug}`}
                     className="lift-card surface-raised block p-5 no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"

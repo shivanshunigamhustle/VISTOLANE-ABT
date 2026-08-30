@@ -2,8 +2,10 @@
  * A tabular reader for structured record fields.
  *
  * The table lives inside its own horizontally scrollable container, so a wide
- * table scrolls within itself and the page body never scrolls sideways. Long
- * unbroken values wrap anywhere rather than forcing the column open.
+ * table scrolls within itself and the page body never scrolls sideways. The
+ * table itself carries a min-width so a narrow viewport triggers that scroll
+ * instead of squeezing every column down to one word per line. Long unbroken
+ * values wrap anywhere rather than forcing the column open.
  *
  * @typedef {Object} DataTableColumn
  * @property {string} key                        Property to read from each row.
@@ -40,7 +42,7 @@ const ALIGN = {
 export default function DataTable({ columns, rows, caption }) {
   return (
     <div className="w-full overflow-x-auto border-y border-rule">
-      <table className="w-full border-collapse text-sm">
+      <table className="w-full min-w-[720px] border-collapse text-sm">
         {caption ? (
           <caption className="caption-top px-4 pb-3 pt-4 text-left text-label-2">
             {caption}

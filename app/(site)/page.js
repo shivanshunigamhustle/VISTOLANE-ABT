@@ -399,11 +399,16 @@ export default async function HomePage() {
             ))}
           </ul>
         </div>
-      </section>
 
-      {/* 6. Tools */}
-      <section aria-labelledby="tools-heading" className="bg-bg">
-        <div className="mx-auto w-full max-w-6xl px-5 py-20">
+        {/*
+          6. Tools — same band as Destinations above, not its own section.
+          Two bg-bg sections sandwiching one band-inset section used to leave
+          a seam floating in bare padding at each boundary, with nothing —
+          no card, no rule — anchoring the colour change. Folding Tools into
+          the same band removes the lower seam outright; each part still has
+          its own SectionHeading to tell the two topics apart.
+        */}
+        <div className="mx-auto w-full max-w-6xl px-5 pb-20">
           <SectionHeading id="tools-heading" eyebrow="Practical">
             Tools &amp; resources
           </SectionHeading>
