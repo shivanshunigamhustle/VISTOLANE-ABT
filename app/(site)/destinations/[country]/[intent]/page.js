@@ -2,7 +2,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import DataTable from "@/components/primitives/DataTable";
-import { FieldValue } from "@/components/primitives/Unverified";
+import {
+  countUnverified,
+  FieldValue,
+  SummaryValue,
+} from "@/components/primitives/Unverified";
 import JsonLd from "@/components/site/JsonLd";
 import PageMasthead from "@/components/site/PageMasthead";
 import ProgramCard from "@/components/site/ProgramCard";
@@ -169,12 +173,24 @@ export default async function CountryIntentPage({ params }) {
                       </Link>
                     ),
                     processingTime: (
-                      <FieldValue value={program.processingTime} />
+                      <SummaryValue value={program.processingTime} />
                     ),
-                    validity: <FieldValue value={program.validity} />,
+                    validity: <SummaryValue value={program.validity} />,
                     extendable: program.extendable ? "Yes" : "No",
                   }))}
                 />
+                {(() => {
+                  const { unverified, total } = countUnverified(
+                    programs.flatMap((p) => [p.processingTime, p.validity])
+                  );
+                  if (unverified === 0) return null;
+                  return (
+                    <p className="mt-3 font-ui text-[0.8125rem] text-label-2">
+                      {unverified} of {total} figures on this table are not yet
+                      verified — see each guide for detail.
+                    </p>
+                  );
+                })()}
               </div>
             </section>
 

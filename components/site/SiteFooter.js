@@ -113,25 +113,23 @@ export default async function SiteFooter() {
           must be agreed with the client and, given what this site publishes,
           reviewed by someone qualified. Do not launch with this text.
         */}
-        <div className="mt-14 rounded-card border border-on-brand/30 p-5">
-          <h2 className="t-subsection">
-            Advisory disclaimer: placeholder, not for launch
-          </h2>
-          <p className="t-body mt-2 opacity-80">
-            The wording of this disclaimer has not been agreed. It needs to
-            state what this site is and is not, general information rather than
-            legal advice, and no advisory relationship created by reading it,
-            in terms the client and their adviser have signed off (MOD-11).
-          </p>
-        </div>
-
         {/*
           TODO(legal): Privacy, Terms, Cookies and Accessibility pages are not
           written. They are omitted rather than listed as absent — a footer of
           "Coming soon" chips reads as an unfinished site.
         */}
-        <div className="mt-10 border-t border-on-brand/20 pt-6">
+        <div className="mt-10 flex flex-col gap-3 border-t border-on-brand/20 pt-6 sm:flex-row sm:items-baseline sm:justify-between">
           <p className="font-ui text-sm text-on-brand opacity-70">Vistolane</p>
+          {/*
+            TODO(MOD-11): the advisory disclaimer that ships must be agreed with
+            the client and reviewed by someone qualified. It used to sit in a
+            bordered box that was the visual anchor of the footer; the honesty is
+            unchanged, the volume is not.
+          */}
+          <p className="max-w-[68ch] font-ui text-xs text-on-brand opacity-60">
+            General information, not legal advice. Final disclaimer wording is
+            not yet agreed with the client (MOD-11).
+          </p>
         </div>
       </div>
     </footer>

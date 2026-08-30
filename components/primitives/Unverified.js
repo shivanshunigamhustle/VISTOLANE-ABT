@@ -53,6 +53,42 @@ export default function Unverified({ reason, onInk = false }) {
 }
 
 /**
+ * A summary-table rendering of the same field.
+ *
+ * On a route guide the "Not yet verified" chip is the point — it is the honest
+ * shape of the research and it belongs there. In a table that summarises many
+ * records the same chip lands in most cells and the site reads as unfinished
+ * rather than as careful. Here the gap is an em dash carrying the reason in its
+ * title, and the table states the total underneath in one line.
+ *
+ * @param {{ value: unknown }} props
+ * @returns {JSX.Element}
+ */
+export function SummaryValue({ value }) {
+  const { text, reason } = splitUnverified(value);
+  if (text) return <>{text}</>;
+  return (
+    <span title={reason || undefined} className="text-label-2">
+      —<span className="sr-only"> not yet verified</span>
+    </span>
+  );
+}
+
+/**
+ * How many of the given field values are wholly unverified.
+ *
+ * @param {unknown[]} values
+ * @returns {{ unverified: number, total: number }}
+ */
+export function countUnverified(values) {
+  const list = values ?? [];
+  return {
+    unverified: list.filter((v) => !splitUnverified(v).text).length,
+    total: list.length,
+  };
+}
+
+/**
  * Render a record field, substituting the chip where the value is unverified.
  *
  * @param {{ value: unknown, onInk?: boolean }} props

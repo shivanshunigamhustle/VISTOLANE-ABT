@@ -1,16 +1,16 @@
 import Link from "next/link";
 
+import Badge from "@/components/primitives/Badge";
 import Button from "@/components/primitives/Button";
 import AttributedLink from "@/components/site/AttributedLink";
 import DestinationPhotoCard from "@/components/site/DestinationPhotoCard";
-import IntentCard from "@/components/site/IntentCard";
 import JsonLd from "@/components/site/JsonLd";
 import Media from "@/components/site/Media";
 import SectionHeading from "@/components/site/SectionHeading";
 import SoftBridge from "@/components/site/SoftBridge";
 import { INTENTS } from "@/lib/content/intents";
 import { getAllCountries, getAllPrograms } from "@/lib/content/loader";
-import { sourceHosts } from "@/lib/content/provenance";
+import { formatReviewDate, sourceHosts } from "@/lib/content/provenance";
 import { eligibilityPath } from "@/lib/bridge";
 import { pageMetadata, SITE_NAME } from "@/lib/seo/metadata";
 import { breadcrumbList, webSite } from "@/lib/seo/schema";
@@ -146,6 +146,21 @@ export default async function HomePage() {
 
   const regions = [...new Set(countries.map((c) => c.region))].sort();
 
+  const countryName = new Map(countries.map((c) => [c.slug, c.name]));
+  const intentLabel = new Map(INTENTS.map((i) => [i.slug, i.label]));
+
+  // Most recently reviewed guides. This replaces a second copy of the intent
+  // cards: the proposition is that the content is maintained, and a dated list
+  // of what was last checked demonstrates that where a repeated nav grid does
+  // not.
+  const recentlyUpdated = [...programs]
+    .sort(
+      (a, b) =>
+        b.lastReviewed.localeCompare(a.lastReviewed) ||
+        a.name.localeCompare(b.name)
+    )
+    .slice(0, 6);
+
   // Both hero states are designed (an image bleeds to the edge behind a
   // fade, or the six-intent index fills the same space) but the client has
   // said explicitly, more than once, that the hero must never show a photo —
@@ -176,34 +191,102 @@ export default async function HomePage() {
           </Media>
         ) : null}
 
-        <div className="relative mx-auto w-full max-w-6xl px-5 pb-16 pt-14">
-          <div
-            className={heroHasImage ? "lg:max-w-[36rem]" : "lg:max-w-[42rem]"}
-          >
-            <p className="hero-enter hero-enter-1 t-eyebrow">
-              Immigration and global mobility
-            </p>
-            <h1
-              id="hero-heading"
-              className="hero-enter hero-enter-2 t-display mt-5 text-label"
-            >
-              Immigration routes, explained in full
-            </h1>
-            <p className="hero-enter hero-enter-3 t-lede mt-6 max-w-[46ch]">
-              {TAGLINE}.
-            </p>
-          </div>
+        <div className="relative mx-auto w-full max-w-6xl px-5 pb-12 pt-14">
+          {/*
+            Two genuine columns from lg. Everything used to sit in the left 55%
+            with the right 45% blank for the whole first screen. Below lg it
+            stacks in DOM order: headline, lede, search, intents, trust.
+          */}
+          <div className="grid gap-10 lg:grid-cols-[55fr_45fr] lg:items-stretch lg:gap-12">
+            <div>
+              <p className="hero-enter hero-enter-1 t-eyebrow">
+                Immigration and global mobility
+              </p>
+              <h1
+                id="hero-heading"
+                className="hero-enter hero-enter-2 t-display mt-5 text-label"
+              >
+                Immigration routes, explained in full
+              </h1>
+              <p className="hero-enter hero-enter-3 t-lede mt-6 max-w-[46ch]">
+                {TAGLINE}.
+              </p>
 
-          {heroHasImage ? (
-            /* Photograph on small screens, where the absolute slot is hidden. */
-            <Media
-              slot="hero"
-              className="mt-8 h-[380px] w-full rounded-media lg:hidden"
-            />
-          ) : (
+              {/* Tabs are links. The active one is this page. */}
+              <div className="hero-enter hero-enter-4 mt-10">
+                <nav aria-label="Search" className="flex flex-wrap gap-1">
+                  <span
+                    aria-current="page"
+                    className="rounded-t-control border-b-2 border-accent px-4 py-2.5 font-ui text-sm font-semibold text-label"
+                  >
+                    Find your option
+                  </span>
+                  <Link
+                    href="/destinations"
+                    className="color-transition rounded-t-control border-b-2 border-transparent px-4 py-2.5 font-ui text-sm font-medium text-label-2 no-underline
+                  hover:text-label
+                  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                  >
+                    Explore countries
+                  </Link>
+                </nav>
+
+                <form
+                  action="/destinations"
+                  method="get"
+                  className="surface-raised flex flex-col gap-4 p-5 sm:flex-row sm:items-end"
+                >
+                  <div className="flex flex-1 flex-col gap-2">
+                    <label htmlFor="home-intent" className="t-eyebrow">
+                      What do you want to do?
+                    </label>
+                    <select
+                      id="home-intent"
+                      name="intent"
+                      defaultValue=""
+                      className="w-full rounded-control border border-rule bg-surface px-3 py-2.5 text-sm text-label
+                    focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                    >
+                      <option value="">Any intent</option>
+                      {INTENTS.map((intent) => (
+                        <option key={intent.slug} value={intent.slug}>
+                          {intent.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="flex flex-1 flex-col gap-2">
+                    <label htmlFor="home-region" className="t-eyebrow">
+                      Where?
+                    </label>
+                    <select
+                      id="home-region"
+                      name="region"
+                      defaultValue=""
+                      className="w-full rounded-control border border-rule bg-surface px-3 py-2.5 text-sm text-label
+                    focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                    >
+                      <option value="">Anywhere</option>
+                      {regions.map((region) => (
+                        <option key={region} value={region}>
+                          {region}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <Button type="submit" variant="primary">
+                    Find destinations
+                  </Button>
+                </form>
+              </div>
+            </div>
+
+            {/* RIGHT COLUMN — the six intents, 2x3. */}
             <nav
               aria-label="Browse by intent"
-              className="mt-8 grid gap-2 sm:grid-cols-2 lg:max-w-[38rem]"
+              className="mt-2 grid auto-rows-fr grid-cols-2 gap-3 lg:mt-0 lg:h-full"
             >
               {INTENTS.map((intent) => (
                 <Link
@@ -229,85 +312,15 @@ export default async function HomePage() {
                 </Link>
               ))}
             </nav>
-          )}
-
-          {/* Tabs are links. The active one is this page. */}
-          <div className="hero-enter hero-enter-4 mt-10 lg:max-w-[42rem]">
-            <nav aria-label="Search" className="flex flex-wrap gap-1">
-              <span
-                aria-current="page"
-                className="rounded-t-control border-b-2 border-accent px-4 py-2.5 font-ui text-sm font-semibold text-label"
-              >
-                Find your option
-              </span>
-              <Link
-                href="/destinations"
-                className="color-transition rounded-t-control border-b-2 border-transparent px-4 py-2.5 font-ui text-sm font-medium text-label-2 no-underline
-                  hover:text-label
-                  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
-              >
-                Explore countries
-              </Link>
-            </nav>
-
-            <form
-              action="/destinations"
-              method="get"
-              className="surface-raised flex flex-col gap-4 p-5 sm:flex-row sm:items-end"
-            >
-              <div className="flex flex-1 flex-col gap-2">
-                <label htmlFor="home-intent" className="t-eyebrow">
-                  What do you want to do?
-                </label>
-                <select
-                  id="home-intent"
-                  name="intent"
-                  defaultValue=""
-                  className="w-full rounded-control border border-rule bg-surface px-3 py-2.5 text-sm text-label
-                    focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
-                >
-                  <option value="">Any intent</option>
-                  {INTENTS.map((intent) => (
-                    <option key={intent.slug} value={intent.slug}>
-                      {intent.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="flex flex-1 flex-col gap-2">
-                <label htmlFor="home-region" className="t-eyebrow">
-                  Where?
-                </label>
-                <select
-                  id="home-region"
-                  name="region"
-                  defaultValue=""
-                  className="w-full rounded-control border border-rule bg-surface px-3 py-2.5 text-sm text-label
-                    focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
-                >
-                  <option value="">Anywhere</option>
-                  {regions.map((region) => (
-                    <option key={region} value={region}>
-                      {region}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <Button type="submit" variant="primary">
-                Find destinations
-              </Button>
-            </form>
           </div>
 
-          {/* 3. Trust bar — sits under the search, static. */}
+          {/* 3. Trust bar — full width beneath both columns, three across. */}
           <h2 id="trust-heading" className="sr-only">
             How this site is written
           </h2>
           <ul
             aria-labelledby="trust-heading"
-            className="mt-8 flex flex-wrap gap-x-8 gap-y-4 lg:max-w-[42rem]"
+            className="mt-8 grid gap-6 border-t border-rule pt-6 sm:grid-cols-3"
           >
             {TRUST.map((item) => (
               <li key={item.title} className="flex gap-2.5">
@@ -340,34 +353,68 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 4. Intents */}
-      <section aria-labelledby="intents-heading" className="bg-bg">
-        <div className="mx-auto w-full max-w-6xl px-5 py-20">
-          <SectionHeading id="intents-heading" eyebrow="By intent">
-            Explore by what matters to you
+      {/*
+        4. Recently updated.
+
+        This slot used to hold a second copy of the six intent cards, which now
+        live in the hero. A dated list of what was last reviewed earns the space
+        instead: the proposition of this site is that the guidance is maintained
+        and sourced, and that is a claim a repeated navigation grid cannot make.
+      */}
+      <section aria-labelledby="recent-heading" className="bg-bg">
+        <div className="mx-auto w-full max-w-6xl px-5 py-12">
+          <SectionHeading
+            id="recent-heading"
+            eyebrow="Maintained"
+            trailing={
+              <Link
+                href="/news"
+                className="text-sm text-tint underline underline-offset-4
+                  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+              >
+                What changed recently
+              </Link>
+            }
+          >
+            Recently updated
           </SectionHeading>
-          {/*
-            Six across only where six fit. At max-w-6xl a 6-column row gives each
-            card ~172px, which will not hold "Settle & Citizenship" beside a 28px
-            icon — so it is 2 up on mobile, 3 from md, and 6 only at 2xl.
-          */}
-          <div className="mt-10 grid auto-rows-fr grid-cols-2 gap-4 md:grid-cols-3 2xl:grid-cols-6">
-            {INTENTS.map((intent) => (
-              <IntentCard
-                key={intent.slug}
-                intent={intent}
-                href={`/${intent.path}`}
-                count={countFor(intent.slug)}
-                description={INTENT_BLURB[intent.slug]}
-              />
+
+          <ul className="mt-8 grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+            {recentlyUpdated.map((program) => (
+              <li key={`${program.countrySlug}-${program.slug}`}>
+                <Link
+                  href={`/destinations/${program.countrySlug}/${program.intent}/${program.slug}`}
+                  className="lift-card surface-raised flex h-full flex-col gap-3 p-4 no-underline
+                    focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                >
+                  <span className="flex flex-wrap items-center gap-2">
+                    <Badge tone={program.intent}>
+                      {intentLabel.get(program.intent) ?? program.intent}
+                    </Badge>
+                    <span className="font-ui text-[0.8125rem] text-label-2">
+                      {countryName.get(program.countrySlug) ??
+                        program.countrySlug}
+                    </span>
+                  </span>
+                  <span className="font-ui text-[0.9375rem] font-semibold leading-snug text-label">
+                    {program.name}
+                  </span>
+                  <span className="mt-auto t-data text-xs text-label-2">
+                    Reviewed{" "}
+                    <time dateTime={program.lastReviewed}>
+                      {formatReviewDate(program.lastReviewed)}
+                    </time>
+                  </span>
+                </Link>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </section>
 
       {/* 5. Destinations */}
       <section aria-labelledby="destinations-heading" className="band-inset">
-        <div className="mx-auto w-full max-w-6xl px-5 py-20">
+        <div className="mx-auto w-full max-w-6xl px-5 py-12">
           <SectionHeading
             id="destinations-heading"
             eyebrow="By country"
@@ -481,7 +528,7 @@ export default async function HomePage() {
             />
           </Media>
 
-          <div className="px-5 py-16 lg:px-12">
+          <div className="px-5 py-12 lg:px-12">
             <p className="t-eyebrow text-on-brand opacity-70">
               Talk to someone
             </p>
@@ -510,8 +557,8 @@ export default async function HomePage() {
                 Success stories
               </p>
               <p className="mt-2 font-ui text-[0.875rem] leading-snug text-on-brand opacity-75">
-                Pending, awaiting testimonials the client can evidence, with
-                the consent of the people quoted. Nothing is written here until
+                Pending, awaiting testimonials the client can evidence, with the
+                consent of the people quoted. Nothing is written here until
                 then.
               </p>
             </div>
@@ -550,7 +597,7 @@ export default async function HomePage() {
 
       {/* 9. Closing bridge */}
       <section className="band-ink">
-        <div className="mx-auto w-full max-w-6xl px-5 py-20">
+        <div className="mx-auto w-full max-w-6xl px-5 py-12">
           <SoftBridge tone="ink" />
         </div>
       </section>

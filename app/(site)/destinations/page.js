@@ -3,7 +3,6 @@ import { Chip } from "@/components/primitives/Chip";
 import CountryCard from "@/components/site/CountryCard";
 import JsonLd from "@/components/site/JsonLd";
 import PageMasthead from "@/components/site/PageMasthead";
-import SectionMarker from "@/components/site/SectionMarker";
 import { INTENTS } from "@/lib/content/intents";
 import { getAllCountries, getAllPrograms } from "@/lib/content/loader";
 import { pageMetadata } from "@/lib/seo/metadata";
@@ -145,6 +144,27 @@ export default async function DestinationsPage({ searchParams }) {
     { key: "costBand", label: "Cost band", options: COST_BANDS },
   ];
 
+  /*
+   * A facet only earns its place if it can actually tell the options apart.
+   *
+   * Region currently shows five chips each returning one result, and cost band
+   * shows Low (0), Medium (0), High (1) — fourteen chips of which eleven are
+   * noise. This rule is deliberately about the data rather than a hardcoded
+   * list, so it self-corrects: region becomes useful somewhere around twenty
+   * countries and reappears on its own without anyone editing this file.
+   */
+  const discriminates = (group) => {
+    const counts = group.options.map((o) => countIfToggled(group.key, o.value));
+    if (new Set(counts).size <= 1) return false; // every option, same answer
+    if (counts.every((c) => c <= 1)) return false; // nothing to compare
+    return true;
+  };
+
+  const usefulGroups = filterGroups.filter(discriminates);
+  const intentGroup = filterGroups.find((g) => g.key === "intent");
+  const intentFilters = usefulGroups.some((g) => g.key === "intent");
+  const secondaryGroups = usefulGroups.filter((g) => g.key !== "intent");
+
   const activeSummary = filterGroups.flatMap((group) => {
     const value = active[group.key];
     if (!value) return [];
@@ -178,78 +198,132 @@ export default async function DestinationsPage({ searchParams }) {
         ]}
       />
 
-      <div className="band-inset">
-        <div className="mx-auto w-full max-w-6xl space-y-5 px-5 py-10">
-          {filterGroups.map((group) => (
-            <div
-              key={group.key}
-              className="flex flex-col gap-2 md:flex-row md:items-baseline md:gap-6"
-            >
-              <h2
-                id={`filter-${group.key}`}
-                className="t-eyebrow shrink-0 md:w-32 md:text-right"
-              >
-                {group.label}
+      {intentGroup || secondaryGroups.length > 0 ? (
+        <div className="band-inset">
+          <div className="mx-auto w-full max-w-6xl px-5 py-5">
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
+              {/*
+                Intent stays visible, but what it IS depends on the data. While
+                it separates the countries it is a filter. Once every country
+                covers every intent — which is true today, 5 of 5 on all six —
+                filtering by it returns the same grid and tells a reader
+                nothing, so the same row becomes navigation to the six intent
+                hubs, where the routes themselves actually differ. Self-
+                correcting either way: no list to maintain.
+              */}
+              <h2 id="filter-intent" className="t-eyebrow shrink-0">
+                {intentFilters ? "Intent" : "Browse by intent"}
               </h2>
               <div
                 role="group"
-                aria-labelledby={`filter-${group.key}`}
-                className="flex flex-1 flex-wrap items-center gap-2"
+                aria-labelledby="filter-intent"
+                className="flex flex-wrap items-center gap-2"
               >
-                {group.options.map((option) => {
-                  const count = countIfToggled(group.key, option.value);
-                  const pressed = active[group.key] === option.value;
-                  const dead = count === 0 && !pressed;
-
-                  if (dead) {
+                {intentGroup.options.map((option) => {
+                  if (!intentFilters) {
+                    const intent = INTENTS.find((i) => i.slug === option.value);
                     return (
-                      <span
-                        key={option.value}
-                        aria-disabled="true"
-                        className="inline-flex items-center gap-1.5 rounded-pill border border-separator px-3 py-1.5 text-sm text-label-3"
-                      >
-                        {option.label}{" "}
-                        <span className="font-data text-xs">(0)</span>
-                      </span>
+                      <Chip key={option.value} href={`/${intent.path}`}>
+                        {option.label}
+                      </Chip>
                     );
                   }
-
+                  const count = countIfToggled("intent", option.value);
+                  const pressed = active.intent === option.value;
+                  if (count === 0 && !pressed) return null;
                   return (
                     <Chip
                       key={option.value}
-                      href={toggledHref(active, group.key, option.value)}
+                      href={toggledHref(active, "intent", option.value)}
                       pressed={pressed}
                     >
                       {option.label}{" "}
-                      <span className="font-data text-xs opacity-70">
+                      <span className="font-data text-xs opacity-80">
                         ({count})
                       </span>
                     </Chip>
                   );
                 })}
               </div>
-            </div>
-          ))}
 
-          {filterCount > 0 ? (
-            <div className="flex justify-end">
-              <Link
-                href="/destinations"
-                className="link-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
-              >
-                Clear all
-              </Link>
+              {secondaryGroups.length > 0 ? (
+                <details className="ml-auto">
+                  <summary className="cursor-pointer list-none rounded-control border border-rule px-3 py-1.5 font-ui text-sm text-label [&::-webkit-details-marker]:hidden focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint">
+                    More filters
+                  </summary>
+                  <div className="mt-4 space-y-4">
+                    {secondaryGroups.map((group) => (
+                      <div
+                        key={group.key}
+                        className="flex flex-col gap-2 md:flex-row md:items-baseline md:gap-5"
+                      >
+                        <h2
+                          id={`filter-${group.key}`}
+                          className="t-eyebrow shrink-0 md:w-28"
+                        >
+                          {group.label}
+                        </h2>
+                        <div
+                          role="group"
+                          aria-labelledby={`filter-${group.key}`}
+                          className="flex flex-1 flex-wrap items-center gap-2"
+                        >
+                          {group.options.map((option) => {
+                            const count = countIfToggled(
+                              group.key,
+                              option.value
+                            );
+                            const pressed = active[group.key] === option.value;
+                            if (count === 0 && !pressed) return null;
+                            return (
+                              <Chip
+                                key={option.value}
+                                href={toggledHref(
+                                  active,
+                                  group.key,
+                                  option.value
+                                )}
+                                pressed={pressed}
+                              >
+                                {option.label}{" "}
+                                <span className="font-data text-xs opacity-80">
+                                  ({count})
+                                </span>
+                              </Chip>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </details>
+              ) : null}
             </div>
-          ) : null}
+          </div>
         </div>
-      </div>
+      ) : null}
 
-      <div className="mx-auto w-full max-w-6xl px-5 py-16">
-        <SectionMarker
-          eyebrow="Result"
-          className="mb-2"
-          trailing={
-            activeSummary.length > 0 ? (
+      <div className="mx-auto w-full max-w-6xl px-5 py-12">
+        {/*
+          A real heading, not a mono status label. Active filters sit beneath it
+          as removable chips, and "Clear all" only appears when there is
+          something to clear.
+        */}
+        <div className="border-b border-rule pb-5">
+          <h2 className="t-section text-label">
+            {matches.length}{" "}
+            {matches.length === 1 ? "destination" : "destinations"}
+            {filterCount > 0 ? (
+              <span className="font-ui text-[0.9375rem] font-normal text-label-2">
+                {" "}
+                of {countries.length}
+              </span>
+            ) : null}
+          </h2>
+
+          {activeSummary.length > 0 ? (
+            <div className="mt-4 flex flex-wrap items-center gap-2">
+              <span className="t-eyebrow">Filtered by</span>
               <ul
                 className="flex flex-wrap items-center gap-2"
                 aria-label="Active filters"
@@ -279,12 +353,15 @@ export default async function DestinationsPage({ searchParams }) {
                   </li>
                 ))}
               </ul>
-            ) : null
-          }
-        >
-          {matches.length} of {countries.length}{" "}
-          {countries.length === 1 ? "destination" : "destinations"}
-        </SectionMarker>
+              <Link
+                href="/destinations"
+                className="link-accent ml-1 font-ui text-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+              >
+                Clear all
+              </Link>
+            </div>
+          ) : null}
+        </div>
 
         {matches.length > 0 ? (
           <div

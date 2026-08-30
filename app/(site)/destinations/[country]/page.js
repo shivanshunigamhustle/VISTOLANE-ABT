@@ -3,7 +3,11 @@ import { notFound } from "next/navigation";
 
 import Badge from "@/components/primitives/Badge";
 import DataTable from "@/components/primitives/DataTable";
-import { FieldValue } from "@/components/primitives/Unverified";
+import {
+  countUnverified,
+  FieldValue,
+  SummaryValue,
+} from "@/components/primitives/Unverified";
 import CountryCard from "@/components/site/CountryCard";
 import CountryMark from "@/components/site/CountryMark";
 import IntentCard from "@/components/site/IntentCard";
@@ -295,10 +299,22 @@ export default async function CountryPage({ params }) {
                     {labelForIntent.get(program.intent) ?? program.intent}
                   </Badge>
                 ),
-                processingTime: <FieldValue value={program.processingTime} />,
-                validity: <FieldValue value={program.validity} />,
+                processingTime: <SummaryValue value={program.processingTime} />,
+                validity: <SummaryValue value={program.validity} />,
               }))}
             />
+            {(() => {
+              const { unverified, total } = countUnverified(
+                programs.flatMap((p) => [p.processingTime, p.validity])
+              );
+              if (unverified === 0) return null;
+              return (
+                <p className="mt-3 font-ui text-[0.8125rem] text-label-2">
+                  {unverified} of {total} figures on this table are not yet
+                  verified — see each guide for detail.
+                </p>
+              );
+            })()}
           </div>
         ) : (
           <div className="mt-6 rounded-card border border-separator bg-surface p-8">
