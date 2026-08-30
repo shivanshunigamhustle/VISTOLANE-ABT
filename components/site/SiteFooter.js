@@ -31,9 +31,11 @@ export default async function SiteFooter() {
   // nothing built yet is omitted rather than listed — the header already says
   // a section is planned, and repeating that in the footer would turn the
   // page into a list of what has not shipped.
-  const columns = NAV.filter(
-    (group) => group.href || group.items?.some((item) => item.href)
-  );
+  // A group with no built children is not a column. "Destinations" is a link
+  // in its own right and gets a real column of countries below, so including it
+  // here as well renders a heading with nothing under it — which reads as a
+  // missing section rather than a nav item.
+  const columns = NAV.filter((group) => group.items?.some((item) => item.href));
 
   return (
     <footer className="band-ink">
