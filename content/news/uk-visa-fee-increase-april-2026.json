@@ -1,0 +1,25 @@
+{
+  "slug": "uk-visa-fee-increase-april-2026",
+  "title": "UK visa and settlement fees increased across most routes",
+  "body": "Fees for a wide range of UK visa and settlement applications increased for applications made on or after 8 April 2026, including the Standard Visitor visa (reported up from a lower prior fee to £135 for 6 months) and Indefinite Leave to Remain (reported up to £3,226 per applicant). The increase applies across most routes on this site's UK coverage, not a single category — anyone budgeting from an older published figure, a previous application, or third-party guidance written before this date should check the current fee directly rather than relying on a figure that may now be out of date.",
+  "countries": ["united-kingdom"],
+  "programs": ["standard-visitor-visa", "indefinite-leave-to-remain"],
+  "effectiveDate": "2026-04-08",
+  "sources": [
+    {
+      "label": "Standard Visitor visa: Overview — GOV.UK",
+      "url": "https://www.gov.uk/standard-visitor-visa",
+      "retrieved": "2026-08-30"
+    },
+    {
+      "label": "Check if you can get indefinite leave to remain — GOV.UK",
+      "url": "https://www.gov.uk/indefinite-leave-to-remain",
+      "retrieved": "2026-08-30"
+    }
+  ],
+  "author": {
+    "name": "Pending review",
+    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+  },
+  "lastReviewed": "2026-08-30"
+}

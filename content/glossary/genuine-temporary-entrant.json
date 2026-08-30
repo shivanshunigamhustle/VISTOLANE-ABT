@@ -1,0 +1,21 @@
+{
+  "slug": "genuine-temporary-entrant",
+  "term": "Genuine Temporary Entrant",
+  "aliases": ["GTE"],
+  "definition": "A requirement on Australia's Student visa (subclass 500) that an applicant show their intention is a genuine, temporary stay to study — assessed on the applicant's individual circumstances, not assumed from the visa application alone.",
+  "longform": "The requirement looks at the applicant's ties to their home country, their broader study and career plans, their financial capacity, and their immigration history, among other factors, to form a picture of whether the stated purpose of the visit is credible. A strong academic offer does not by itself satisfy this requirement if the surrounding circumstances do not support a genuine temporary intent.",
+  "relatedPrograms": ["student-visa-500"],
+  "relatedTerms": ["visa-subclass"],
+  "sources": [
+    {
+      "label": "Student visa (subclass 500) — Department of Home Affairs",
+      "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/student-500",
+      "retrieved": "2026-08-30"
+    }
+  ],
+  "author": {
+    "name": "Pending review",
+    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+  },
+  "lastReviewed": "2026-08-30"
+}

@@ -21,15 +21,13 @@ import { absoluteUrl } from "@/lib/seo/metadata";
  * @returns {Promise<import("next").MetadataRoute.Sitemap>}
  */
 export default async function sitemap() {
-  const [countries, programs, terms, guides, newsUpdates] = await Promise.all(
-    [
-      getAllCountries(),
-      getAllPrograms(),
-      getAllTerms(),
-      getAllGuides(),
-      getAllNewsUpdates(),
-    ]
-  );
+  const [countries, programs, terms, guides, newsUpdates] = await Promise.all([
+    getAllCountries(),
+    getAllPrograms(),
+    getAllTerms(),
+    getAllGuides(),
+    getAllNewsUpdates(),
+  ]);
 
   /** @type {import("next").MetadataRoute.Sitemap} */
   const staticRoutes = [
@@ -39,7 +37,11 @@ export default async function sitemap() {
       changeFrequency: "weekly",
       priority: 0.9,
     },
-    { url: absoluteUrl("/business"), changeFrequency: "monthly", priority: 0.5 },
+    {
+      url: absoluteUrl("/business"),
+      changeFrequency: "monthly",
+      priority: 0.5,
+    },
     { url: absoluteUrl("/tools"), changeFrequency: "monthly", priority: 0.7 },
     {
       url: absoluteUrl("/tools/processing-times"),
@@ -56,9 +58,17 @@ export default async function sitemap() {
       changeFrequency: "weekly",
       priority: 0.7,
     },
-    { url: absoluteUrl("/resources"), changeFrequency: "weekly", priority: 0.7 },
+    {
+      url: absoluteUrl("/resources"),
+      changeFrequency: "weekly",
+      priority: 0.7,
+    },
     { url: absoluteUrl("/news"), changeFrequency: "weekly", priority: 0.6 },
-    { url: absoluteUrl("/glossary"), changeFrequency: "monthly", priority: 0.6 },
+    {
+      url: absoluteUrl("/glossary"),
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
   ];
 
   const countryRoutes = countries.map((country) => ({

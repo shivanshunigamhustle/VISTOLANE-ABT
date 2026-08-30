@@ -7,28 +7,34 @@
  * real flag palette, so the set still reads as distinct countries rather
  * than one generic placeholder repeated five times.
  *
+ * The palette lives in styles/tokens.css as --flag-{country}-sky/lane, not as
+ * literal hex here: every colour in this codebase has exactly one home, and
+ * a national flag colour is still a colour. It just does not shift with the
+ * six intent hues, so it gets its own token namespace rather than borrowing
+ * --intent-* or --color-*.
+ *
  * Designed to live in production for any country that is never photographed,
  * not scaffolding: there is no "Image pending" text here, only a dev-only
  * console warning fired by the caller.
- *
- * @type {Record<string, { sky: string, lane: string }>}
  */
-const PALETTE = {
-  canada: { sky: "#D52B1E", lane: "#FFFFFF" },
-  australia: { sky: "#00247D", lane: "#FFFFFF" },
-  germany: { sky: "#DD0000", lane: "#FFCE00" },
-  "united-kingdom": { sky: "#012169", lane: "#C8102E" },
-  vietnam: { sky: "#DA251D", lane: "#FFFF00" },
-};
 
-const FALLBACK = { sky: "#13274D", lane: "#F5C33B" };
+/** Country slugs with a defined flag palette in tokens.css. */
+const KNOWN = new Set([
+  "canada",
+  "australia",
+  "germany",
+  "united-kingdom",
+  "vietnam",
+]);
 
 /**
  * @param {{ countrySlug: string, label: string, className?: string }} props
  * @returns {JSX.Element}
  */
 export default function CountryMark({ countrySlug, label, className = "" }) {
-  const { sky, lane } = PALETTE[countrySlug] ?? FALLBACK;
+  const key = KNOWN.has(countrySlug) ? countrySlug : "fallback";
+  const sky = `var(--flag-${key}-sky)`;
+  const lane = `var(--flag-${key}-lane)`;
   // Ids are per-instance so two marks on one page (a card grid) never share a
   // gradient or clip path.
   const uid = `mark-${countrySlug}`;
@@ -47,7 +53,7 @@ export default function CountryMark({ countrySlug, label, className = "" }) {
           <stop offset="1" stopColor={sky} stopOpacity="0.55" />
         </linearGradient>
       </defs>
-      <rect width="160" height="120" fill="#0B1830" />
+      <rect width="160" height="120" fill="var(--color-brand-ink)" />
       <rect width="160" height="58" fill={`url(#${uid}-sky)`} />
       <rect y="57" width="160" height="1.5" fill={lane} opacity="0.55" />
       <path d="M74 58 H86 L124 120 H36 Z" fill={lane} opacity="0.14" />

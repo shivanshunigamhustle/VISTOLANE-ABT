@@ -1,0 +1,21 @@
+{
+  "slug": "aufenthaltserlaubnis",
+  "term": "Aufenthaltserlaubnis",
+  "aliases": ["temporary residence permit"],
+  "definition": "Germany's standard temporary residence permit — time-limited and tied to a specific purpose, such as work, study or family reunion, unlike the indefinite Niederlassungserlaubnis it can eventually lead to.",
+  "longform": "Most foreign nationals living in Germany hold an Aufenthaltserlaubnis at some stage, since it is the entry point for nearly every route on this site's Germany coverage. The permit's conditions — what work it allows, whether it can be extended, how it counts toward settlement — depend on which purpose it was granted for, so two Aufenthaltserlaubnis holders can have meaningfully different rights depending on their underlying route.",
+  "relatedPrograms": ["settlement-permit"],
+  "relatedTerms": ["auslanderbehorde"],
+  "sources": [
+    {
+      "label": "Permanent settlement permit (general) — Service Berlin, Berlin.de",
+      "url": "https://service.berlin.de/dienstleistung/121864/en/",
+      "retrieved": "2026-08-30"
+    }
+  ],
+  "author": {
+    "name": "Pending review",
+    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+  },
+  "lastReviewed": "2026-08-30"
+}

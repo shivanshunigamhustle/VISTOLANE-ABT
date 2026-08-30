@@ -5,7 +5,10 @@
   "definition": "A document issued by the Government of Quebec, required alongside a study permit for most students planning to study in Quebec. It replaces the provincial attestation letter that other provinces and territories issue.",
   "longform": "It is obtained through a separate application to the Government of Quebec, distinct from both the institution's letter of acceptance and the federal study permit application.",
   "relatedPrograms": ["study-permit"],
-  "relatedTerms": ["provincial-attestation-letter", "designated-learning-institution"],
+  "relatedTerms": [
+    "provincial-attestation-letter",
+    "designated-learning-institution"
+  ],
   "sources": [
     {
       "label": "Applying for temporary selection for studies — Gouvernement du Quebec",

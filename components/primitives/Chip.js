@@ -18,13 +18,17 @@ import { Children, useState } from "react";
  * @returns {JSX.Element}
  */
 export function Chip({ pressed = false, onToggle, href, children, ...rest }) {
-  const className = `inline-flex cursor-pointer items-center gap-1.5 rounded-pill border px-3 py-1.5 text-sm no-underline
-        transition-[background-color,border-color] duration-200 motion-reduce:transition-none
+  // Resting state used to read as disabled — a hairline border, secondary
+  // text, no fill. It is now a real border, --color-label text (not the
+  // secondary tone), and a surface fill, so an unselected chip still looks
+  // like a pressable control rather than inert label text. Hover moves the
+  // border to the tint colour as the clickable cue, on --dur-color.
+  const className = `color-transition inline-flex cursor-pointer items-center gap-1.5 rounded-pill border px-3 py-1.5 text-sm font-medium no-underline
         focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint
         ${
           pressed
-            ? "border-label-3 bg-fill font-medium text-label"
-            : "border-separator bg-transparent text-label-2 hover:bg-fill"
+            ? "border-tint bg-tint/10 text-tint"
+            : "border-rule bg-surface text-label hover:border-tint hover:bg-fill"
         }`;
 
   const mark = pressed ? (

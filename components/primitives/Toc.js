@@ -15,10 +15,10 @@ import { useEffect, useState } from "react";
  */
 
 /**
- * @param {{ headings: import("@/lib/content/toc").TocHeading[], activeId: string | null }} props
+ * @param {{ headings: import("@/lib/content/toc").TocHeading[], activeId: string | null, hue?: string }} props
  * @returns {JSX.Element}
  */
-function TocList({ headings, activeId }) {
+function TocList({ headings, activeId, hue }) {
   return (
     <ol className="space-y-0.5">
       {headings.map((heading) => {
@@ -28,11 +28,15 @@ function TocList({ headings, activeId }) {
             <a
               href={`#${heading.id}`}
               aria-current={active ? "location" : undefined}
+              style={{
+                borderLeftWidth: active && hue ? "2px" : undefined,
+                borderLeftColor: active && hue ? hue : undefined,
+              }}
               className={`color-transition block border-l py-1.5 pl-3 font-ui text-[0.8125rem] leading-snug no-underline
                 hover:text-label focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint
                 ${
                   active
-                    ? "border-label font-medium text-label"
+                    ? `font-medium text-label ${hue ? "" : "border-label"}`
                     : "border-rule text-label-2"
                 }`}
             >
@@ -49,10 +53,11 @@ function TocList({ headings, activeId }) {
  * @param {{
  *   headings: import("@/lib/content/toc").TocHeading[],
  *   label?: string,
+ *   hue?: string,
  * }} props
  * @returns {JSX.Element | null}
  */
-export default function Toc({ headings, label = "On this page" }) {
+export default function Toc({ headings, label = "On this page", hue }) {
   const [activeId, setActiveId] = useState(null);
 
   useEffect(() => {
@@ -91,7 +96,7 @@ export default function Toc({ headings, label = "On this page" }) {
         className="hidden xl:sticky xl:top-10 xl:block xl:self-start"
       >
         <p className="t-eyebrow mb-4">{label}</p>
-        <TocList headings={headings} activeId={activeId} />
+        <TocList headings={headings} activeId={activeId} hue={hue} />
       </nav>
 
       <details className="border-y border-rule py-4 xl:hidden">
@@ -99,7 +104,7 @@ export default function Toc({ headings, label = "On this page" }) {
           {label}
         </summary>
         <div className="disclose-content mt-4">
-          <TocList headings={headings} activeId={activeId} />
+          <TocList headings={headings} activeId={activeId} hue={hue} />
         </div>
       </details>
     </>

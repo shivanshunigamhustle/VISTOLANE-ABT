@@ -5,7 +5,11 @@
   "definition": "One of the three federal economic immigration programmes managed through Express Entry, for people with qualifying skilled work experience gained inside Canada — including former international students and temporary foreign workers.",
   "longform": "Because it rewards Canadian work experience specifically, it is the programme that most directly connects a period of study or employer-sponsored work in Canada to a later Express Entry application. Verify before publish — confirm the current minimum experience and language requirements before stating them.",
   "relatedPrograms": ["express-entry", "study-permit", "lmia"],
-  "relatedTerms": ["express-entry", "comprehensive-ranking-system", "post-graduation-work-permit"],
+  "relatedTerms": [
+    "express-entry",
+    "comprehensive-ranking-system",
+    "post-graduation-work-permit"
+  ],
   "sources": [
     {
       "label": "Express Entry: Who can apply",

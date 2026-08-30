@@ -254,6 +254,28 @@
   }
 
   /*
+   * The one inline text link style, used everywhere a link sits inside body
+   * copy or a table cell rather than standing alone as a button. Bold,
+   * on --color-label rather than the tint blue, and no underline at rest —
+   * the weight alone is what marks it as a link. The underline appears on
+   * hover as the real interaction cue, so a reader who has not yet
+   * interacted still gets an unambiguous signal once they do.
+   */
+  .link-accent {
+    color: var(--color-label);
+    font-weight: 600;
+    text-decoration-line: none;
+    text-underline-offset: 2px;
+    transition:
+      color var(--dur-color) var(--ease-out),
+      text-decoration-color var(--dur-color) var(--ease-out);
+  }
+  .link-accent:hover {
+    color: var(--color-tint);
+    text-decoration-line: underline;
+  }
+
+  /*
    * The motion system. Every rule below is either a response to a user
    * action (press, hover, disclosure) or fires once at first paint (the
    * hero entrance). Nothing here runs on a loop or triggers off scroll —
@@ -415,4 +437,3 @@
     display: none !important;
   }
 }
-

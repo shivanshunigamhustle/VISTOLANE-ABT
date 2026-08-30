@@ -1,0 +1,21 @@
+{
+  "slug": "visa-subclass",
+  "term": "Visa subclass",
+  "aliases": ["subclass"],
+  "definition": "The number Australia's Department of Home Affairs assigns to each distinct visa category — for example, subclass 500 for the Student visa or subclass 189 for the Skilled Independent visa.",
+  "longform": "Unlike many countries, where a visa is generally referred to by a descriptive name alone, Australia's immigration system treats the subclass number as the primary, precise identifier — a form, a fee, or a piece of legislation is written against the subclass number, and two visas with similar-sounding descriptive names can be entirely different subclasses with different rules. Checking the subclass number rather than relying on a description is the more reliable way to confirm which visa a piece of guidance actually refers to.",
+  "relatedPrograms": ["student-visa-500", "skilled-independent-visa-189"],
+  "relatedTerms": ["genuine-temporary-entrant", "points-test"],
+  "sources": [
+    {
+      "label": "Student visa (subclass 500) — Department of Home Affairs",
+      "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/student-500",
+      "retrieved": "2026-08-30"
+    }
+  ],
+  "author": {
+    "name": "Pending review",
+    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+  },
+  "lastReviewed": "2026-08-30"
+}

@@ -195,7 +195,7 @@ export default async function ProcessingTimesPage({ searchParams }) {
             <p className="text-sm">
               <Link
                 href="/tools/processing-times"
-                className="text-tint underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                className="link-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
               >
                 Clear filters
               </Link>
@@ -216,14 +216,14 @@ export default async function ProcessingTimesPage({ searchParams }) {
               <p className="mt-6 text-sm">
                 <Link
                   href="/tools/processing-times"
-                  className="text-tint underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                  className="link-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
                 >
                   Clear filters
                 </Link>{" "}
                 ·{" "}
                 <Link
                   href="/destinations"
-                  className="text-tint underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                  className="link-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
                 >
                   Browse destinations
                 </Link>
@@ -248,7 +248,7 @@ export default async function ProcessingTimesPage({ searchParams }) {
                 program: (
                   <Link
                     href={`/destinations/${program.countrySlug}/${program.intent}/${program.slug}`}
-                    className="text-tint underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                    className="link-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
                   >
                     {program.name}
                   </Link>

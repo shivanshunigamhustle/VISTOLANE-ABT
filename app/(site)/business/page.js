@@ -1,6 +1,7 @@
 import Button from "@/components/primitives/Button";
 import Field from "@/components/primitives/Field";
 import JsonLd from "@/components/site/JsonLd";
+import PageMasthead from "@/components/site/PageMasthead";
 import PortalLink from "@/components/site/PortalLink";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { breadcrumbList } from "@/lib/seo/schema";
@@ -51,17 +52,12 @@ export default async function BusinessPage({ searchParams }) {
         ])}
       />
 
-      <div className="band-ink">
-        <div className="mx-auto w-full max-w-6xl px-5 py-14">
-          <p className="t-eyebrow text-on-brand opacity-70">For Business</p>
-          <h1 className="t-page-title mt-6 max-w-[22ch] text-on-brand">
-            Moving people for work, at the scale your business needs
-          </h1>
-          <p className="t-lede mt-5 max-w-[60ch] text-on-brand opacity-85">
-            {DESCRIPTION}
-          </p>
-        </div>
-      </div>
+      <PageMasthead
+        eyebrow="For Business"
+        title="Moving people for work, at the scale your business needs"
+        standfirst={DESCRIPTION}
+        breadcrumb={[{ label: "Home", href: "/" }, { label: TITLE }]}
+      />
 
       <div className="mx-auto grid w-full max-w-6xl gap-12 px-5 py-16 lg:grid-cols-[minmax(0,1fr)_22rem]">
         <div className="min-w-0 space-y-10">

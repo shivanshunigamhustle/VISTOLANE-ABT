@@ -75,7 +75,7 @@ export default function ErrorSummary({
           <li key={error.fieldId}>
             <a
               href={`#${error.fieldId}`}
-              className="text-tint underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+              className="link-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
             >
               {error.message}
             </a>

@@ -55,6 +55,29 @@
   --dur-color: 160ms;
   --dur-disclose: 260ms;
   --dur-enter: 450ms;
+
+  /*
+   * Flag colours for CountryMark's fallback lane motif. These are real
+   * national flag colours, not design-system colours — they do not shift
+   * with the six intent hues and would be wrong if they did, so they get
+   * their own small namespace rather than borrowing --intent-* or --color-*.
+   * Same rule as everything else in this file still holds: a colour lives
+   * here and nowhere else, so CountryMark reads these rather than writing a
+   * hex literal. Not redefined for dark — a national flag does not change
+   * colour with the appearance.
+   */
+  --flag-canada-sky: #d52b1e;
+  --flag-canada-lane: #ffffff;
+  --flag-australia-sky: #00247d;
+  --flag-australia-lane: #ffffff;
+  --flag-germany-sky: #dd0000;
+  --flag-germany-lane: #ffce00;
+  --flag-united-kingdom-sky: #012169;
+  --flag-united-kingdom-lane: #c8102e;
+  --flag-vietnam-sky: #da251d;
+  --flag-vietnam-lane: #ffff00;
+  --flag-fallback-sky: var(--color-brand);
+  --flag-fallback-lane: var(--color-accent);
 }
 
 /*
