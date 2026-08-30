@@ -95,7 +95,7 @@ export default function CountryCard({
             <p
               className={`t-figure ${programCount === 0 ? "text-label-2" : "text-label"}`}
             >
-              {programCount === 0 ? "—" : programCount}
+              {programCount === 0 ? "0" : programCount}
             </p>
             <p className="t-eyebrow mt-1.5">
               {programCount === 1 ? "route guide" : "route guides"}

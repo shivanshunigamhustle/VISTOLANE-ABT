@@ -294,13 +294,13 @@ export default async function DocumentChecklistPage({ searchParams }) {
                   {source.label}
                 </a>{" "}
                 <span className="text-label-2">
-                  — retrieved {source.retrieved}
+                  · retrieved {source.retrieved}
                 </span>
               </li>
             ))}
           </ul>
           <p className="t-value mt-4 text-label-2">
-            Last reviewed {program.lastReviewed} — {program.author.name},{" "}
+            Last reviewed {program.lastReviewed} · {program.author.name},{" "}
             {program.author.credentials}
           </p>
         </section>
@@ -331,7 +331,7 @@ export default async function DocumentChecklistPage({ searchParams }) {
                   Want a consultant to look at your case?
                 </p>
                 <p className="mt-1 font-ui text-sm text-label-2">
-                  Optional — add your name and phone number.
+                  Optional, add your name and phone number.
                 </p>
                 <form
                   action="/api/leads"

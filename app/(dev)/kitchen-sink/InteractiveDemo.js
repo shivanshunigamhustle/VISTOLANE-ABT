@@ -57,7 +57,7 @@ export default function InteractiveDemo({ intents }) {
         </h2>
         <p className="max-w-prose text-sm text-label-2">
           Toggleable, aria-pressed, and wrapping. The collection below is capped
-          at four so the operable overflow control is visible — never an
+          at four so the operable overflow control is visible, never an
           ellipsis.
         </p>
         <ChipGroup label="Filter by intent" visibleCount={4}>
@@ -82,7 +82,7 @@ export default function InteractiveDemo({ intents }) {
         </h2>
         <p className="max-w-prose text-sm text-label-2">
           Submit with the first two fields empty. The summary appears, takes
-          focus, and links to each invalid control — while the inline messages
+          focus, and links to each invalid control, while the inline messages
           stay put at the fields themselves.
         </p>
 

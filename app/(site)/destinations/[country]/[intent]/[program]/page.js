@@ -90,7 +90,7 @@ export async function generateMetadata({ params }) {
   const { text } = splitUnverified(program.whoItsFor);
 
   return pageMetadata({
-    title: `${program.name} — ${countryName} ${intentLabel} | Vistolane`,
+    title: `${program.name} | ${countryName} ${intentLabel} | Vistolane`,
     description: text ?? program.officialName,
     path: `/destinations/${program.countrySlug}/${program.intent}/${program.slug}`,
     type: "article",
@@ -363,7 +363,7 @@ export default async function ProgramPage({ params }) {
               </p>
               <p className="font-data text-lg tabular-nums text-label">
                 {feeTotalsByCurrency.size === 0
-                  ? "—"
+                  ? "N/A"
                   : [...feeTotalsByCurrency.entries()]
                       .map(
                         ([currency, total]) =>

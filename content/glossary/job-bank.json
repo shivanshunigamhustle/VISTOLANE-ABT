@@ -8,7 +8,7 @@
   "relatedTerms": ["lmia", "tfwp"],
   "sources": [
     {
-      "label": "Fill a position — Job Bank",
+      "label": "Fill a position, Job Bank",
       "url": "https://www.jobbank.gc.ca/employers",
       "retrieved": "2026-08-29"
     },
@@ -20,7 +20,7 @@
   ],
   "author": {
     "name": "Pending review",
-    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+    "credentials": "Unverified draft, not yet reviewed by a qualified immigration advisor"
   },
   "lastReviewed": "2026-08-29"
 }

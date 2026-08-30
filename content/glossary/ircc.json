@@ -3,24 +3,24 @@
   "term": "Immigration, Refugees and Citizenship Canada",
   "aliases": ["IRCC"],
   "definition": "The federal department that decides applications for work permits, study permits, permanent residence and citizenship. It is the department a study permit, an Express Entry profile, or a work permit is actually submitted to.",
-  "longform": "IRCC is distinct from Employment and Social Development Canada, which handles the employer-side Labour Market Impact Assessment for some work permits. A worker's own application — the work permit, the study permit, or the permanent residence application — is always decided by IRCC.",
+  "longform": "IRCC is distinct from Employment and Social Development Canada, which handles the employer-side Labour Market Impact Assessment for some work permits. A worker's own application, the work permit, the study permit, or the permanent residence application, is always decided by IRCC.",
   "relatedPrograms": ["lmia", "study-permit", "express-entry"],
   "relatedTerms": ["esdc"],
   "sources": [
     {
-      "label": "Immigration, Refugees and Citizenship Canada — Canada.ca",
+      "label": "Immigration, Refugees and Citizenship Canada, Canada.ca",
       "url": "https://www.canada.ca/en/immigration-refugees-citizenship.html",
       "retrieved": "2026-08-29"
     },
     {
-      "label": "Citizenship and immigration application fees: Fee list — Immigration, Refugees and Citizenship Canada",
+      "label": "Citizenship and immigration application fees: Fee list, Immigration, Refugees and Citizenship Canada",
       "url": "https://ircc.canada.ca/english/information/fees/fees.asp",
       "retrieved": "2026-08-29"
     }
   ],
   "author": {
     "name": "Pending review",
-    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+    "credentials": "Unverified draft, not yet reviewed by a qualified immigration advisor"
   },
   "lastReviewed": "2026-08-29"
 }

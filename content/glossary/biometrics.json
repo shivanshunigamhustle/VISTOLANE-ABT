@@ -3,19 +3,19 @@
   "term": "Biometrics",
   "aliases": [],
   "definition": "Fingerprints and a photo collected as part of many Canadian immigration applications, including work permits, study permits and permanent residence, at a cost of $85 CAD per individual.",
-  "longform": "Biometrics are usually collected at a visa application centre. Verify before publish — confirm the current validity period before stating how often they must be given again.",
+  "longform": "Biometrics are usually collected at a visa application centre. Verify before publish: confirm the current validity period before stating how often they must be given again.",
   "relatedPrograms": ["lmia", "study-permit", "express-entry"],
   "relatedTerms": ["ircc"],
   "sources": [
     {
-      "label": "Citizenship and immigration application fees: Fee list — Immigration, Refugees and Citizenship Canada",
+      "label": "Citizenship and immigration application fees: Fee list, Immigration, Refugees and Citizenship Canada",
       "url": "https://ircc.canada.ca/english/information/fees/fees.asp",
       "retrieved": "2026-08-29"
     }
   ],
   "author": {
     "name": "Pending review",
-    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+    "credentials": "Unverified draft, not yet reviewed by a qualified immigration advisor"
   },
   "lastReviewed": "2026-08-29"
 }

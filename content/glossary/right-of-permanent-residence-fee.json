@@ -8,14 +8,14 @@
   "relatedTerms": ["express-entry", "ircc"],
   "sources": [
     {
-      "label": "Citizenship and immigration application fees: Fee list — Immigration, Refugees and Citizenship Canada",
+      "label": "Citizenship and immigration application fees: Fee list, Immigration, Refugees and Citizenship Canada",
       "url": "https://ircc.canada.ca/english/information/fees/fees.asp",
       "retrieved": "2026-08-29"
     }
   ],
   "author": {
     "name": "Pending review",
-    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+    "credentials": "Unverified draft, not yet reviewed by a qualified immigration advisor"
   },
   "lastReviewed": "2026-08-29"
 }

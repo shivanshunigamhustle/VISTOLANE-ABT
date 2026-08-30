@@ -8,7 +8,7 @@ import { breadcrumbList } from "@/lib/seo/schema";
 
 const TITLE = "News";
 const DESCRIPTION =
-  "Policy changes that affect the routes on this site, dated to when they took effect — or, where a change is still proposed, to what actually happened and when.";
+  "Policy changes that affect the routes on this site, dated to when they took effect, or, where a change is still proposed, to what actually happened and when.";
 
 export const metadata = pageMetadata({
   title: `${TITLE} | Vistolane`,

@@ -3,19 +3,19 @@
   "term": "EU Blue Card",
   "aliases": ["Blue Card"],
   "definition": "A residence and work permit for highly qualified non-EU workers taking a job in Germany above a set salary threshold, notable on this site for the meaningfully faster route it offers to permanent settlement.",
-  "longform": "Blue Card holders have been reported reaching Germany's settlement permit — normally a 5-year route on the general path — in around 21 months with B1 German, or around 27 months with only A1. That gap is large enough to change real planning decisions for anyone whose job offer would qualify.",
+  "longform": "Blue Card holders have been reported reaching Germany's settlement permit, normally a 5-year route on the general path, in around 21 months with B1 German, or around 27 months with only A1. That gap is large enough to change real planning decisions for anyone whose job offer would qualify.",
   "relatedPrograms": ["eu-blue-card", "settlement-permit"],
   "relatedTerms": ["aufenthaltserlaubnis"],
   "sources": [
     {
-      "label": "EU Blue Card — Make it in Germany, the Federal Government portal for skilled workers",
+      "label": "EU Blue Card, Make it in Germany, the Federal Government portal for skilled workers",
       "url": "https://www.make-it-in-germany.com/en/visa-residence/types/eu-blue-card",
       "retrieved": "2026-08-30"
     }
   ],
   "author": {
     "name": "Pending review",
-    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+    "credentials": "Unverified draft, not yet reviewed by a qualified immigration advisor"
   },
   "lastReviewed": "2026-08-30"
 }

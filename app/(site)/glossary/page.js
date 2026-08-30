@@ -16,7 +16,7 @@ import { breadcrumbList } from "@/lib/seo/schema";
 
 const TITLE = "Glossary";
 const DESCRIPTION =
-  "Immigration terms used across Vistolane's guides — from Canada's Express Entry system to Vietnam's investor visa tiers — defined and sourced.";
+  "Immigration terms used across Vistolane's guides, from Canada's Express Entry system to Vietnam's investor visa tiers, defined and sourced.";
 
 export const metadata = pageMetadata({
   title: `${TITLE} | Vistolane`,

@@ -3,19 +3,19 @@
   "term": "Leben in Deutschland test",
   "aliases": ["Life in Germany test", "integration test"],
   "definition": "A test covering knowledge of German legal and social systems and living conditions, generally required before Germany's settlement permit (Niederlassungserlaubnis) is granted.",
-  "longform": "The test sits alongside, and is separate from, the German language requirement — passing one does not substitute for the other. Applicants building toward settlement are generally expected to complete it ahead of, or alongside, their qualifying residence period rather than treating it as a late-stage formality.",
+  "longform": "The test sits alongside, and is separate from, the German language requirement; passing one does not substitute for the other. Applicants building toward settlement are generally expected to complete it ahead of, or alongside, their qualifying residence period rather than treating it as a late-stage formality.",
   "relatedPrograms": ["settlement-permit"],
   "relatedTerms": ["aufenthaltserlaubnis"],
   "sources": [
     {
-      "label": "Permanent settlement permit (general) — Service Berlin, Berlin.de",
+      "label": "Permanent settlement permit (general), Service Berlin, Berlin.de",
       "url": "https://service.berlin.de/dienstleistung/121864/en/",
       "retrieved": "2026-08-30"
     }
   ],
   "author": {
     "name": "Pending review",
-    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+    "credentials": "Unverified draft, not yet reviewed by a qualified immigration advisor"
   },
   "lastReviewed": "2026-08-30"
 }

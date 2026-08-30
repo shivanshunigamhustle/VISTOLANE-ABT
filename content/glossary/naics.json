@@ -2,20 +2,20 @@
   "slug": "naics",
   "term": "North American Industry Classification System",
   "aliases": ["NAICS"],
-  "definition": "A standard industry classification system used by Canada, the United States and Mexico. Some Labour Market Impact Assessment rules — such as the higher cap for food manufacturing, construction and health care — are defined by NAICS sector codes.",
+  "definition": "A standard industry classification system used by Canada, the United States and Mexico. Some Labour Market Impact Assessment rules: such as the higher cap for food manufacturing, construction and health care; are defined by NAICS sector codes.",
   "longform": "",
   "relatedPrograms": ["lmia"],
   "relatedTerms": ["lmia"],
   "sources": [
     {
-      "label": "North American Industry Classification System (NAICS) Canada — Statistics Canada",
+      "label": "North American Industry Classification System (NAICS) Canada, Statistics Canada",
       "url": "https://www23.statcan.gc.ca/imdb/p3VD.pl?Function=getVD&TVD=1181553",
       "retrieved": "2026-08-29"
     }
   ],
   "author": {
     "name": "Pending review",
-    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+    "credentials": "Unverified draft, not yet reviewed by a qualified immigration advisor"
   },
   "lastReviewed": "2026-08-29"
 }

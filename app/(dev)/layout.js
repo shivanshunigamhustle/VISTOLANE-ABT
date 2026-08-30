@@ -2,7 +2,7 @@ import "@/styles/tokens.css";
 import "@/styles/globals.css";
 
 export const metadata = {
-  title: "Vistolane — development",
+  title: "Vistolane | development",
   robots: { index: false, follow: false },
 };
 

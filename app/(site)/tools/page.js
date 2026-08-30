@@ -45,7 +45,7 @@ const TOOLS = [
   },
   {
     name: "Cost estimator",
-    body: "Government fees for a chosen route, totalled — with what could not be confirmed shown separately.",
+    body: "Government fees for a chosen route, totalled, with what could not be confirmed shown separately.",
     href: "/tools/cost-estimator",
   },
 ];

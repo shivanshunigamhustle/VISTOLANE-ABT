@@ -115,12 +115,12 @@ export default async function SiteFooter() {
         */}
         <div className="mt-14 rounded-card border border-on-brand/30 p-5">
           <h2 className="t-subsection">
-            Advisory disclaimer — placeholder, not for launch
+            Advisory disclaimer: placeholder, not for launch
           </h2>
           <p className="t-body mt-2 opacity-80">
             The wording of this disclaimer has not been agreed. It needs to
-            state what this site is and is not — general information rather than
-            legal advice, and no advisory relationship created by reading it —
+            state what this site is and is not, general information rather than
+            legal advice, and no advisory relationship created by reading it,
             in terms the client and their adviser have signed off (MOD-11).
           </p>
         </div>

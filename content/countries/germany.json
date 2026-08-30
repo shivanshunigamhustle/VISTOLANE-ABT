@@ -1,5 +1,5 @@
 {
-  "//": "Scaffold pending launch country list — OPN-02",
+  "//": "Scaffold pending launch country list; OPN-02",
   "slug": "germany",
   "name": "Germany",
   "iso2": "DE",
@@ -9,28 +9,28 @@
   "languages": ["German"],
   "costBand": "unknown",
   "atAGlance": {
-    "processingWindow": "Verify before publish — no processing times have been researched for Germany.",
-    "typicalCostRange": "Verify before publish — no official fee schedule has been read for Germany.",
-    "visaFreeNote": "Verify before publish — visa-free and visa-on-arrival access to Germany has not been researched."
+    "processingWindow": "Verify before publish: no processing times have been researched for Germany.",
+    "typicalCostRange": "Verify before publish: no official fee schedule has been read for Germany.",
+    "visaFreeNote": "Verify before publish: visa-free and visa-on-arrival access to Germany has not been researched."
   },
   "living": {
-    "costOfLiving": "Verify before publish — no cost-of-living figures have been gathered for Germany, so the cost band on this record is recorded as unknown rather than guessed.",
-    "healthcare": "Verify before publish — healthcare entitlement for newcomers to Germany has not been researched.",
-    "schooling": "Verify before publish — schooling access for children of temporary residents in Germany has not been researched.",
-    "bringingFamily": "Verify before publish — dependant and partner eligibility for Germany has not been researched."
+    "costOfLiving": "Verify before publish: no cost-of-living figures have been gathered for Germany, so the cost band on this record is recorded as unknown rather than guessed.",
+    "healthcare": "Verify before publish: healthcare entitlement for newcomers to Germany has not been researched.",
+    "schooling": "Verify before publish: schooling access for children of temporary residents in Germany has not been researched.",
+    "bringingFamily": "Verify before publish: dependant and partner eligibility for Germany has not been researched."
   },
   "commonDocuments": [],
   "relatedCountries": [],
   "sources": [
     {
-      "label": "Visa and residence — Make it in Germany, the Federal Government portal for skilled workers",
+      "label": "Visa and residence, Make it in Germany, the Federal Government portal for skilled workers",
       "url": "https://www.make-it-in-germany.com/en/visa-residence",
       "retrieved": "2026-08-29"
     }
   ],
   "author": {
     "name": "Pending review",
-    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+    "credentials": "Unverified draft, not yet reviewed by a qualified immigration advisor"
   },
   "lastReviewed": "2026-08-29"
 }

@@ -1,7 +1,7 @@
 {
   "slug": "lmia-six-month-validity",
   "title": "Positive Labour Market Impact Assessments now valid for 6 months, not 12",
-  "body": "A positive Labour Market Impact Assessment issued on an application received on or after 1 May 2024 is valid for a maximum of 6 months from the date it is issued, down from the previous 12-month validity period. The named worker must apply for their work permit inside that 6-month window — an expired assessment cannot be extended, and an employer whose worker misses the window generally has to start the LMIA process again from the beginning, including the fee.",
+  "body": "A positive Labour Market Impact Assessment issued on an application received on or after 1 May 2024 is valid for a maximum of 6 months from the date it is issued, down from the previous 12-month validity period. The named worker must apply for their work permit inside that 6-month window; an expired assessment cannot be extended, and an employer whose worker misses the window generally has to start the LMIA process again from the beginning, including the fee.",
   "countries": ["canada"],
   "programs": ["lmia"],
   "effectiveDate": "2024-05-01",
@@ -14,7 +14,7 @@
   ],
   "author": {
     "name": "Pending review",
-    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+    "credentials": "Unverified draft, not yet reviewed by a qualified immigration advisor"
   },
   "lastReviewed": "2026-08-29"
 }

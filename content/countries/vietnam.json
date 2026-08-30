@@ -1,5 +1,5 @@
 {
-  "//": "Scaffold pending launch country list — OPN-02",
+  "//": "Scaffold pending launch country list; OPN-02",
   "slug": "vietnam",
   "name": "Vietnam",
   "iso2": "VN",
@@ -9,21 +9,21 @@
   "languages": ["Vietnamese"],
   "costBand": "unknown",
   "atAGlance": {
-    "processingWindow": "Verify before publish — no processing times have been researched for Vietnam.",
-    "typicalCostRange": "Verify before publish — no official fee schedule has been read for Vietnam.",
-    "visaFreeNote": "Verify before publish — visa-free and visa-on-arrival access to Vietnam has not been researched."
+    "processingWindow": "Verify before publish: no processing times have been researched for Vietnam.",
+    "typicalCostRange": "Verify before publish: no official fee schedule has been read for Vietnam.",
+    "visaFreeNote": "Verify before publish: visa-free and visa-on-arrival access to Vietnam has not been researched."
   },
   "living": {
-    "costOfLiving": "Verify before publish — no cost-of-living figures have been gathered for Vietnam, so the cost band on this record is recorded as unknown rather than guessed.",
-    "healthcare": "Verify before publish — healthcare entitlement for newcomers to Vietnam has not been researched.",
-    "schooling": "Verify before publish — schooling access for children of temporary residents in Vietnam has not been researched.",
-    "bringingFamily": "Verify before publish — dependant and partner eligibility for Vietnam has not been researched."
+    "costOfLiving": "Verify before publish: no cost-of-living figures have been gathered for Vietnam, so the cost band on this record is recorded as unknown rather than guessed.",
+    "healthcare": "Verify before publish: healthcare entitlement for newcomers to Vietnam has not been researched.",
+    "schooling": "Verify before publish: schooling access for children of temporary residents in Vietnam has not been researched.",
+    "bringingFamily": "Verify before publish: dependant and partner eligibility for Vietnam has not been researched."
   },
   "commonDocuments": [],
   "relatedCountries": [],
   "sources": [
     {
-      "label": "Vietnam Immigration Department — official portal",
+      "label": "Vietnam Immigration Department, official portal",
       "url": "https://xuatnhapcanh.gov.vn/",
       "retrieved": "2026-08-29"
     },
@@ -35,7 +35,7 @@
   ],
   "author": {
     "name": "Pending review",
-    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+    "credentials": "Unverified draft, not yet reviewed by a qualified immigration advisor"
   },
   "lastReviewed": "2026-08-29"
 }

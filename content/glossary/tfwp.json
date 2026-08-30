@@ -3,7 +3,7 @@
   "term": "Temporary Foreign Worker Program",
   "aliases": ["TFWP"],
   "definition": "The Employment and Social Development Canada program under which employers apply for a Labour Market Impact Assessment to hire a foreign worker for a specific position, when no Canadian or permanent resident is available to fill it.",
-  "longform": "The programme is employer-sponsored and position-specific by design: it exists to test whether a labour market need is genuine before a foreign national is hired for it, and it carries obligations — recruitment, wage thresholds, caps in some sectors — that fall on the employer rather than the worker.",
+  "longform": "The programme is employer-sponsored and position-specific by design: it exists to test whether a labour market need is genuine before a foreign national is hired for it, and it carries obligations, recruitment, wage thresholds, caps in some sectors, that fall on the employer rather than the worker.",
   "relatedPrograms": ["lmia"],
   "relatedTerms": [
     "lmia",
@@ -14,14 +14,14 @@
   ],
   "sources": [
     {
-      "label": "Hire a temporary foreign worker with a Labour Market Impact Assessment — Employment and Social Development Canada",
+      "label": "Hire a temporary foreign worker with a Labour Market Impact Assessment, Employment and Social Development Canada",
       "url": "https://www.canada.ca/en/employment-social-development/services/foreign-workers.html",
       "retrieved": "2026-08-29"
     }
   ],
   "author": {
     "name": "Pending review",
-    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+    "credentials": "Unverified draft, not yet reviewed by a qualified immigration advisor"
   },
   "lastReviewed": "2026-08-29"
 }

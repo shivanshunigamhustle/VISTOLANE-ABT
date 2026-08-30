@@ -268,7 +268,7 @@ export default async function CountryPage({ params }) {
         {programs.length > 0 ? (
           <div className="mt-6">
             <DataTable
-              caption={`Every route Vistolane covers for ${country.name} — ${programs.length} route${programs.length === 1 ? "" : "s"}, coloured by intent.`}
+              caption={`Every route Vistolane covers for ${country.name}: ${programs.length} route${programs.length === 1 ? "" : "s"}, coloured by intent.`}
               columns={[
                 { key: "name", label: "Route", width: "24%" },
                 { key: "intent", label: "Intent", width: "14%", nowrap: true },

@@ -3,19 +3,19 @@
   "term": "Points test",
   "aliases": ["skilled migration points test"],
   "definition": "The scoring system Australia's skilled visa routes, including the Skilled Independent visa (subclass 189), use to rank candidates on factors such as age, English ability, skilled employment history, and qualifications.",
-  "longform": "Meeting the minimum points score makes a candidate eligible to be considered — it does not by itself guarantee an invitation, since invitations are generally issued to the highest-scoring candidates within an occupation up to whatever number the programme has room for in a given round. A score comfortably above the stated minimum is a meaningfully stronger position than one that just clears it.",
+  "longform": "Meeting the minimum points score makes a candidate eligible to be considered; it does not by itself guarantee an invitation, since invitations are generally issued to the highest-scoring candidates within an occupation up to whatever number the programme has room for in a given round. A score comfortably above the stated minimum is a meaningfully stronger position than one that just clears it.",
   "relatedPrograms": ["skilled-independent-visa-189"],
   "relatedTerms": ["visa-subclass"],
   "sources": [
     {
-      "label": "Skilled Independent visa (subclass 189) — Department of Home Affairs",
+      "label": "Skilled Independent visa (subclass 189), Department of Home Affairs",
       "url": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/skilled-independent-189",
       "retrieved": "2026-08-30"
     }
   ],
   "author": {
     "name": "Pending review",
-    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+    "credentials": "Unverified draft, not yet reviewed by a qualified immigration advisor"
   },
   "lastReviewed": "2026-08-30"
 }

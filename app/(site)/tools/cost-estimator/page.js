@@ -29,7 +29,7 @@ import { breadcrumbList } from "@/lib/seo/schema";
 
 const TITLE = "Cost estimator";
 const DESCRIPTION =
-  "Government fees for a route, totalled — with anything that could not be confirmed shown separately, never folded into the total.";
+  "Government fees for a route, totalled, with anything that could not be confirmed shown separately, never folded into the total.";
 
 export const metadata = pageMetadata({
   title: `${TITLE} | Vistolane`,
@@ -164,7 +164,7 @@ export default async function CostEstimatorPage({ searchParams }) {
             <h3 className="t-subsection text-label">Total of confirmed fees</h3>
             {totalsByCurrency.size === 0 ? (
               <p className="t-body mt-2 text-label-2">
-                None of this route&apos;s fees are confirmed yet — every figure
+                None of this route&apos;s fees are confirmed yet; every figure
                 below still needs to be checked against an official source.
               </p>
             ) : (
