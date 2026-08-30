@@ -43,7 +43,7 @@ export default function PageMasthead({
       ) : null}
 
       <div className="relative mx-auto w-full max-w-6xl px-5 pt-14">
-        <nav aria-label="Breadcrumb">
+        <nav aria-label="Breadcrumb" className="hero-enter hero-enter-1">
           <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 font-ui text-sm text-on-brand/70">
             {breadcrumb.map((crumb, index) => {
               const last = index === breadcrumb.length - 1;
@@ -76,18 +76,20 @@ export default function PageMasthead({
           </ol>
         </nav>
 
-        <p className="t-eyebrow mt-8 text-on-brand opacity-70">{eyebrow}</p>
-        <h1 className="t-page-title mt-3 max-w-[26ch] text-on-brand">
+        <p className="hero-enter hero-enter-1 t-eyebrow mt-8 text-on-brand opacity-70">
+          {eyebrow}
+        </p>
+        <h1 className="hero-enter hero-enter-2 t-page-title mt-3 max-w-[26ch] text-on-brand">
           {title}
         </h1>
         {standfirst ? (
-          <p className="t-lede mt-5 max-w-[68ch] text-on-brand opacity-85">
+          <p className="hero-enter hero-enter-3 t-lede mt-5 max-w-[68ch] text-on-brand opacity-85">
             {standfirst}
           </p>
         ) : null}
 
         {stats?.length ? (
-          <dl className="mt-12 grid grid-cols-2 divide-y divide-on-brand/15 border-t border-on-brand/15 sm:grid-cols-4 sm:divide-x sm:divide-y-0">
+          <dl className="hero-enter hero-enter-4 mt-12 grid grid-cols-2 divide-y divide-on-brand/15 border-t border-on-brand/15 sm:grid-cols-4 sm:divide-x sm:divide-y-0">
             {stats.map((stat) => (
               <div
                 key={stat.label}
