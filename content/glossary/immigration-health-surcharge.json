@@ -1,0 +1,21 @@
+{
+  "slug": "immigration-health-surcharge",
+  "term": "Immigration Health Surcharge",
+  "aliases": ["IHS"],
+  "definition": "A fee paid as part of most UK visa applications, charged per year of the visa's length, that gives the holder access to the National Health Service broadly as a UK resident would have.",
+  "longform": "Because it is charged per year rather than as a flat one-off amount, the surcharge multiplies with the length of the visa or course — a multi-year study or work route pays considerably more in total surcharge than the headline visa application fee alone suggests. It is reported as not charged on settlement (Indefinite Leave to Remain) applications, since settlement carries no further visa length for it to be calculated against.",
+  "relatedPrograms": ["student-visa", "standard-visitor-visa", "indefinite-leave-to-remain"],
+  "relatedTerms": ["confirmation-of-acceptance-for-studies"],
+  "sources": [
+    {
+      "label": "Student visa: Overview — GOV.UK",
+      "url": "https://www.gov.uk/student-visa",
+      "retrieved": "2026-08-30"
+    }
+  ],
+  "author": {
+    "name": "Pending review",
+    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+  },
+  "lastReviewed": "2026-08-30"
+}

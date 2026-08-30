@@ -61,10 +61,15 @@ export default function Callout({ tone = "note", title, sources, children }) {
   // them to 4.36:1. It keeps the rail and drops the fill so the links sit on the
   // band itself, where they clear AA.
   const filled = tone !== "source";
+  // Pitfalls are the highest-value content on a guide, so the warning tone
+  // carries real weight — a bigger icon, a display-face title, generous
+  // padding — rather than reading as an afterthought beside the reference
+  // tables around it.
+  const weighted = tone === "warning";
 
   return (
     <aside
-      className="my-6 rounded-r-card border-l-2 p-4 text-label"
+      className={`my-6 rounded-r-card border-l-2 text-label ${weighted ? "p-6" : "p-4"}`}
       style={{
         borderLeftColor: hue,
         ...(filled
@@ -72,13 +77,17 @@ export default function Callout({ tone = "note", title, sources, children }) {
           : {}),
       }}
     >
-      <p className="flex items-center gap-2 font-ui text-sm font-semibold">
+      <p
+        className={`flex items-center font-ui font-semibold ${
+          weighted ? "gap-3 font-read text-lg" : "gap-2 text-sm"
+        }`}
+      >
         <svg
           aria-hidden="true"
           focusable="false"
           viewBox="0 0 16 16"
-          width="14"
-          height="14"
+          width={weighted ? 20 : 14}
+          height={weighted ? 20 : 14}
           fill="none"
           stroke="currentColor"
           strokeWidth="1.5"
@@ -93,7 +102,13 @@ export default function Callout({ tone = "note", title, sources, children }) {
       </p>
 
       {children ? (
-        <div className="mt-2 text-sm leading-relaxed text-label-2">
+        <div
+          className={
+            weighted
+              ? "mt-3 max-w-[68ch] font-read leading-relaxed text-label"
+              : "mt-2 text-sm leading-relaxed text-label-2"
+          }
+        >
           {children}
         </div>
       ) : null}
@@ -104,7 +119,7 @@ export default function Callout({ tone = "note", title, sources, children }) {
             <li key={source.url} className="[overflow-wrap:anywhere]">
               <a
                 href={source.url}
-                className="text-tint underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                className="link-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
                 rel="noreferrer noopener"
                 target="_blank"
               >

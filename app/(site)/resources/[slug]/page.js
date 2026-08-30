@@ -5,6 +5,7 @@ import rehypeSlug from "rehype-slug";
 
 import Prose from "@/components/primitives/Prose";
 import JsonLd from "@/components/site/JsonLd";
+import PageMasthead from "@/components/site/PageMasthead";
 import { getIntent } from "@/lib/content/intents";
 import { getAllGuides, getAllPrograms, getGuide } from "@/lib/content/loader";
 import { pageMetadata } from "@/lib/seo/metadata";
@@ -70,27 +71,21 @@ export default async function GuidePage({ params }) {
         })}
       />
 
-      <div className="band-ink">
-        <div className="mx-auto w-full max-w-6xl px-5 py-14">
-          {intentLabel ? (
-            <p className="t-eyebrow text-on-brand opacity-70">
-              {intentLabel}
-            </p>
-          ) : (
-            <p className="t-eyebrow text-on-brand opacity-70">Guide</p>
-          )}
-          <h1 className="t-page-title mt-6 max-w-[26ch] text-on-brand">
-            {guide.title}
-          </h1>
-          <p className="t-lede mt-5 max-w-[60ch] text-on-brand opacity-85">
-            {guide.standfirst}
-          </p>
-          <p className="mt-6 font-ui text-sm text-on-brand opacity-70">
-            {guide.author.name} · {guide.readingTime} min read · Last
-            reviewed {guide.lastReviewed}
-          </p>
-        </div>
-      </div>
+      <PageMasthead
+        eyebrow={intentLabel ?? "Cross-route guide"}
+        title={guide.title}
+        standfirst={guide.standfirst}
+        breadcrumb={[
+          { label: "Home", href: "/" },
+          { label: "Guides", href: "/resources" },
+          { label: guide.title },
+        ]}
+        stats={[
+          { label: "Reading time", value: `${guide.readingTime} min` },
+          { label: "Author", value: guide.author.name },
+          { label: "Last reviewed", value: guide.lastReviewed },
+        ]}
+      />
 
       <div className="mx-auto grid w-full max-w-6xl gap-12 px-5 py-16 lg:grid-cols-[minmax(0,1fr)_18rem]">
         <div className="min-w-0">
@@ -108,7 +103,7 @@ export default async function GuidePage({ params }) {
                 <li key={source.url} className="text-sm">
                   <a
                     href={source.url}
-                    className="text-tint underline underline-offset-2 [overflow-wrap:anywhere] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                    className="link-accent [overflow-wrap:anywhere] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
                   >
                     {source.label}
                   </a>{" "}
@@ -142,7 +137,7 @@ export default async function GuidePage({ params }) {
           <p className="mt-6 text-sm">
             <Link
               href="/resources"
-              className="text-tint underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+              className="link-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
             >
               All guides
             </Link>

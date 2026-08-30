@@ -5,7 +5,10 @@
   "definition": "The national standard for describing and measuring English language ability used across Canadian immigration programmes. Niveaux de competence linguistique canadiens (NCLC) is the equivalent French-language scale. Language test results must be converted to a CLB or NCLC level and are only valid for a limited period.",
   "longform": "The Federal Skilled Worker Program requires a minimum of CLB 7 in all four abilities — listening, speaking, reading and writing. Verify before publish — confirm current accepted tests and the validity period of results before stating either.",
   "relatedPrograms": ["express-entry"],
-  "relatedTerms": ["comprehensive-ranking-system", "federal-skilled-worker-program"],
+  "relatedTerms": [
+    "comprehensive-ranking-system",
+    "federal-skilled-worker-program"
+  ],
   "sources": [
     {
       "label": "Language testing — Skilled immigrants (Express Entry)",

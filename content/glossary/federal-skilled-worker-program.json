@@ -5,7 +5,11 @@
   "definition": "One of the three federal economic immigration programmes managed through Express Entry, selecting on skilled work experience and human capital factors such as education and language ability.",
   "longform": "It requires at least 1 year of continuous full-time skilled work experience (or the part-time equivalent), a minimum Canadian Language Benchmark of 7 in all four abilities, and a pass mark of 67 points on a separate selection grid, before a candidate is scored under the Comprehensive Ranking System for an invitation.",
   "relatedPrograms": ["express-entry"],
-  "relatedTerms": ["express-entry", "comprehensive-ranking-system", "canadian-language-benchmark"],
+  "relatedTerms": [
+    "express-entry",
+    "comprehensive-ranking-system",
+    "canadian-language-benchmark"
+  ],
   "sources": [
     {
       "label": "Express Entry: Federal Skilled Worker Program",

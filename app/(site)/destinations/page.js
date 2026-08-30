@@ -2,7 +2,8 @@ import Link from "next/link";
 import { Chip } from "@/components/primitives/Chip";
 import CountryCard from "@/components/site/CountryCard";
 import JsonLd from "@/components/site/JsonLd";
-import SectionHeading from "@/components/site/SectionHeading";
+import PageMasthead from "@/components/site/PageMasthead";
+import SectionMarker from "@/components/site/SectionMarker";
 import { INTENTS } from "@/lib/content/intents";
 import { getAllCountries, getAllPrograms } from "@/lib/content/loader";
 import { pageMetadata } from "@/lib/seo/metadata";
@@ -16,6 +17,10 @@ import { breadcrumbList } from "@/lib/seo/schema";
  * whole point: each filtered view has its own URL, renders without JavaScript,
  * and can be crawled. Organic search is what this site is for, so a filter that
  * only exists in client state would be a filter that does not exist.
+ *
+ * Each chip shows how many destinations it would leave — a chip that would
+ * leave zero renders muted and inert rather than becoming a link into an
+ * empty page.
  */
 
 const TITLE = "Destinations";
@@ -59,6 +64,30 @@ function toggledHref(current, key, value) {
 }
 
 /**
+ * @param {import("@/lib/content/schema").Country[]} countries
+ * @param {Map<string, import("@/lib/content/schema").Program[]>} byCountry
+ * @param {{ intent?: string, region?: string, costBand?: string }} facets
+ * @returns {import("@/lib/content/schema").Country[]}
+ */
+function applyFilters(countries, byCountry, facets) {
+  return countries.filter((country) => {
+    const countryPrograms = byCountry.get(country.slug) ?? [];
+    if (facets.region && country.region !== facets.region) return false;
+    if (facets.costBand) {
+      if (country.costBand === "unknown") return false;
+      if (country.costBand !== facets.costBand) return false;
+    }
+    if (
+      facets.intent &&
+      !countryPrograms.some((program) => program.intent === facets.intent)
+    ) {
+      return false;
+    }
+    return true;
+  });
+}
+
+/**
  * @param {{ searchParams: Promise<Record<string, string | string[] | undefined>> }} props
  * @returns {Promise<JSX.Element>}
  */
@@ -88,26 +117,16 @@ export default async function DestinationsPage({ searchParams }) {
     ...new Set(countries.map((country) => country.region)),
   ].sort();
 
-  const matches = countries.filter((country) => {
-    const countryPrograms = byCountry.get(country.slug) ?? [];
-    if (active.region && country.region !== active.region) return false;
-    // A country whose band is unknown is never a match for a cost-band filter.
-    // Equality already excludes it; this is explicit so it cannot regress into a
-    // filter that quietly returns countries whose band was never researched.
-    if (active.costBand) {
-      if (country.costBand === "unknown") return false;
-      if (country.costBand !== active.costBand) return false;
-    }
-    if (
-      active.intent &&
-      !countryPrograms.some((program) => program.intent === active.intent)
-    ) {
-      return false;
-    }
-    return true;
-  });
+  const matches = applyFilters(countries, byCountry, active);
 
   const filterCount = Object.values(active).filter(Boolean).length;
+
+  /** Result count if this one option were toggled on, other facets held. */
+  const countIfToggled = (key, value) => {
+    const next = { ...active };
+    next[key] = next[key] === value ? undefined : value;
+    return applyFilters(countries, byCountry, next).length;
+  };
 
   const filterGroups = [
     {
@@ -126,6 +145,18 @@ export default async function DestinationsPage({ searchParams }) {
     { key: "costBand", label: "Cost band", options: COST_BANDS },
   ];
 
+  const activeSummary = filterGroups.flatMap((group) => {
+    const value = active[group.key];
+    if (!value) return [];
+    const option = group.options.find((o) => o.value === value);
+    return [{ key: group.key, label: option?.label ?? value }];
+  });
+
+  const totalSources = countries.reduce(
+    (sum, country) => sum + country.sources.length,
+    0
+  );
+
   return (
     <main id="main-content">
       <JsonLd
@@ -134,57 +165,126 @@ export default async function DestinationsPage({ searchParams }) {
           { name: TITLE, path: "/destinations" },
         ])}
       />
-      <div className="band-ink">
-        <div className="mx-auto w-full max-w-6xl px-5 py-14">
-          <p className="t-eyebrow text-on-brand opacity-70">Coverage</p>
-          <h1 className="t-page-title mt-6 text-on-brand">{TITLE}</h1>
-          <p className="t-lede mt-5 text-on-brand opacity-85">{DESCRIPTION}</p>
-        </div>
-      </div>
+
+      <PageMasthead
+        eyebrow="Coverage"
+        title={TITLE}
+        standfirst={DESCRIPTION}
+        breadcrumb={[{ label: "Home", href: "/" }, { label: TITLE }]}
+        stats={[
+          { label: "Countries", value: countries.length },
+          { label: "Route guides", value: programs.length },
+          { label: "Sources cited", value: totalSources },
+        ]}
+      />
 
       <div className="band-inset">
-        <div className="mx-auto w-full max-w-6xl space-y-6 px-5 py-10">
+        <div className="mx-auto w-full max-w-6xl space-y-5 px-5 py-10">
           {filterGroups.map((group) => (
-            <div key={group.key}>
-              <h2 id={`filter-${group.key}`} className="t-eyebrow mb-3">
+            <div
+              key={group.key}
+              className="flex flex-col gap-2 md:flex-row md:items-baseline md:gap-6"
+            >
+              <h2
+                id={`filter-${group.key}`}
+                className="t-eyebrow shrink-0 md:w-32 md:text-right"
+              >
                 {group.label}
               </h2>
               <div
                 role="group"
                 aria-labelledby={`filter-${group.key}`}
-                className="flex flex-wrap items-center gap-2"
+                className="flex flex-1 flex-wrap items-center gap-2"
               >
-                {group.options.map((option) => (
-                  <Chip
-                    key={option.value}
-                    href={toggledHref(active, group.key, option.value)}
-                    pressed={active[group.key] === option.value}
-                  >
-                    {option.label}
-                  </Chip>
-                ))}
+                {group.options.map((option) => {
+                  const count = countIfToggled(group.key, option.value);
+                  const pressed = active[group.key] === option.value;
+                  const dead = count === 0 && !pressed;
+
+                  if (dead) {
+                    return (
+                      <span
+                        key={option.value}
+                        aria-disabled="true"
+                        className="inline-flex items-center gap-1.5 rounded-pill border border-separator px-3 py-1.5 text-sm text-label-3"
+                      >
+                        {option.label}{" "}
+                        <span className="font-data text-xs">(0)</span>
+                      </span>
+                    );
+                  }
+
+                  return (
+                    <Chip
+                      key={option.value}
+                      href={toggledHref(active, group.key, option.value)}
+                      pressed={pressed}
+                    >
+                      {option.label}{" "}
+                      <span className="font-data text-xs opacity-70">
+                        ({count})
+                      </span>
+                    </Chip>
+                  );
+                })}
               </div>
             </div>
           ))}
 
           {filterCount > 0 ? (
-            <p className="text-sm">
+            <div className="flex justify-end">
               <Link
                 href="/destinations"
-                className="text-tint underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                className="link-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
               >
-                Clear filters
+                Clear all
               </Link>
-            </p>
+            </div>
           ) : null}
         </div>
       </div>
 
       <div className="mx-auto w-full max-w-6xl px-5 py-16">
-        <p aria-live="polite" className="t-data text-label-2">
+        <SectionMarker
+          eyebrow="Result"
+          className="mb-2"
+          trailing={
+            activeSummary.length > 0 ? (
+              <ul
+                className="flex flex-wrap items-center gap-2"
+                aria-label="Active filters"
+              >
+                {activeSummary.map((entry) => (
+                  <li key={entry.key}>
+                    <Link
+                      href={toggledHref(active, entry.key, active[entry.key])}
+                      className="color-transition inline-flex items-center gap-1.5 rounded-pill bg-fill px-3 py-1 font-ui text-xs font-medium text-label no-underline hover:bg-separator focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                    >
+                      {entry.label}
+                      <svg
+                        aria-hidden="true"
+                        focusable="false"
+                        viewBox="0 0 16 16"
+                        width="10"
+                        height="10"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                      >
+                        <path d="M4.5 4.5 11.5 11.5M11.5 4.5 4.5 11.5" />
+                      </svg>
+                      <span className="sr-only">— remove filter</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            ) : null
+          }
+        >
           {matches.length} of {countries.length}{" "}
           {countries.length === 1 ? "destination" : "destinations"}
-        </p>
+        </SectionMarker>
 
         {matches.length > 0 ? (
           <div
@@ -230,7 +330,7 @@ export default async function DestinationsPage({ searchParams }) {
             <p className="mt-6 text-sm">
               <Link
                 href="/destinations"
-                className="text-tint underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                className="link-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
               >
                 Clear filters
               </Link>

@@ -15,11 +15,7 @@ import Button from "@/components/primitives/Button";
  */
 export default function PrintButton() {
   return (
-    <Button
-      type="button"
-      variant="quiet"
-      onClick={() => window.print()}
-    >
+    <Button type="button" variant="quiet" onClick={() => window.print()}>
       Print this checklist
     </Button>
   );

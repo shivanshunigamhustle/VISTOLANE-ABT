@@ -14,6 +14,12 @@
  *   otherwise lets one long prose column starve the rest.
  * @property {boolean} [nowrap]                  Keep short labels on one line, so a badge
  *   in a narrow column cannot be broken mid-word.
+ *
+ * A row may carry `rowAccent`, a CSS colour rendered as a 3px left rail on
+ * that row — used on the routes table, where the six intent hues do real
+ * navigational work rather than decoration. It is set on the first cell
+ * rather than the <tr> itself: box-shadow on table rows does not render
+ * consistently across browsers, a border on a cell does.
  */
 
 /** @type {Record<string, string>} */
@@ -26,7 +32,7 @@ const ALIGN = {
 /**
  * @param {{
  *   columns: DataTableColumn[],
- *   rows: Array<Record<string, React.ReactNode>>,
+ *   rows: Array<Record<string, React.ReactNode> & { rowAccent?: string }>,
  *   caption?: string,
  * }} props
  * @returns {JSX.Element}
@@ -58,10 +64,15 @@ export default function DataTable({ columns, rows, caption }) {
         </thead>
         <tbody>
           {rows.map((row, index) => (
-            <tr key={index}>
-              {columns.map((column) => (
+            <tr key={index} className="color-transition hover:bg-fill">
+              {columns.map((column, columnIndex) => (
                 <td
                   key={column.key}
+                  style={
+                    columnIndex === 0 && row.rowAccent
+                      ? { borderLeft: `3px solid ${row.rowAccent}` }
+                      : undefined
+                  }
                   className={`border-b border-separator px-4 py-2.5 align-top text-label ${
                     column.nowrap
                       ? "whitespace-nowrap"

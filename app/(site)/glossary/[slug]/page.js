@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import JsonLd from "@/components/site/JsonLd";
+import PageMasthead from "@/components/site/PageMasthead";
 import SoftBridge from "@/components/site/SoftBridge";
 import { getIntent } from "@/lib/content/intents";
 import { getAllPrograms, getAllTerms, getTerm } from "@/lib/content/loader";
@@ -81,21 +82,25 @@ export default async function GlossaryTermPage({ params }) {
         ])}
       />
 
-      <div className="band-ink">
-        <div className="mx-auto w-full max-w-6xl px-5 py-14">
-          <p className="t-eyebrow text-on-brand opacity-70">Glossary</p>
-          <h1 className="t-page-title mt-6 text-on-brand">{term.term}</h1>
-          {term.aliases.length > 0 ? (
-            <p className="mt-3 font-ui text-sm text-on-brand opacity-70">
-              Also written as: {term.aliases.join(", ")}
-            </p>
-          ) : null}
-        </div>
-      </div>
+      <PageMasthead
+        eyebrow="Glossary"
+        title={term.term}
+        standfirst={term.definition}
+        breadcrumb={[
+          { label: "Home", href: "/" },
+          { label: "Glossary", href: "/glossary" },
+          { label: term.term },
+        ]}
+        stats={[
+          ...(term.aliases.length > 0
+            ? [{ label: "Also written as", value: term.aliases.join(", ") }]
+            : []),
+          { label: "Last reviewed", value: term.lastReviewed },
+        ]}
+      />
 
       <div className="mx-auto grid w-full max-w-6xl gap-12 px-5 py-16 lg:grid-cols-[minmax(0,1fr)_18rem]">
         <div className="min-w-0">
-          <p className="t-lede text-label">{term.definition}</p>
           {term.longform ? (
             <p className="t-body mt-5 max-w-[68ch] text-label">
               {term.longform}
@@ -109,7 +114,7 @@ export default async function GlossaryTermPage({ params }) {
                 <li key={source.url} className="text-sm">
                   <a
                     href={source.url}
-                    className="text-tint underline underline-offset-2 [overflow-wrap:anywhere] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                    className="link-accent [overflow-wrap:anywhere] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
                   >
                     {source.label}
                   </a>{" "}
@@ -133,7 +138,7 @@ export default async function GlossaryTermPage({ params }) {
                   <li key={program.slug}>
                     <Link
                       href={`/destinations/${program.countrySlug}/${program.intent}/${program.slug}`}
-                      className="text-tint underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                      className="link-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
                     >
                       {program.name}
                     </Link>
@@ -165,7 +170,7 @@ export default async function GlossaryTermPage({ params }) {
           <p className="mt-6 text-sm">
             <Link
               href="/glossary"
-              className="text-tint underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+              className="link-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
             >
               All terms
             </Link>

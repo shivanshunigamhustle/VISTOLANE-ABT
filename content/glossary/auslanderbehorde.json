@@ -1,0 +1,21 @@
+{
+  "slug": "auslanderbehorde",
+  "term": "Ausländerbehörde",
+  "aliases": ["foreigners' registration office", "immigration office"],
+  "definition": "The local German authority, one per city or district, responsible for residence permit applications, extensions and settlement decisions for foreign nationals living in that area.",
+  "longform": "Because each Ausländerbehörde is a local office rather than a single national body, processing times, appointment availability and, in some cases, specific document expectations can vary meaningfully between one city and another for what is nominally the same application. This is one of the more common reasons a figure or requirement quoted for one location does not match another applicant's experience elsewhere in Germany.",
+  "relatedPrograms": ["settlement-permit"],
+  "relatedTerms": ["aufenthaltserlaubnis"],
+  "sources": [
+    {
+      "label": "Permanent settlement permit (general) — Service Berlin, Berlin.de",
+      "url": "https://service.berlin.de/dienstleistung/121864/en/",
+      "retrieved": "2026-08-30"
+    }
+  ],
+  "author": {
+    "name": "Pending review",
+    "credentials": "Unverified draft — not yet reviewed by a qualified immigration advisor"
+  },
+  "lastReviewed": "2026-08-30"
+}

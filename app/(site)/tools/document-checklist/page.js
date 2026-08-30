@@ -61,9 +61,7 @@ export default async function DocumentChecklistPage({ searchParams }) {
     return (
       <main id="main-content">
         <Shell crumbs={crumbs}>
-          <SectionHeading eyebrow="Step 1 of 2">
-            Which country?
-          </SectionHeading>
+          <SectionHeading eyebrow="Step 1 of 2">Which country?</SectionHeading>
           <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {countries.map((country) => (
               <li key={country.slug}>
@@ -120,7 +118,7 @@ export default async function DocumentChecklistPage({ searchParams }) {
               <p className="mt-6 text-sm">
                 <Link
                   href="/tools/document-checklist"
-                  className="text-tint underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                  className="link-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
                 >
                   Choose a different country
                 </Link>
@@ -193,7 +191,7 @@ export default async function DocumentChecklistPage({ searchParams }) {
           <p className="text-sm">
             <Link
               href="/tools/document-checklist"
-              className="text-tint underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+              className="link-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
             >
               Start again
             </Link>
@@ -291,7 +289,7 @@ export default async function DocumentChecklistPage({ searchParams }) {
               <li key={source.url} className="text-sm">
                 <a
                   href={source.url}
-                  className="text-tint underline underline-offset-2 [overflow-wrap:anywhere] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                  className="link-accent [overflow-wrap:anywhere] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
                 >
                   {source.label}
                 </a>{" "}
@@ -340,12 +338,24 @@ export default async function DocumentChecklistPage({ searchParams }) {
                   method="POST"
                   className="mt-4 space-y-4"
                 >
-                  <input type="hidden" name="source" value="document-checklist" />
+                  <input
+                    type="hidden"
+                    name="source"
+                    value="document-checklist"
+                  />
                   <input type="hidden" name="step" value="2" />
                   <input type="hidden" name="email" value={carriedEmail} />
-                  <input type="hidden" name="countrySlug" value={country.slug} />
+                  <input
+                    type="hidden"
+                    name="countrySlug"
+                    value={country.slug}
+                  />
                   <input type="hidden" name="intent" value={program.intent} />
-                  <input type="hidden" name="programSlug" value={program.slug} />
+                  <input
+                    type="hidden"
+                    name="programSlug"
+                    value={program.slug}
+                  />
                   <input type="hidden" name="returnTo" value={currentPath} />
 
                   <div className="grid gap-4 sm:grid-cols-2">
@@ -453,7 +463,7 @@ function NotFound({ label }) {
       <p className="mt-6 text-sm">
         <Link
           href="/tools/document-checklist"
-          className="text-tint underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+          className="link-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
         >
           Start again
         </Link>

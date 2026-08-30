@@ -15,8 +15,13 @@ import Unverified, {
 import JsonLd from "@/components/site/JsonLd";
 import LatestUpdates from "@/components/site/LatestUpdates";
 import LeadForm from "@/components/site/LeadForm";
+import PageMasthead from "@/components/site/PageMasthead";
 import ProgramBridge from "@/components/site/ProgramBridge";
-import SectionHeading from "@/components/site/SectionHeading";
+import ProvenancePanel from "@/components/site/ProvenancePanel";
+import ReadingProgress from "@/components/site/ReadingProgress";
+import ReviewerCredit from "@/components/site/ReviewerCredit";
+import SectionMarker from "@/components/site/SectionMarker";
+import StepList from "@/components/site/StepList";
 import {
   getAllPrograms,
   getCountry,
@@ -36,14 +41,13 @@ import { breadcrumbList, faqPage, howTo } from "@/lib/seo/schema";
  * the action, then the detail in the sequence someone actually needs it —
  * whether they qualify, what to gather, what happens, what it costs, what goes
  * wrong. It is dense on purpose. This is a document to be consulted, not a
- * landing page to be scrolled.
- *
- * Every string on the page comes from the record or is a structural label. No
- * structured data is emitted here; prompt 9 owns that in one place, so the FAQs
- * are plain semantic disclosure elements for now.
+ * landing page to be scrolled — the craft here comes from data display and
+ * typography (numbered sections, an intent-hue reading rail, tabular figures),
+ * never from imagery or added whitespace.
  */
 
-/** Section anchors, also used to build the contents list. */
+/** Section anchors, also used to build the contents list — numbered, because
+ *  on this page the sections really are a sequence. */
 const SECTIONS = [
   { id: "eligibility", label: "Eligibility", eyebrow: "Who qualifies" },
   { id: "documents", label: "Documents", eyebrow: "What to gather" },
@@ -103,15 +107,17 @@ export default async function ProgramPage({ params }) {
   const program = await getProgram(country, intent, slug);
   if (!program) notFound();
 
-  const [countryRecord, intentRecord, siblings, newsUpdates] = await Promise.all([
-    getCountry(program.countrySlug),
-    getIntent(program.intent),
-    getPrograms({ country: program.countrySlug }),
-    getNewsUpdatesFor({ program: program.slug }),
-  ]);
+  const [countryRecord, intentRecord, siblings, newsUpdates] =
+    await Promise.all([
+      getCountry(program.countrySlug),
+      getIntent(program.intent),
+      getPrograms({ country: program.countrySlug }),
+      getNewsUpdatesFor({ program: program.slug }),
+    ]);
 
   const countryName = countryRecord?.name ?? program.countrySlug;
   const intentLabel = intentRecord?.label ?? program.intent;
+  const hue = intentRecord ? `var(${intentRecord.token})` : "var(--color-tint)";
 
   const pagePath = `/destinations/${program.countrySlug}/${program.intent}/${program.slug}`;
   const bodyHeadings = tocFromMdx(program.body);
@@ -126,8 +132,19 @@ export default async function ProgramPage({ params }) {
       siblings.find((candidate) => candidate.slug === relatedSlug) ?? null,
   }));
 
+  const confirmedFees = program.fees.filter((fee) => fee.amount !== null);
+  const unconfirmedFees = program.fees.filter((fee) => fee.amount === null);
+  const feeTotalsByCurrency = new Map();
+  for (const fee of confirmedFees) {
+    feeTotalsByCurrency.set(
+      fee.currency,
+      (feeTotalsByCurrency.get(fee.currency) ?? 0) + fee.amount
+    );
+  }
+
   return (
     <main id="main-content">
+      <ReadingProgress hue={hue} />
       <JsonLd
         schema={breadcrumbList([
           { name: "Home", path: "/" },
@@ -143,82 +160,33 @@ export default async function ProgramPage({ params }) {
       <JsonLd schema={faqPage(program)} />
       <JsonLd schema={howTo(program, pagePath)} />
 
-      {/* Masthead. Chrome and identification, separated from the argument. */}
-      <div className="band-ink">
-        <div className="mx-auto w-full max-w-6xl px-5 py-12">
-          <nav aria-label="Breadcrumb">
-            <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 font-ui text-sm text-on-brand/70">
-              {[
-                { href: "/destinations", label: "Destinations" },
-                {
-                  href: `/destinations/${program.countrySlug}`,
-                  label: countryName,
-                },
-                {
-                  href: `/destinations/${program.countrySlug}/${program.intent}`,
-                  label: intentLabel,
-                },
-              ].map((crumb) => (
-                <li key={crumb.href} className="flex items-center gap-2">
-                  <Link
-                    href={crumb.href}
-                    className="text-on-brand/70 underline underline-offset-4 hover:text-on-brand
-                      focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-on-brand"
-                  >
-                    {crumb.label}
-                  </Link>
-                  <span aria-hidden="true" className="text-on-brand/40">
-                    /
-                  </span>
-                </li>
-              ))}
-              <li aria-current="page" className="text-on-brand">
-                {program.name}
-              </li>
-            </ol>
-          </nav>
-
-          <h1 className="t-page-title mt-8 max-w-[22ch] text-on-brand">
-            {program.name}
-          </h1>
-          <p className="mt-3 font-read text-lg text-on-brand opacity-75">
-            {program.officialName}
-          </p>
-          <p className="t-body mt-6 text-on-brand opacity-85">
-            <FieldValue value={program.whoItsFor} onInk />
-          </p>
-
-          <dl className="mt-10 grid gap-x-10 gap-y-6 border-t border-on-brand/25 pt-6 sm:grid-cols-2 lg:grid-cols-4">
-            {[
-              { label: "Processing time", value: program.processingTime },
-              { label: "Validity", value: program.validity },
-            ].map((entry) => (
-              <div key={entry.label}>
-                <dt className="t-eyebrow text-on-brand opacity-60">
-                  {entry.label}
-                </dt>
-                <dd className="t-value mt-2 text-on-brand [overflow-wrap:anywhere]">
-                  <FieldValue value={entry.value} onInk />
-                </dd>
-              </div>
-            ))}
-            <div>
-              <dt className="t-eyebrow text-on-brand opacity-60">Extendable</dt>
-              <dd className="t-value mt-2 text-on-brand">
-                {program.extendable ? "Yes" : "No"}
-              </dd>
-            </div>
-            <div>
-              <dt className="t-eyebrow text-on-brand opacity-60">Intent</dt>
-              <dd className="mt-2">
-                <Badge tone={program.intent} onInk>
-                  {intentLabel}
-                </Badge>
-              </dd>
-            </div>
-          </dl>
-        </div>
-      </div>
+      <PageMasthead
+        eyebrow={program.officialName}
+        title={program.name}
+        standfirst={<FieldValue value={program.whoItsFor} />}
+        accentHue={hue}
+        breadcrumb={[
+          { label: "Destinations", href: "/destinations" },
+          {
+            label: countryName,
+            href: `/destinations/${program.countrySlug}`,
+          },
+          {
+            label: intentLabel,
+            href: `/destinations/${program.countrySlug}/${program.intent}`,
+          },
+          { label: program.name },
+        ]}
+        stats={[
+          {
+            label: "Processing time",
+            value: <FieldValue value={program.processingTime} />,
+          },
+          { label: "Validity", value: <FieldValue value={program.validity} /> },
+          { label: "Extendable", value: program.extendable ? "Yes" : "No" },
+          { label: "Last reviewed", value: program.lastReviewed },
+        ]}
+      />
 
       {newsUpdates.length > 0 ? (
         <div className="mx-auto w-full max-w-6xl px-5 pt-12">
@@ -238,45 +206,59 @@ export default async function ProgramPage({ params }) {
       </div>
 
       <div className="mx-auto grid w-full max-w-6xl grid-cols-[minmax(0,1fr)] gap-10 px-5 pb-16 xl:grid-cols-[15rem_minmax(0,1fr)]">
-        {/* Contents rail, left of the column on xl. */}
+        {/* Contents rail, left of the column on xl, active section marked in the intent hue. */}
         <div className="xl:order-first">
-          <Toc headings={contents} />
+          <Toc headings={contents} hue={hue} />
         </div>
 
         <div className="surface-raised min-w-0 space-y-14 p-6 sm:p-10">
-          {/* 6. Eligibility */}
+          {/* 1. Eligibility */}
           <section aria-labelledby="eligibility">
-            <SectionHeading
+            <SectionMarker
               id="eligibility"
               eyebrow={SECTIONS[0].eyebrow}
+              number={1}
+              hue={hue}
               className="mb-6"
             >
               {SECTIONS[0].label}
-            </SectionHeading>
+            </SectionMarker>
             <DataTable
+              caption={`${program.eligibility.length} eligibility requirement${program.eligibility.length === 1 ? "" : "s"} for ${program.name}.`}
               columns={[
-                { key: "requirement", label: "Requirement", width: "28%" },
+                { key: "requirement", label: "Requirement", width: "35%" },
                 { key: "detail", label: "Detail" },
               ]}
               rows={program.eligibility.map((item) => ({
-                requirement: item.requirement,
-                detail: <FieldValue value={item.detail} />,
+                requirement: (
+                  <span className="font-ui font-semibold text-label">
+                    {item.requirement}
+                  </span>
+                ),
+                detail: (
+                  <span className="font-read">
+                    <FieldValue value={item.detail} />
+                  </span>
+                ),
               }))}
             />
           </section>
 
-          {/* 7. Documents */}
+          {/* 2. Documents */}
           <section aria-labelledby="documents">
-            <SectionHeading
+            <SectionMarker
               id="documents"
               eyebrow={SECTIONS[1].eyebrow}
+              number={2}
+              hue={hue}
               className="mb-6"
             >
               {SECTIONS[1].label}
-            </SectionHeading>
+            </SectionMarker>
             <DataTable
+              caption={`${program.documents.length} document${program.documents.length === 1 ? "" : "s"} to gather.`}
               columns={[
-                { key: "name", label: "Document", width: "26%" },
+                { key: "name", label: "Document", width: "26%", nowrap: true },
                 {
                   key: "required",
                   label: "Required",
@@ -286,66 +268,63 @@ export default async function ProgramPage({ params }) {
                 { key: "note", label: "Note" },
               ]}
               rows={program.documents.map((document) => ({
-                name: document.name,
+                name: (
+                  <span className="font-ui font-semibold text-label">
+                    {document.name}
+                  </span>
+                ),
                 required: (
                   <Badge tone={document.required ? "success" : "neutral"}>
                     {document.required ? "Required" : "Optional"}
                   </Badge>
                 ),
                 note: document.note ? (
-                  <FieldValue value={document.note} />
+                  <span className="font-read">
+                    <FieldValue value={document.note} />
+                  </span>
                 ) : null,
               }))}
             />
           </section>
 
-          {/* 8. Process */}
+          {/* 3. Process */}
           <section aria-labelledby="process">
-            <SectionHeading
+            <SectionMarker
               id="process"
               eyebrow={SECTIONS[2].eyebrow}
+              number={3}
+              hue={hue}
               className="mb-6"
             >
               {SECTIONS[2].label}
-            </SectionHeading>
-            <ol className="space-y-6">
-              {program.processSteps.map((step) => (
-                <li key={step.step} className="flex gap-4">
-                  <span
-                    aria-hidden="true"
-                    className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full bg-fill font-data text-sm tabular-nums text-label"
-                  >
-                    {step.step}
-                  </span>
-                  <div className="min-w-0">
-                    <h3 className="font-ui text-base font-semibold">
-                      {step.title}
-                    </h3>
-                    <p className="mt-1 max-w-[68ch] font-read leading-relaxed text-label-2">
-                      <FieldValue value={step.detail} />
-                    </p>
-                    <p className="t-value mt-2 text-[0.8125rem] text-label-2">
-                      <FieldValue value={step.typicalDuration} />
-                    </p>
-                  </div>
-                </li>
-              ))}
-            </ol>
+            </SectionMarker>
+            <StepList
+              hue={hue}
+              steps={program.processSteps.map((step) => ({
+                step: step.step,
+                title: step.title,
+                detail: <FieldValue value={step.detail} />,
+                typicalDuration: <FieldValue value={step.typicalDuration} />,
+              }))}
+            />
           </section>
 
-          {/* 9. Bridge */}
+          {/* 4. Bridge */}
           <ProgramBridge program={program} />
 
-          {/* 10. Fees */}
+          {/* 5. Fees */}
           <section aria-labelledby="fees">
-            <SectionHeading
+            <SectionMarker
               id="fees"
               eyebrow={SECTIONS[3].eyebrow}
+              number={5}
+              hue={hue}
               className="mb-6"
             >
               {SECTIONS[3].label}
-            </SectionHeading>
+            </SectionMarker>
             <DataTable
+              caption={`${program.fees.length} fee line${program.fees.length === 1 ? "" : "s"}.`}
               columns={[
                 { key: "item", label: "Item", width: "24%" },
                 {
@@ -353,10 +332,10 @@ export default async function ProgramPage({ params }) {
                   label: "Amount",
                   align: "right",
                   mono: true,
-                  width: "16%",
+                  width: "18%",
                   nowrap: true,
                 },
-                { key: "payableBy", label: "Payable by", width: "22%" },
+                { key: "payableBy", label: "Payable by", width: "20%" },
                 { key: "note", label: "Note" },
               ]}
               rows={program.fees.map((fee) => ({
@@ -365,7 +344,10 @@ export default async function ProgramPage({ params }) {
                   fee.amount === null ? (
                     <Unverified reason={splitUnverified(fee.note).reason} />
                   ) : (
-                    `${fee.amount.toLocaleString("en-CA")} ${fee.currency}`
+                    <>
+                      {fee.amount.toLocaleString("en-CA")}{" "}
+                      <span className="text-label-2">{fee.currency}</span>
+                    </>
                   ),
                 payableBy: fee.payableBy,
                 note:
@@ -374,6 +356,33 @@ export default async function ProgramPage({ params }) {
                   ) : null,
               }))}
             />
+
+            <div className="mt-4 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 border-t border-rule pt-4">
+              <p className="font-ui text-sm font-semibold text-label">
+                Total, confirmed fees only
+              </p>
+              <p className="font-data text-lg tabular-nums text-label">
+                {feeTotalsByCurrency.size === 0
+                  ? "—"
+                  : [...feeTotalsByCurrency.entries()]
+                      .map(
+                        ([currency, total]) =>
+                          `${total.toLocaleString("en-CA")} ${currency}`
+                      )
+                      .join(" + ")}
+              </p>
+            </div>
+            {unconfirmedFees.length > 0 ? (
+              <p className="mt-2 font-ui text-sm text-label-2">
+                {unconfirmedFees.length}{" "}
+                {unconfirmedFees.length === 1 ? "fee is" : "fees are"} excluded
+                from this total because{" "}
+                {unconfirmedFees.length === 1 ? "it is" : "they are"} not yet
+                confirmed against an official source:{" "}
+                {unconfirmedFees.map((fee) => fee.item).join(", ")}.
+              </p>
+            ) : null}
+
             {program.quotas ? (
               <p className="mt-4 max-w-[68ch] font-read leading-relaxed text-label-2">
                 <FieldValue value={program.quotas} />
@@ -381,15 +390,17 @@ export default async function ProgramPage({ params }) {
             ) : null}
           </section>
 
-          {/* 11. Pitfalls */}
+          {/* 6. Pitfalls — the upgraded warning Callout, one per pitfall. */}
           <section aria-labelledby="pitfalls">
-            <SectionHeading
+            <SectionMarker
               id="pitfalls"
               eyebrow={SECTIONS[4].eyebrow}
+              number={6}
+              hue={hue}
               className="mb-6"
             >
               {SECTIONS[4].label}
-            </SectionHeading>
+            </SectionMarker>
             {program.pitfalls.map((pitfall) => (
               <Callout key={pitfall.title} tone="warning" title={pitfall.title}>
                 <FieldValue value={pitfall.detail} />
@@ -397,20 +408,37 @@ export default async function ProgramPage({ params }) {
             ))}
           </section>
 
-          {/* 12. FAQs */}
+          {/* 7. FAQs */}
           <section aria-labelledby="faqs">
-            <SectionHeading
+            <SectionMarker
               id="faqs"
               eyebrow={SECTIONS[5].eyebrow}
+              number={7}
+              hue={hue}
               className="mb-6"
             >
               {SECTIONS[5].label}
-            </SectionHeading>
+            </SectionMarker>
             <div className="divide-y divide-rule border-y border-rule">
               {program.faqs.map((faq) => (
                 <details key={faq.question} className="group py-4">
-                  <summary className="cursor-pointer font-ui font-medium text-label focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint">
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-ui font-medium text-label focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint [&::-webkit-details-marker]:hidden">
                     {faq.question}
+                    <svg
+                      aria-hidden="true"
+                      focusable="false"
+                      viewBox="0 0 16 16"
+                      width="14"
+                      height="14"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.75"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="shrink-0 transition-transform duration-200 motion-reduce:transition-none group-open:rotate-180"
+                    >
+                      <path d="M3.5 6 8 10.5 12.5 6" />
+                    </svg>
                   </summary>
                   <p className="disclose-content mt-3 max-w-[68ch] font-read leading-relaxed text-label-2">
                     <FieldValue value={faq.answer} />
@@ -420,15 +448,17 @@ export default async function ProgramPage({ params }) {
             </div>
           </section>
 
-          {/* 13. Body */}
+          {/* 8. Body */}
           <section aria-labelledby="about">
-            <SectionHeading
+            <SectionMarker
               id="about"
               eyebrow={SECTIONS[6].eyebrow}
+              number={8}
+              hue={hue}
               className="mb-6"
             >
               {SECTIONS[6].label}
-            </SectionHeading>
+            </SectionMarker>
             <Prose>
               <MDXRemote
                 source={program.body}
@@ -442,40 +472,42 @@ export default async function ProgramPage({ params }) {
       {/* Provenance sits back from the argument it supports. */}
       <div className="band-inset">
         <div className="mx-auto w-full max-w-6xl space-y-14 px-5 py-16">
-          {/* 14. Sources */}
+          {/* 9. Sources */}
           <section aria-labelledby="sources">
-            <SectionHeading
+            <SectionMarker
               id="sources"
               eyebrow={SECTIONS[7].eyebrow}
-              className="mb-6"
+              number={9}
+              hue={hue}
+              className="mb-8"
             >
               {SECTIONS[7].label}
-            </SectionHeading>
-            <Callout tone="source" sources={program.sources} />
+            </SectionMarker>
+            <ProvenancePanel sources={program.sources} />
           </section>
 
-          {/* 15. Review line */}
-          <p className="t-value border-y border-rule py-4 text-label-2">
-            Last reviewed {program.lastReviewed} — {program.author.name},{" "}
-            {program.author.credentials}
-          </p>
+          {/* Reviewer credit */}
+          <ReviewerCredit
+            author={program.author}
+            lastReviewed={program.lastReviewed}
+          />
 
-          {/* 16. Related */}
+          {/* Related */}
           <section aria-labelledby="related">
-            <SectionHeading
+            <SectionMarker
               id="related"
               eyebrow={SECTIONS[8].eyebrow}
               className="mb-6"
             >
               {SECTIONS[8].label}
-            </SectionHeading>
+            </SectionMarker>
             <ul className="space-y-3">
               {related.map((entry) => (
                 <li key={entry.slug}>
                   {entry.record ? (
                     <Link
                       href={`/destinations/${entry.record.countrySlug}/${entry.record.intent}/${entry.record.slug}`}
-                      className="text-tint underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                      className="link-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
                     >
                       {entry.record.name}
                     </Link>
@@ -487,7 +519,7 @@ export default async function ProgramPage({ params }) {
             </ul>
           </section>
 
-          {/* 17. Bridge */}
+          {/* Closing bridge */}
           <ProgramBridge program={program} />
         </div>
       </div>

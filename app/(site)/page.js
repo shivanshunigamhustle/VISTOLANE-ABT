@@ -374,7 +374,7 @@ export default async function HomePage() {
             trailing={
               <Link
                 href="/destinations"
-                className="text-sm text-tint underline underline-offset-4
+                className="text-sm link-accent
                   focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
               >
                 See all {countries.length}
@@ -420,7 +420,7 @@ export default async function HomePage() {
                   {tool.live && tool.href ? (
                     <Link
                       href={tool.href}
-                      className="color-transition font-ui text-sm text-tint underline underline-offset-4
+                      className="color-transition font-ui text-sm link-accent
                         focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
                     >
                       Open the tool
@@ -429,7 +429,7 @@ export default async function HomePage() {
                     <AttributedLink
                       path={eligibilityPath() || undefined}
                       source="home-tools"
-                      className="color-transition font-ui text-sm text-tint underline underline-offset-4
+                      className="color-transition font-ui text-sm link-accent
                         focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
                     >
                       Open the checker
@@ -449,7 +449,32 @@ export default async function HomePage() {
       {/* 7. Consultation */}
       <section aria-labelledby="consult-heading" className="band-ink">
         <div className="mx-auto grid w-full max-w-6xl gap-0 px-0 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
-          <Media slot="consultation" className="h-[260px] w-full lg:h-full" />
+          <Media slot="consultation" className="h-[260px] w-full lg:h-full">
+            {/*
+              The photo sat as a hard rectangle against the navy ground with
+              no transition — it read as the page being cut off rather than
+              a deliberate edge. Two fades, shown at the breakpoint where
+              each layout actually needs it: bottom on the stacked mobile
+              layout, right on the side-by-side desktop one. object-cover on
+              the image itself is untouched, so nothing stretches.
+            */}
+            <div
+              aria-hidden="true"
+              className="absolute inset-x-0 bottom-0 h-24 lg:hidden"
+              style={{
+                background:
+                  "linear-gradient(to top, var(--color-brand-ink) 0%, transparent 100%)",
+              }}
+            />
+            <div
+              aria-hidden="true"
+              className="absolute inset-y-0 right-0 hidden w-32 lg:block"
+              style={{
+                background:
+                  "linear-gradient(to right, transparent 0%, var(--color-brand-ink) 100%)",
+              }}
+            />
+          </Media>
 
           <div className="px-5 py-16 lg:px-12">
             <p className="t-eyebrow text-on-brand opacity-70">

@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import JsonLd from "@/components/site/JsonLd";
+import PageMasthead from "@/components/site/PageMasthead";
 import { getAllTerms } from "@/lib/content/loader";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { breadcrumbList } from "@/lib/seo/schema";
@@ -15,7 +16,7 @@ import { breadcrumbList } from "@/lib/seo/schema";
 
 const TITLE = "Glossary";
 const DESCRIPTION =
-  "Immigration terms used across Vistolane's guides, defined and sourced.";
+  "Immigration terms used across Vistolane's guides — from Canada's Express Entry system to Vietnam's investor visa tiers — defined and sourced.";
 
 export const metadata = pageMetadata({
   title: `${TITLE} | Vistolane`,
@@ -45,22 +46,26 @@ export default async function GlossaryIndexPage() {
         ])}
       />
 
-      <div className="band-ink">
-        <div className="mx-auto w-full max-w-6xl px-5 py-14">
-          <p className="t-eyebrow text-on-brand opacity-70">Reference</p>
-          <h1 className="t-page-title mt-6 text-on-brand">{TITLE}</h1>
-          <p className="t-lede mt-5 max-w-[60ch] text-on-brand opacity-85">
-            {DESCRIPTION}
-          </p>
-        </div>
-      </div>
+      <PageMasthead
+        eyebrow="Reference"
+        title={TITLE}
+        standfirst={DESCRIPTION}
+        breadcrumb={[{ label: "Home", href: "/" }, { label: TITLE }]}
+        stats={[
+          { label: "Terms defined", value: terms.length },
+          { label: "Letters covered", value: letters.length },
+        ]}
+      />
 
       <div className="mx-auto w-full max-w-6xl px-5 py-16">
         {letters.length === 0 ? (
           <p className="t-body text-label-2">No terms yet.</p>
         ) : (
           <>
-            <nav aria-label="Jump to letter" className="flex flex-wrap gap-2">
+            <nav
+              aria-label="Jump to letter"
+              className="surface-raised flex flex-wrap gap-2 p-4"
+            >
               {letters.map((letter) => (
                 <a
                   key={letter}
@@ -75,12 +80,18 @@ export default async function GlossaryIndexPage() {
             <div className="mt-10 space-y-10">
               {letters.map((letter) => (
                 <section key={letter} aria-labelledby={`letter-${letter}`}>
-                  <h2
-                    id={`letter-${letter}`}
-                    className="t-eyebrow scroll-mt-24 border-b border-rule pb-2"
-                  >
-                    {letter}
-                  </h2>
+                  <div className="flex items-baseline justify-between gap-3 border-b border-rule pb-2">
+                    <h2
+                      id={`letter-${letter}`}
+                      className="t-eyebrow scroll-mt-24"
+                    >
+                      {letter}
+                    </h2>
+                    <p className="t-data text-xs text-label-3">
+                      {byLetter.get(letter).length} term
+                      {byLetter.get(letter).length === 1 ? "" : "s"}
+                    </p>
+                  </div>
                   <ul className="mt-4 grid gap-x-8 gap-y-1 sm:grid-cols-2 lg:grid-cols-3">
                     {byLetter.get(letter).map((term) => (
                       <li key={term.slug}>

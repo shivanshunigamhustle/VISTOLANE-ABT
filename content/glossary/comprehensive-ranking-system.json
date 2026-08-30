@@ -5,7 +5,11 @@
   "definition": "The points system that scores every profile in the Express Entry pool out of 1,200, based on factors including age, education, language ability and work experience. Invitations to apply for permanent residence go to the highest-ranked candidates.",
   "longform": "Meeting a programme's minimum requirements is a separate test from scoring well under the CRS — the minimums decide who enters the pool, the CRS score decides who is invited out of it.",
   "relatedPrograms": ["express-entry"],
-  "relatedTerms": ["express-entry", "canadian-language-benchmark", "educational-credential-assessment"],
+  "relatedTerms": [
+    "express-entry",
+    "canadian-language-benchmark",
+    "educational-credential-assessment"
+  ],
   "sources": [
     {
       "label": "Express Entry: Check your score",

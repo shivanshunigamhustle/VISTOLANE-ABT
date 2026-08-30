@@ -73,7 +73,7 @@ export default async function CostEstimatorPage({ searchParams }) {
               <p className="mt-6 text-sm">
                 <Link
                   href="/tools/cost-estimator"
-                  className="text-tint underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                  className="link-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
                 >
                   Start again
                 </Link>
@@ -116,7 +116,7 @@ export default async function CostEstimatorPage({ searchParams }) {
           <p className="text-sm">
             <Link
               href="/tools/cost-estimator"
-              className="text-tint underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+              className="link-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
             >
               Start again
             </Link>
@@ -198,7 +198,7 @@ export default async function CostEstimatorPage({ searchParams }) {
           <p className="mt-8 text-sm">
             <Link
               href={programPath}
-              className="text-tint underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+              className="link-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
             >
               Read the full guide for {program.name}
             </Link>
@@ -224,7 +224,7 @@ export default async function CostEstimatorPage({ searchParams }) {
               <p className="mt-6 text-sm">
                 <Link
                   href="/tools/cost-estimator"
-                  className="text-tint underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                  className="link-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
                 >
                   Start again
                 </Link>
@@ -261,7 +261,7 @@ export default async function CostEstimatorPage({ searchParams }) {
               <p className="mt-6 text-sm">
                 <Link
                   href="/tools/cost-estimator"
-                  className="text-tint underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                  className="link-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
                 >
                   Choose a different country
                 </Link>

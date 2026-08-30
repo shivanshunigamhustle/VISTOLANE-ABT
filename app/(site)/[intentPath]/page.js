@@ -83,8 +83,8 @@ export default async function IntentHubPage({ params }) {
           <p className="t-eyebrow text-on-brand opacity-70">By intent</p>
           <h1 className="t-page-title mt-6 text-on-brand">{intent.label}</h1>
           <p className="t-lede mt-5 max-w-[60ch] text-on-brand opacity-85">
-            Every {intent.label.toLowerCase()} route Vistolane covers,
-            compared across {countries.length}{" "}
+            Every {intent.label.toLowerCase()} route Vistolane covers, compared
+            across {countries.length}{" "}
             {countries.length === 1 ? "country" : "countries"}.
           </p>
         </div>
@@ -102,9 +102,8 @@ export default async function IntentHubPage({ params }) {
             </h2>
             <p className="t-body mt-4 max-w-[60ch] text-label">
               This intent is not covered for any country yet. It would sit
-              under:{" "}
-              {countries.map((c) => c.name).join(", ")}
-              , as those are written.
+              under: {countries.map((c) => c.name).join(", ")}, as those are
+              written.
             </p>
           </div>
         ) : (
@@ -121,7 +120,7 @@ export default async function IntentHubPage({ params }) {
                 program: (
                   <Link
                     href={`/destinations/${program.countrySlug}/${program.intent}/${program.slug}`}
-                    className="text-tint underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                    className="link-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
                   >
                     {program.name}
                   </Link>
@@ -148,9 +147,7 @@ export default async function IntentHubPage({ params }) {
                     href={`/destinations/${country.slug}/${intent.slug}`}
                     className="lift-card surface-raised block p-5 no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
                   >
-                    <h3 className="t-subsection text-label">
-                      {country.name}
-                    </h3>
+                    <h3 className="t-subsection text-label">{country.name}</h3>
                     <p className="mt-1 font-ui text-sm text-label-2">
                       {
                         programs.filter((p) => p.countrySlug === country.slug)
@@ -195,23 +192,30 @@ export default async function IntentHubPage({ params }) {
       <div className="band-inset">
         <div className="mx-auto w-full max-w-6xl px-5 py-12">
           <h2 className="t-eyebrow mb-4">Related intents</h2>
-          <ul className="flex flex-wrap gap-3">
-            {otherIntents.map((other) => (
-              <li key={other.slug}>
-                <Link
-                  href={`/${other.path}`}
-                  className="color-transition inline-flex items-center gap-2 rounded-pill border border-separator bg-surface px-3 py-1.5 text-sm text-label no-underline hover:bg-fill focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
-                >
-                  <span
-                    aria-hidden="true"
-                    className="size-2 rounded-full"
-                    style={{ backgroundColor: `var(${other.token})` }}
-                  />
-                  {other.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <div className="marquee overflow-hidden">
+            <ul className="marquee-track flex w-max flex-nowrap gap-3">
+              {[...otherIntents, ...otherIntents].map((other, i) => {
+                const duplicate = i >= otherIntents.length;
+                return (
+                  <li key={`${other.slug}-${i}`} className="shrink-0">
+                    <Link
+                      href={`/${other.path}`}
+                      aria-hidden={duplicate ? "true" : undefined}
+                      tabIndex={duplicate ? -1 : undefined}
+                      className="color-transition inline-flex items-center gap-2 rounded-pill border border-separator bg-surface px-3 py-1.5 text-sm text-label no-underline hover:bg-fill focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                    >
+                      <span
+                        aria-hidden="true"
+                        className="size-2 rounded-full"
+                        style={{ backgroundColor: `var(${other.token})` }}
+                      />
+                      {other.label}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
         </div>
       </div>
     </main>

@@ -4,8 +4,9 @@ import { notFound } from "next/navigation";
 import DataTable from "@/components/primitives/DataTable";
 import { FieldValue } from "@/components/primitives/Unverified";
 import JsonLd from "@/components/site/JsonLd";
+import PageMasthead from "@/components/site/PageMasthead";
 import ProgramCard from "@/components/site/ProgramCard";
-import SectionHeading from "@/components/site/SectionHeading";
+import SectionMarker from "@/components/site/SectionMarker";
 import SoftBridge from "@/components/site/SoftBridge";
 import { INTENTS, INTENT_SLUGS } from "@/lib/content/intents";
 import {
@@ -67,6 +68,8 @@ export default async function CountryIntentPage({ params }) {
   ]);
   if (!country || !intent) notFound();
 
+  const hue = `var(${intent.token})`;
+
   const programs = await getPrograms({
     country: country.slug,
     intent: intent.slug,
@@ -85,7 +88,7 @@ export default async function CountryIntentPage({ params }) {
   const covered = otherIntents.filter((entry) => entry.count > 0);
 
   return (
-    <main id="main-content" className="mx-auto w-full max-w-6xl px-5 py-16">
+    <main id="main-content">
       <JsonLd
         schema={breadcrumbList([
           { name: "Home", path: "/" },
@@ -98,42 +101,30 @@ export default async function CountryIntentPage({ params }) {
         ])}
       />
 
-      <nav aria-label="Breadcrumb" className="mb-8">
-        <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-label-2">
-          {[
-            { href: "/destinations", label: "Destinations" },
-            { href: `/destinations/${country.slug}`, label: country.name },
-          ].map((crumb) => (
-            <li key={crumb.href} className="flex items-center gap-2">
-              <Link
-                href={crumb.href}
-                className="underline underline-offset-2 hover:text-label focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
-              >
-                {crumb.label}
-              </Link>
-              <span aria-hidden="true" className="text-label-2">
-                /
-              </span>
-            </li>
-          ))}
-          <li aria-current="page" className="text-label">
-            {intent.label}
-          </li>
-        </ol>
-      </nav>
-
-      <header className="max-w-[68ch]">
-        <h1 className="t-page-title">
-          {intent.label} in {country.name}
-        </h1>
-        <p className="t-lede mt-6">
-          {programs.length > 0
+      <PageMasthead
+        eyebrow="Side by side"
+        title={`${intent.label} in ${country.name}`}
+        standfirst={
+          programs.length > 0
             ? `${programs.length} ${programs.length === 1 ? "route" : "routes"} covered so far. Each guide sets out who it suits, what it requires and what it costs, with every figure traced to an official source or marked as unverified.`
-            : `No routes for this intent have been written yet.`}
-        </p>
-      </header>
+            : "No routes for this intent have been written yet."
+        }
+        accentHue={hue}
+        breadcrumb={[
+          { label: "Destinations", href: "/destinations" },
+          { label: country.name, href: `/destinations/${country.slug}` },
+          { label: intent.label },
+        ]}
+        stats={[
+          { label: "Routes", value: programs.length },
+          {
+            label: "Other intents covered",
+            value: `${covered.length} of ${otherIntents.length}`,
+          },
+        ]}
+      />
 
-      <div className="mt-12">
+      <div className="mx-auto w-full max-w-6xl px-5 pt-16">
         <SoftBridge
           country={country.slug}
           intent={intent.slug}
@@ -141,104 +132,112 @@ export default async function CountryIntentPage({ params }) {
         />
       </div>
 
-      {programs.length > 0 ? (
-        <>
-          <section aria-labelledby="compare" className="mt-14">
-            <SectionHeading id="compare" eyebrow="Side by side">
-              Compare
-            </SectionHeading>
-            <div className="mt-6">
-              <DataTable
-                columns={[
-                  { key: "name", label: "Route", width: "24%" },
-                  {
-                    key: "processingTime",
-                    label: "Processing time",
-                    width: "32%",
-                  },
-                  { key: "validity", label: "Validity", width: "34%" },
-                  {
-                    key: "extendable",
-                    label: "Extendable",
-                    width: "10%",
-                    nowrap: true,
-                  },
-                ]}
-                rows={programs.map((program) => ({
-                  name: (
-                    <Link
-                      href={`/destinations/${program.countrySlug}/${program.intent}/${program.slug}`}
-                      className="text-tint underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
-                    >
-                      {program.name}
-                    </Link>
-                  ),
-                  processingTime: <FieldValue value={program.processingTime} />,
-                  validity: <FieldValue value={program.validity} />,
-                  extendable: program.extendable ? "Yes" : "No",
-                }))}
-              />
-            </div>
-          </section>
-
-          <section aria-labelledby="routes" className="mt-14">
-            <SectionHeading id="routes" eyebrow="Guides">
-              Routes
-            </SectionHeading>
-            <div className="mt-8 grid gap-5 lg:grid-cols-2">
-              {programs.map((program) => (
-                <ProgramCard
-                  key={program.slug}
-                  program={program}
-                  intentLabel={intent.label}
+      <div className="mx-auto w-full max-w-6xl px-5 pb-16">
+        {programs.length > 0 ? (
+          <>
+            <section aria-labelledby="compare" className="mt-14">
+              <SectionMarker id="compare" eyebrow="Side by side" hue={hue}>
+                Compare
+              </SectionMarker>
+              <div className="mt-6">
+                <DataTable
+                  caption={`${programs.length} route${programs.length === 1 ? "" : "s"} for ${intent.label.toLowerCase()} in ${country.name}.`}
+                  columns={[
+                    { key: "name", label: "Route", width: "24%" },
+                    {
+                      key: "processingTime",
+                      label: "Processing time",
+                      width: "30%",
+                      mono: true,
+                    },
+                    { key: "validity", label: "Validity", width: "32%" },
+                    {
+                      key: "extendable",
+                      label: "Extendable",
+                      width: "14%",
+                      nowrap: true,
+                    },
+                  ]}
+                  rows={programs.map((program) => ({
+                    rowAccent: hue,
+                    name: (
+                      <Link
+                        href={`/destinations/${program.countrySlug}/${program.intent}/${program.slug}`}
+                        className="link-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                      >
+                        {program.name}
+                      </Link>
+                    ),
+                    processingTime: (
+                      <FieldValue value={program.processingTime} />
+                    ),
+                    validity: <FieldValue value={program.validity} />,
+                    extendable: program.extendable ? "Yes" : "No",
+                  }))}
                 />
-              ))}
-            </div>
-          </section>
-        </>
-      ) : (
-        <div className="surface-raised mt-12 p-8">
-          <h2 className="t-section text-label">
-            Guides for {intent.label.toLowerCase()} in {country.name} are being
-            written
-          </h2>
-          {covered.length > 0 ? (
-            <>
-              <p className="mt-3 max-w-[68ch] font-read leading-relaxed text-label-2">
-                These intents are covered for {country.name} today:
-              </p>
-              <ul className="mt-5 space-y-2">
-                {covered.map((entry) => (
-                  <li key={entry.intent.slug}>
-                    <Link
-                      href={`/destinations/${country.slug}/${entry.intent.slug}`}
-                      className="text-tint underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
-                    >
-                      {entry.intent.label}
-                    </Link>{" "}
-                    <span className="font-data text-sm tabular-nums text-label-2">
-                      ({entry.count})
-                    </span>
-                  </li>
+              </div>
+            </section>
+
+            <section aria-labelledby="routes" className="mt-14">
+              <SectionMarker id="routes" eyebrow="Guides" hue={hue}>
+                Routes
+              </SectionMarker>
+              <div className="mt-8 grid gap-5 lg:grid-cols-2">
+                {programs.map((program) => (
+                  <ProgramCard
+                    key={program.slug}
+                    program={program}
+                    intentLabel={intent.label}
+                  />
                 ))}
-              </ul>
-            </>
-          ) : (
-            <p className="mt-3 max-w-[68ch] font-read leading-relaxed text-label-2">
-              No routes have been written for {country.name} yet. The country
-              record and its sources are in place so they can be reviewed first.
+              </div>
+            </section>
+          </>
+        ) : (
+          <div className="surface-raised mt-12 p-8">
+            <h2 className="t-section text-label">
+              Guides for {intent.label.toLowerCase()} in {country.name} are
+              being written
+            </h2>
+            {covered.length > 0 ? (
+              <>
+                <p className="mt-3 max-w-[68ch] font-read leading-relaxed text-label-2">
+                  These intents are covered for {country.name} today:
+                </p>
+                <ul className="mt-5 space-y-2">
+                  {covered.map((entry) => (
+                    <li key={entry.intent.slug}>
+                      <Link
+                        href={`/destinations/${country.slug}/${entry.intent.slug}`}
+                        className="link-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                      >
+                        {entry.intent.label}
+                      </Link>{" "}
+                      <span className="font-data text-sm tabular-nums text-label-2">
+                        ({entry.count})
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : (
+              <p className="mt-3 max-w-[68ch] font-read leading-relaxed text-label-2">
+                No routes have been written for {country.name} yet. The country
+                record and its sources are in place so they can be reviewed
+                first.
+              </p>
+            )}
+            <p className="mt-6 text-sm">
+              <Link
+                href={`/destinations/${country.slug}`}
+                className="link-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+              >
+                Back to {country.name}
+              </Link>
             </p>
-          )}
-          <p className="mt-6 text-sm">
-            <Link
-              href={`/destinations/${country.slug}`}
-              className="text-tint underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
-            >
-              Back to {country.name}
-            </Link>
-          </p>
-        </div>
-      )}
+          </div>
+        )}
+      </div>
     </main>
   );
 }

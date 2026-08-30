@@ -5,7 +5,10 @@
   "definition": "A school approved by a provincial or territorial government to host international students. A study permit is tied to a specific designated learning institution, and its designation status also governs what the qualification is worth afterwards.",
   "longform": "Checking an institution's current designation before paying any deposit is one of the few checks an applicant can do entirely themselves, and it affects both the study permit application and eligibility for a post-graduation work permit later.",
   "relatedPrograms": ["study-permit"],
-  "relatedTerms": ["provincial-attestation-letter", "post-graduation-work-permit"],
+  "relatedTerms": [
+    "provincial-attestation-letter",
+    "post-graduation-work-permit"
+  ],
   "sources": [
     {
       "label": "Study permit — Immigration, Refugees and Citizenship Canada",

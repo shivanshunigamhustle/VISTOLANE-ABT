@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import JsonLd from "@/components/site/JsonLd";
+import PageMasthead from "@/components/site/PageMasthead";
 import {
   getAllCountries,
   getAllNewsUpdates,
@@ -65,16 +66,25 @@ export default async function NewsUpdatePage({ params }) {
         ])}
       />
 
-      <div className="band-ink">
-        <div className="mx-auto w-full max-w-6xl px-5 py-14">
-          <time className="t-eyebrow text-on-brand opacity-70">
-            Effective {update.effectiveDate}
-          </time>
-          <h1 className="t-page-title mt-6 max-w-[28ch] text-on-brand">
-            {update.title}
-          </h1>
-        </div>
-      </div>
+      <PageMasthead
+        eyebrow="News"
+        title={update.title}
+        breadcrumb={[
+          { label: "Home", href: "/" },
+          { label: "News", href: "/news" },
+          { label: update.title },
+        ]}
+        stats={[
+          { label: "Effective", value: update.effectiveDate },
+          {
+            label: "Countries",
+            value:
+              relatedCountries.length > 0
+                ? relatedCountries.map((c) => c.name).join(", ")
+                : "—",
+          },
+        ]}
+      />
 
       <div className="mx-auto w-full max-w-6xl px-5 py-16">
         <p className="t-body max-w-[68ch] text-label">{update.body}</p>
@@ -86,7 +96,7 @@ export default async function NewsUpdatePage({ params }) {
               <li key={source.url} className="text-sm">
                 <a
                   href={source.url}
-                  className="text-tint underline underline-offset-2 [overflow-wrap:anywhere] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                  className="link-accent [overflow-wrap:anywhere] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
                 >
                   {source.label}
                 </a>{" "}
@@ -133,7 +143,7 @@ export default async function NewsUpdatePage({ params }) {
         <p className="mt-10 text-sm">
           <Link
             href="/news"
-            className="text-tint underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+            className="link-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
           >
             All updates
           </Link>

@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import AttributedLink from "@/components/site/AttributedLink";
 import JsonLd from "@/components/site/JsonLd";
+import PageMasthead from "@/components/site/PageMasthead";
 import SectionHeading from "@/components/site/SectionHeading";
 import { eligibilityPath } from "@/lib/bridge";
 import { pageMetadata } from "@/lib/seo/metadata";
@@ -59,15 +60,12 @@ export default function ToolsIndexPage() {
         ])}
       />
 
-      <div className="band-ink">
-        <div className="mx-auto w-full max-w-6xl px-5 py-14">
-          <p className="t-eyebrow text-on-brand opacity-70">Practical</p>
-          <h1 className="t-page-title mt-6 text-on-brand">{TITLE}</h1>
-          <p className="t-lede mt-5 max-w-[60ch] text-on-brand opacity-85">
-            {DESCRIPTION}
-          </p>
-        </div>
-      </div>
+      <PageMasthead
+        eyebrow="Practical"
+        title={TITLE}
+        standfirst={DESCRIPTION}
+        breadcrumb={[{ label: "Home", href: "/" }, { label: TITLE }]}
+      />
 
       <div className="mx-auto w-full max-w-6xl px-5 py-16">
         <SectionHeading eyebrow="Every tool on the site">
@@ -83,7 +81,7 @@ export default function ToolsIndexPage() {
                   <AttributedLink
                     path={eligibilityPath() || undefined}
                     source="tools-index"
-                    className="font-ui text-sm text-tint underline underline-offset-4
+                    className="font-ui text-sm link-accent
                       focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
                   >
                     Open the checker
@@ -91,7 +89,7 @@ export default function ToolsIndexPage() {
                 ) : (
                   <Link
                     href={tool.href}
-                    className="font-ui text-sm text-tint underline underline-offset-4
+                    className="font-ui text-sm link-accent
                       focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
                   >
                     Open the tool

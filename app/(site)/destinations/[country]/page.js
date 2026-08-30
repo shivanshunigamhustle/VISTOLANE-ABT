@@ -2,14 +2,17 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import Badge from "@/components/primitives/Badge";
-import Callout from "@/components/primitives/Callout";
 import DataTable from "@/components/primitives/DataTable";
 import { FieldValue } from "@/components/primitives/Unverified";
 import CountryCard from "@/components/site/CountryCard";
+import CountryMark from "@/components/site/CountryMark";
 import IntentCard from "@/components/site/IntentCard";
-import LatestUpdates from "@/components/site/LatestUpdates";
-import SectionHeading from "@/components/site/SectionHeading";
 import JsonLd from "@/components/site/JsonLd";
+import LatestUpdates from "@/components/site/LatestUpdates";
+import LivingIcon from "@/components/site/LivingIcon";
+import ProvenancePanel from "@/components/site/ProvenancePanel";
+import ReviewerCredit from "@/components/site/ReviewerCredit";
+import SectionHeading from "@/components/site/SectionHeading";
 import SoftBridge from "@/components/site/SoftBridge";
 import { INTENTS } from "@/lib/content/intents";
 import {
@@ -26,8 +29,11 @@ import { breadcrumbList } from "@/lib/seo/schema";
  * A country overview.
  *
  * This is a discovery surface, not a reference document: spacious, card-led,
- * and built to answer "what can I do here" before it answers anything else. The
- * dense treatment belongs on the program page.
+ * and built to answer "what can I do here" before it answers anything else.
+ * The dense treatment belongs on the program page. That does not mean plain
+ * — the masthead, the routes table and the provenance and reviewer blocks
+ * carry real craft, because this is the hinge page between the home page
+ * and the reference documents underneath it.
  */
 
 /**
@@ -75,9 +81,18 @@ export default async function CountryPage({ params }) {
     counts.set(program.countrySlug, (counts.get(program.countrySlug) ?? 0) + 1);
     return counts;
   }, new Map());
+  const intentsByCountry = allPrograms.reduce((map, program) => {
+    const set = map.get(program.countrySlug) ?? new Set();
+    set.add(program.intent);
+    map.set(program.countrySlug, set);
+    return map;
+  }, new Map());
 
   const labelForIntent = new Map(
     INTENTS.map((intent) => [intent.slug, intent.label])
+  );
+  const tokenForIntent = new Map(
+    INTENTS.map((intent) => [intent.slug, intent.token])
   );
   const countFor = (intentSlug) =>
     programs.filter((program) => program.intent === intentSlug).length;
@@ -98,10 +113,34 @@ export default async function CountryPage({ params }) {
   ];
 
   const living = [
-    { label: "Cost of living", value: country.living.costOfLiving },
-    { label: "Healthcare", value: country.living.healthcare },
-    { label: "Schooling", value: country.living.schooling },
-    { label: "Bringing family", value: country.living.bringingFamily },
+    {
+      label: "Cost of living",
+      value: country.living.costOfLiving,
+      icon: "cost",
+    },
+    {
+      label: "Healthcare",
+      value: country.living.healthcare,
+      icon: "healthcare",
+    },
+    { label: "Schooling", value: country.living.schooling, icon: "schooling" },
+    {
+      label: "Bringing family",
+      value: country.living.bringingFamily,
+      icon: "family",
+    },
+  ];
+
+  const intentsCovered = intentsByCountry.get(country.slug)?.size ?? 0;
+
+  const stats = [
+    { label: "Route guides", value: programs.length },
+    {
+      label: "Intents covered",
+      value: `${intentsCovered} of ${INTENTS.length}`,
+    },
+    { label: "Sources cited", value: country.sources.length },
+    { label: "Last reviewed", value: country.lastReviewed },
   ];
 
   return (
@@ -114,8 +153,17 @@ export default async function CountryPage({ params }) {
         ])}
       />
 
-      <div className="band-ink">
-        <div className="mx-auto w-full max-w-6xl px-5 py-14">
+      {/* Masthead — the country mark sits behind the ink ground as a low-
+          opacity anchor, not a photograph standing in for one. */}
+      <div className="band-ink relative overflow-hidden">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 opacity-[0.18]"
+        >
+          <CountryMark countrySlug={country.slug} label="" />
+        </div>
+
+        <div className="relative mx-auto w-full max-w-6xl px-5 pt-14">
           <nav aria-label="Breadcrumb">
             <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 font-ui text-sm text-on-brand/70">
               <li className="flex items-center gap-2">
@@ -137,13 +185,30 @@ export default async function CountryPage({ params }) {
           </nav>
 
           <h1 className="t-page-title mt-8 text-on-brand">{country.name}</h1>
-          <p className="t-body mt-6 text-on-brand opacity-85">
+          <p className="t-body mt-6 max-w-[68ch] text-on-brand opacity-85">
             {country.summary}
           </p>
+
+          {/* Stat rail along the masthead's bottom edge. */}
+          <dl className="mt-12 grid grid-cols-2 divide-y divide-on-brand/15 border-t border-on-brand/15 sm:grid-cols-4 sm:divide-x sm:divide-y-0">
+            {stats.map((stat) => (
+              <div
+                key={stat.label}
+                className="py-4 sm:px-6 sm:first:pl-0 sm:last:pr-0"
+              >
+                <dt className="font-ui text-[0.6875rem] font-semibold uppercase tracking-[0.09em] text-on-brand/60">
+                  {stat.label}
+                </dt>
+                <dd className="mt-1.5 font-data text-xl tabular-nums text-on-brand">
+                  {stat.value}
+                </dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </div>
 
-      {/* At a glance — a mono row of pairs divided by rules, not a card. */}
+      {/* At a glance — one object, three compartments. */}
       <div className="mx-auto w-full max-w-6xl px-5">
         <dl className="grid divide-y divide-rule border-b border-rule sm:grid-cols-3 sm:divide-x sm:divide-y-0">
           {glance.map((entry) => (
@@ -152,7 +217,7 @@ export default async function CountryPage({ params }) {
               className="py-6 sm:px-6 sm:first:pl-0 sm:last:pr-0"
             >
               <dt className="t-eyebrow">{entry.label}</dt>
-              <dd className="t-value mt-3 text-label [overflow-wrap:anywhere]">
+              <dd className="mt-3 font-ui text-[1.0625rem] text-label [overflow-wrap:anywhere]">
                 <FieldValue value={entry.value} />
               </dd>
             </div>
@@ -166,7 +231,7 @@ export default async function CountryPage({ params }) {
         </div>
       ) : null}
 
-      {/* 2. Intents */}
+      {/* 2. Intents — identical treatment to the home page. */}
       <section
         aria-labelledby="intents"
         className="mx-auto w-full max-w-6xl px-5 pt-16"
@@ -190,7 +255,7 @@ export default async function CountryPage({ params }) {
         <SoftBridge country={country.slug} />
       </div>
 
-      {/* 3. All programs */}
+      {/* 3. All programs — the six intent hues do real navigational work here. */}
       <section
         aria-labelledby="programs"
         className="mx-auto w-full max-w-6xl px-5 pt-16"
@@ -201,21 +266,24 @@ export default async function CountryPage({ params }) {
         {programs.length > 0 ? (
           <div className="mt-6">
             <DataTable
+              caption={`Every route Vistolane covers for ${country.name} — ${programs.length} route${programs.length === 1 ? "" : "s"}, coloured by intent.`}
               columns={[
-                { key: "name", label: "Route", width: "22%" },
-                { key: "intent", label: "Intent", width: "12%", nowrap: true },
+                { key: "name", label: "Route", width: "24%" },
+                { key: "intent", label: "Intent", width: "14%", nowrap: true },
                 {
                   key: "processingTime",
                   label: "Processing time",
-                  width: "30%",
+                  width: "22%",
+                  mono: true,
                 },
-                { key: "validity", label: "Validity", width: "36%" },
+                { key: "validity", label: "Validity" },
               ]}
               rows={programs.map((program) => ({
+                rowAccent: `var(${tokenForIntent.get(program.intent)})`,
                 name: (
                   <Link
                     href={`/destinations/${program.countrySlug}/${program.intent}/${program.slug}`}
-                    className="text-tint underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                    className="font-ui font-semibold link-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
                   >
                     {program.name}
                   </Link>
@@ -245,7 +313,7 @@ export default async function CountryPage({ params }) {
                 <li key={candidate.slug}>
                   <Link
                     href={`/destinations/${candidate.slug}`}
-                    className="text-tint underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                    className="link-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
                   >
                     {candidate.name}
                   </Link>
@@ -267,14 +335,21 @@ export default async function CountryPage({ params }) {
         {country.commonDocuments.length > 0 ? (
           <div className="mt-6">
             <DataTable
+              caption={`Documents that apply across every route in ${country.name}, not only one.`}
               columns={[
-                { key: "name", label: "Document" },
+                { key: "name", label: "Document", width: "30%" },
                 { key: "note", label: "Note" },
               ]}
               rows={country.commonDocuments.map((document) => ({
-                name: document.name,
+                name: (
+                  <span className="font-ui font-semibold text-label">
+                    {document.name}
+                  </span>
+                ),
                 note: document.note ? (
-                  <FieldValue value={document.note} />
+                  <span className="font-read">
+                    <FieldValue value={document.note} />
+                  </span>
                 ) : null,
               }))}
             />
@@ -294,29 +369,34 @@ export default async function CountryPage({ params }) {
         <SectionHeading id="living" eyebrow="On arrival">
           Living there
         </SectionHeading>
-        <dl className="mt-8 grid gap-x-12 gap-y-8 sm:grid-cols-2">
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {living.map((entry) => (
-            <div key={entry.label} className="border-t border-rule pt-4">
-              <dt className="t-eyebrow">{entry.label}</dt>
-              <dd className="t-value mt-3 text-label">
+            <div key={entry.label} className="band-inset rounded-card p-5">
+              <LivingIcon name={entry.icon} />
+              <p className="t-eyebrow mt-4">{entry.label}</p>
+              <p className="mt-2 font-read text-label">
                 <FieldValue value={entry.value} />
-              </dd>
+              </p>
             </div>
           ))}
-        </dl>
+        </div>
       </section>
 
-      {/* 6. Sources and review line, set back on the inset band */}
+      {/* 6. Sources and review, set back on the inset band */}
       <section aria-labelledby="sources" className="band-inset mt-20">
         <div className="mx-auto w-full max-w-6xl px-5 py-16">
           <SectionHeading id="sources" eyebrow="Provenance">
             Sources
           </SectionHeading>
-          <Callout tone="source" sources={country.sources} />
-          <p className="t-value mt-6 border-t border-rule pt-6 text-label-2">
-            Last reviewed {country.lastReviewed} — {country.author.name},{" "}
-            {country.author.credentials}
-          </p>
+          <div className="mt-8">
+            <ProvenancePanel sources={country.sources} />
+          </div>
+          <div className="mt-10">
+            <ReviewerCredit
+              author={country.author}
+              lastReviewed={country.lastReviewed}
+            />
+          </div>
         </div>
       </section>
 
@@ -335,6 +415,9 @@ export default async function CountryPage({ params }) {
                 key={candidate.slug}
                 country={candidate}
                 programCount={programCounts.get(candidate.slug) ?? 0}
+                coveredIntents={[
+                  ...(intentsByCountry.get(candidate.slug) ?? []),
+                ]}
               />
             ))}
           </div>
