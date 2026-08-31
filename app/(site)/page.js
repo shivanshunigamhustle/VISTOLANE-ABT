@@ -207,10 +207,10 @@ export default async function HomePage() {
                 id="hero-heading"
                 className="hero-enter hero-enter-2 t-display mt-5 text-label"
               >
-                Immigration routes, explained in full
+                Immigration applications fail for a small number of reasons.
               </h1>
               <p className="hero-enter hero-enter-3 t-lede mt-6 max-w-[46ch]">
-                {TAGLINE}.
+                All of them are documented.
               </p>
 
               {/* Tabs are links. The active one is this page. */}
