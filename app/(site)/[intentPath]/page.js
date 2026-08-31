@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import Badge from "@/components/primitives/Badge";
 import DataTable from "@/components/primitives/DataTable";
 import {
   countUnverified,
@@ -59,6 +60,23 @@ const STANDFIRST = {
     "Investment, start-up and business routes. They trade capital or a viable business plan for residence, and they carry the most conditions after approval of any route type here.",
   residence:
     "Permanent residence and the path to citizenship. Usually reached after years on another route rather than applied for directly, so the sequence that got someone here matters as much as the application itself.",
+};
+
+/**
+ * The buyer persona each intent hub speaks to, named rather than left
+ * implicit. Every fact this page states already comes from real programme
+ * records — this only puts a name on who those facts are for, the same way
+ * a product page names its audience before it lists features.
+ *
+ * @type {Record<string, string>}
+ */
+const PERSONA = {
+  visitor: "The Short-Stay Visitor",
+  work: "The Sponsored Worker",
+  study: "The International Student",
+  family: "The Family Sponsor",
+  investor: "The Investor & Founder",
+  residence: "The Long-Term Settler",
 };
 
 /**
@@ -198,6 +216,11 @@ export default async function IntentHubPage({ params }) {
         <div className="mx-auto w-full max-w-6xl px-5 py-14">
           <p className="t-eyebrow text-on-brand opacity-70">By intent</p>
           <h1 className="t-page-title mt-6 text-on-brand">{intent.label}</h1>
+          <p className="mt-4">
+            <Badge tone={intent.slug} onInk>
+              Persona: {PERSONA[intent.slug]}
+            </Badge>
+          </p>
           <p className="t-lede mt-5 max-w-[60ch] text-on-brand opacity-85">
             {STANDFIRST[intent.slug]}
           </p>
@@ -270,8 +293,8 @@ export default async function IntentHubPage({ params }) {
         <div className="mx-auto grid w-full max-w-6xl gap-10 px-5 pb-12 md:grid-cols-2">
           {recurring.length > 0 ? (
             <section aria-labelledby="common-heading">
-              <SectionHeading id="common-heading" eyebrow="Shared">
-                What these routes have in common
+              <SectionHeading id="common-heading" eyebrow="Essentials">
+                What {PERSONA[intent.slug]} needs, everywhere
               </SectionHeading>
               <p className="t-body mt-6 text-label-2">
                 Each country names its paperwork differently. These are the
