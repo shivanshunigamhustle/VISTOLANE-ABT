@@ -11,6 +11,7 @@ import {
 } from "@/components/primitives/Unverified";
 import DestinationPhotoCard from "@/components/site/DestinationPhotoCard";
 import EligibilityPreviewCard from "@/components/site/EligibilityPreviewCard";
+import Icon from "@/components/site/IconSet";
 import JsonLd from "@/components/site/JsonLd";
 import Media from "@/components/site/Media";
 import SectionHeading from "@/components/site/SectionHeading";
@@ -157,38 +158,59 @@ const REQUIREMENT_THEMES = [
     label: "Proof of identity",
     test: /passport|travel document|identity/i,
     href: null,
+    icon: "document",
   },
   {
     label: "Evidence of funds",
     test: /financial|funds|maintenance|savings|income/i,
     href: "/resources/your-funds-are-in-the-wrong-account",
+    icon: "money",
   },
   {
     label: "Language ability",
     test: /language|english|german|ielts|test result/i,
     href: null,
+    icon: "education",
   },
   {
     label: "Police or character checks",
     test: /police|character|criminal|clearance/i,
     href: "/resources/police-certificates-and-medical-exams-explained",
+    icon: "shield",
   },
   {
     label: "Medical or health cover",
     test: /medical|health|insurance|tuberculosis/i,
     href: "/resources/police-certificates-and-medical-exams-explained",
+    icon: "health",
   },
   {
     label: "Proof of qualifications",
     test: /qualification|degree|credential|skills assessment|enrolment|acceptance/i,
     href: "/resources/your-qualification-is-not-recognised",
+    icon: "education",
   },
   {
     label: "A sponsor or employer document",
     test: /sponsor|employer|certificate of sponsorship|nomination|job offer|contract/i,
     href: "/resources/the-person-deciding-your-case-is-not-the-government",
+    icon: "work",
   },
 ];
+
+/** One icon per problem card, matched to the guide's dominant theme rather
+ *  than its intent — several problem guides deliberately cross intents, so
+ *  this maps by slug instead of reusing the six intent icons. */
+const PROBLEM_ICON = {
+  "why-work-permit-applications-get-refused": "alert",
+  "your-documents-were-returned": "document",
+  "your-funds-are-in-the-wrong-account": "money",
+  "your-job-offer-does-not-count": "work",
+  "you-are-on-the-wrong-permit-to-switch": "shield",
+  "family-members-who-can-no-longer-come-with-you": "family",
+  "what-happens-when-your-permit-is-about-to-expire": "clock",
+  "the-route-you-qualify-for-today-may-close-next-year": "calendar",
+};
 
 /**
  * @returns {Promise<JSX.Element>}
@@ -220,6 +242,7 @@ export default async function HomePage() {
 
   const countryName = new Map(countries.map((c) => [c.slug, c.name]));
   const intentLabel = new Map(INTENTS.map((i) => [i.slug, i.label]));
+  const tokenForIntent = new Map(INTENTS.map((i) => [i.slug, i.token]));
 
   const recentlyUpdated = [...programs]
     .sort(
@@ -374,10 +397,7 @@ export default async function HomePage() {
 
       {/* 2. What usually goes wrong — eight real problems, above the intents,
           so a reader meets their own situation before the product. */}
-      <section
-        aria-labelledby="problems-heading"
-        className="bg-bg [content-visibility:auto] [contain-intrinsic-size:1200px]"
-      >
+      <section aria-labelledby="problems-heading" className="bg-bg">
         <div className="mx-auto w-full max-w-6xl px-5 py-16">
           <SectionHeading id="problems-heading" eyebrow="Start here">
             What usually goes wrong
@@ -392,13 +412,27 @@ export default async function HomePage() {
               <li key={guide.slug}>
                 <Link
                   href={`/resources/${guide.slug}`}
-                  className="lift-card surface-raised flex h-full flex-col gap-2 p-5 no-underline
+                  className="lift-card surface-raised flex h-full flex-col gap-3 border-t-2 p-5 no-underline
                     focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                  style={{ borderTopColor: "var(--color-warning)" }}
                 >
+                  <span
+                    className="flex size-9 shrink-0 items-center justify-center rounded-control"
+                    style={{
+                      backgroundColor:
+                        "color-mix(in srgb, var(--color-warning) 14%, transparent)",
+                    }}
+                  >
+                    <Icon
+                      name={PROBLEM_ICON[guide.slug] ?? "alert"}
+                      size={20}
+                      className="text-[color:var(--color-warning)]"
+                    />
+                  </span>
                   <span className="font-ui text-[0.9375rem] font-semibold leading-snug text-label">
                     {guide.title}
                   </span>
-                  <span className="font-ui text-[0.8125rem] leading-snug text-label-2">
+                  <span className="font-ui text-[0.8125rem] leading-snug text-label-2 [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:4] overflow-hidden">
                     {guide.standfirst}
                   </span>
                 </Link>
@@ -420,7 +454,7 @@ export default async function HomePage() {
         <div className="mx-auto w-full max-w-6xl px-5 py-16">
           <SectionHeading
             id="costs-heading"
-            eyebrow="From fees[] across 30 guides"
+            eyebrow="Every route, compared"
             trailing={
               <Link
                 href="/tools/cost-estimator"
@@ -443,13 +477,19 @@ export default async function HomePage() {
             <DataTable
               caption={`Confirmed fee totals for ${costRows.length} routes across ${countries.length} countries.`}
               columns={[
-                { key: "route", label: "Route", width: "28%" },
+                { key: "route", label: "Route", width: "26%" },
                 { key: "country", label: "Country", width: "16%" },
-                { key: "total", label: "Confirmed total", mono: true },
-                { key: "gap", label: "Not yet confirmed" },
+                {
+                  key: "total",
+                  label: "Confirmed total",
+                  mono: true,
+                  align: "right",
+                },
+                { key: "gap", label: "Not yet confirmed", align: "right" },
               ]}
               rows={costRows.map(
                 ({ key, program, totalText, unconfirmed }) => ({
+                  rowAccent: `var(${tokenForIntent.get(program.intent)})`,
                   route: (
                     <Link
                       href={`/destinations/${program.countrySlug}/${program.intent}/${program.slug}`}
@@ -460,12 +500,26 @@ export default async function HomePage() {
                   ),
                   country:
                     countryName.get(program.countrySlug) ?? program.countrySlug,
-                  total: totalText ?? (
-                    <span className="text-label-2">No confirmed fee yet</span>
+                  total: totalText ? (
+                    <span className="font-semibold text-label">
+                      {totalText}
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center gap-1.5 text-label-2">
+                      <Icon name="alert" size={14} />
+                      Not yet confirmed
+                    </span>
                   ),
                   gap:
                     unconfirmed > 0 ? (
-                      <span className="text-label-2">
+                      <span
+                        className="inline-flex items-center gap-1 rounded-pill px-2 py-0.5 text-xs font-medium"
+                        style={{
+                          backgroundColor:
+                            "color-mix(in srgb, var(--color-warning) 14%, transparent)",
+                          color: "var(--color-warning)",
+                        }}
+                      >
                         {unconfirmed} item{unconfirmed === 1 ? "" : "s"}
                       </span>
                     ) : (
@@ -489,7 +543,7 @@ export default async function HomePage() {
         <div className="mx-auto w-full max-w-6xl px-5 py-16">
           <SectionHeading
             id="timing-heading"
-            eyebrow="From processingTime across 30 guides"
+            eyebrow="Every route, compared"
             trailing={
               <Link
                 href="/tools/processing-times"
@@ -522,6 +576,7 @@ export default async function HomePage() {
                 { key: "time", label: "Published processing time" },
               ]}
               rows={timingRows.map((program) => ({
+                rowAccent: `var(${tokenForIntent.get(program.intent)})`,
                 route: (
                   <Link
                     href={`/destinations/${program.countrySlug}/${program.intent}/${program.slug}`}
@@ -627,7 +682,7 @@ export default async function HomePage() {
         <div className="mx-auto w-full max-w-6xl px-5 py-16">
           <SectionHeading
             id="requirements-heading"
-            eyebrow="From documents[] across 30 guides"
+            eyebrow="Every route, compared"
             trailing={
               <Link
                 href="/tools/document-checklist"
@@ -644,13 +699,20 @@ export default async function HomePage() {
             themes that recur, and how many of the {programs.length} routes this
             site covers ask for one.
           </p>
-          <ul className="mt-8 grid gap-3 sm:grid-cols-2">
+          <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {requirementCounts.map((theme) => {
-              const row = (
-                <span className="flex items-baseline justify-between gap-4 border-b border-rule py-3 font-ui text-[0.9375rem] text-label">
-                  {theme.label}
-                  <span className="t-data shrink-0 text-label-2">
-                    {theme.count} of {programs.length}
+              const card = (
+                <span
+                  className={`flex h-full flex-col gap-3 p-5 ${
+                    theme.href ? "lift-card" : ""
+                  } surface-raised`}
+                >
+                  <Icon name={theme.icon} className="text-tint" />
+                  <span className="mt-1 font-ui text-[0.9375rem] font-semibold leading-snug text-label">
+                    {theme.label}
+                  </span>
+                  <span className="t-data mt-auto text-xs text-label-2">
+                    {theme.count} of {programs.length} routes
                   </span>
                 </span>
               );
@@ -659,12 +721,12 @@ export default async function HomePage() {
                   {theme.href ? (
                     <Link
                       href={theme.href}
-                      className="color-transition block no-underline hover:text-tint focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                      className="block h-full no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
                     >
-                      {row}
+                      {card}
                     </Link>
                   ) : (
-                    row
+                    card
                   )}
                 </li>
               );
