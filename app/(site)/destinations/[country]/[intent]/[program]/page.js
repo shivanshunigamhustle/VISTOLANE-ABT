@@ -181,8 +181,13 @@ export default async function ProgramPage({ params }) {
           {
             label: "Processing time",
             value: <FieldValue value={program.processingTime} />,
+            mono: false,
           },
-          { label: "Validity", value: <FieldValue value={program.validity} /> },
+          {
+            label: "Validity",
+            value: <FieldValue value={program.validity} />,
+            mono: false,
+          },
           { label: "Extendable", value: program.extendable ? "Yes" : "No" },
           { label: "Last reviewed", value: program.lastReviewed },
         ]}

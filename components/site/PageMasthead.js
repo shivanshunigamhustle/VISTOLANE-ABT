@@ -12,7 +12,7 @@ import CountryMark from "@/components/site/CountryMark";
  *   standfirst?: string,
  *   breadcrumb: Array<{ label: string, href?: string }>,
  *   accentHue?: string,
- *   stats?: Array<{ label: string, value: React.ReactNode }>,
+ *   stats?: Array<{ label: string, value: React.ReactNode, mono?: boolean }>,
  *   mark?: string,
  * }} props
  * @returns {JSX.Element}
@@ -90,19 +90,33 @@ export default function PageMasthead({
 
         {stats?.length ? (
           <dl className="hero-enter hero-enter-4 mt-12 grid grid-cols-2 divide-y divide-on-brand/15 border-t border-on-brand/15 sm:grid-cols-4 sm:divide-x sm:divide-y-0">
-            {stats.map((stat) => (
-              <div
-                key={stat.label}
-                className="py-4 sm:px-6 sm:first:pl-0 sm:last:pr-0"
-              >
-                <dt className="font-ui text-[0.6875rem] font-semibold uppercase tracking-[0.09em] text-on-brand/60">
-                  {stat.label}
-                </dt>
-                <dd className="mt-1.5 font-data text-xl tabular-nums text-on-brand">
-                  {stat.value}
-                </dd>
-              </div>
-            ))}
+            {stats.map((stat) => {
+              // Short data — a count, a date, "Yes" — reads well as tabular
+              // monospace. A hedged or descriptive value can run to a full
+              // sentence, and a sentence set in a code face reads as a
+              // rendering bug, not a design choice. mono defaults to true so
+              // every existing call site keeps its current look.
+              const mono = stat.mono ?? true;
+              return (
+                <div
+                  key={stat.label}
+                  className="py-4 sm:px-6 sm:first:pl-0 sm:last:pr-0"
+                >
+                  <dt className="font-ui text-[0.6875rem] font-semibold uppercase tracking-[0.09em] text-on-brand/60">
+                    {stat.label}
+                  </dt>
+                  <dd
+                    className={
+                      mono
+                        ? "mt-1.5 font-data text-xl tabular-nums text-on-brand"
+                        : "mt-1.5 font-ui text-[1.0625rem] leading-snug text-on-brand"
+                    }
+                  >
+                    {stat.value}
+                  </dd>
+                </div>
+              );
+            })}
           </dl>
         ) : (
           <div className="pb-14" />

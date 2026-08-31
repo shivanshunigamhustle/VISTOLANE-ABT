@@ -112,6 +112,7 @@ const SHAPES = {
       <circle cx="12" cy="9.5" r="2.5" />
     </>
   ),
+  chevronDown: <path d="M6 9.5 12 15.5 18 9.5" />,
 };
 
 /**

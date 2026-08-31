@@ -4,6 +4,7 @@ import Badge from "@/components/primitives/Badge";
 import Button from "@/components/primitives/Button";
 import AttributedLink from "@/components/site/AttributedLink";
 import DestinationPhotoCard from "@/components/site/DestinationPhotoCard";
+import Icon from "@/components/site/IconSet";
 import JsonLd from "@/components/site/JsonLd";
 import Media from "@/components/site/Media";
 import SectionHeading from "@/components/site/SectionHeading";
@@ -240,40 +241,54 @@ export default async function HomePage() {
                     <label htmlFor="home-intent" className="t-eyebrow">
                       What do you want to do?
                     </label>
-                    <select
-                      id="home-intent"
-                      name="intent"
-                      defaultValue=""
-                      className="w-full rounded-control border border-rule bg-surface px-3 py-2.5 text-sm text-label
-                    focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
-                    >
-                      <option value="">Any intent</option>
-                      {INTENTS.map((intent) => (
-                        <option key={intent.slug} value={intent.slug}>
-                          {intent.label}
-                        </option>
-                      ))}
-                    </select>
+                    <div className="relative">
+                      <select
+                        id="home-intent"
+                        name="intent"
+                        defaultValue=""
+                        className="w-full appearance-none rounded-control border border-rule bg-surface px-3 py-2.5 pr-9 text-sm text-label
+                      focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                      >
+                        <option value="">Any intent</option>
+                        {INTENTS.map((intent) => (
+                          <option key={intent.slug} value={intent.slug}>
+                            {intent.label}
+                          </option>
+                        ))}
+                      </select>
+                      <Icon
+                        name="chevronDown"
+                        size={18}
+                        className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-label-2"
+                      />
+                    </div>
                   </div>
 
                   <div className="flex flex-1 flex-col gap-2">
                     <label htmlFor="home-region" className="t-eyebrow">
                       Where?
                     </label>
-                    <select
-                      id="home-region"
-                      name="region"
-                      defaultValue=""
-                      className="w-full rounded-control border border-rule bg-surface px-3 py-2.5 text-sm text-label
-                    focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
-                    >
-                      <option value="">Anywhere</option>
-                      {regions.map((region) => (
-                        <option key={region} value={region}>
-                          {region}
-                        </option>
-                      ))}
-                    </select>
+                    <div className="relative">
+                      <select
+                        id="home-region"
+                        name="region"
+                        defaultValue=""
+                        className="w-full appearance-none rounded-control border border-rule bg-surface px-3 py-2.5 pr-9 text-sm text-label
+                      focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                      >
+                        <option value="">Anywhere</option>
+                        {regions.map((region) => (
+                          <option key={region} value={region}>
+                            {region}
+                          </option>
+                        ))}
+                      </select>
+                      <Icon
+                        name="chevronDown"
+                        size={18}
+                        className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-label-2"
+                      />
+                    </div>
                   </div>
 
                   <Button type="submit" variant="primary">
@@ -369,7 +384,7 @@ export default async function HomePage() {
             trailing={
               <Link
                 href="/news"
-                className="text-sm text-tint underline underline-offset-4
+                className="color-transition text-sm link-accent
                   focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
               >
                 What changed recently
