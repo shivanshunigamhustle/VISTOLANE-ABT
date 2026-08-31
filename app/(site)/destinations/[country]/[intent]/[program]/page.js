@@ -23,6 +23,7 @@ import ReviewerCredit from "@/components/site/ReviewerCredit";
 import SectionMarker from "@/components/site/SectionMarker";
 import StepList from "@/components/site/StepList";
 import {
+  getAllGuides,
   getAllPrograms,
   getCountry,
   getIntent,
@@ -107,13 +108,22 @@ export default async function ProgramPage({ params }) {
   const program = await getProgram(country, intent, slug);
   if (!program) notFound();
 
-  const [countryRecord, intentRecord, siblings, newsUpdates] =
+  const [countryRecord, intentRecord, siblings, newsUpdates, allGuides] =
     await Promise.all([
       getCountry(program.countrySlug),
       getIntent(program.intent),
       getPrograms({ country: program.countrySlug }),
       getNewsUpdatesFor({ program: program.slug }),
+      getAllGuides(),
     ]);
+
+  // Cross-country pattern guides that name this specific programme among
+  // their relatedPrograms — a reader who has just read this route's own
+  // pitfalls can see the wider pattern those pitfalls belong to, without
+  // this page asserting anything the guide itself does not already say.
+  const patternGuides = allGuides.filter((guide) =>
+    guide.relatedPrograms.includes(program.slug)
+  );
 
   const countryName = countryRecord?.name ?? program.countrySlug;
   const intentLabel = intentRecord?.label ?? program.intent;
@@ -181,8 +191,13 @@ export default async function ProgramPage({ params }) {
           {
             label: "Processing time",
             value: <FieldValue value={program.processingTime} />,
+            mono: false,
           },
-          { label: "Validity", value: <FieldValue value={program.validity} /> },
+          {
+            label: "Validity",
+            value: <FieldValue value={program.validity} />,
+            mono: false,
+          },
           { label: "Extendable", value: program.extendable ? "Yes" : "No" },
           { label: "Last reviewed", value: program.lastReviewed },
         ]}
@@ -406,6 +421,23 @@ export default async function ProgramPage({ params }) {
                 <FieldValue value={pitfall.detail} />
               </Callout>
             ))}
+            {patternGuides.length > 0 ? (
+              <div className="mt-6 border-t border-rule pt-5">
+                <p className="t-eyebrow mb-3">The wider pattern</p>
+                <ul className="space-y-2">
+                  {patternGuides.map((guide) => (
+                    <li key={guide.slug}>
+                      <Link
+                        href={`/resources/${guide.slug}`}
+                        className="link-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                      >
+                        {guide.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
           </section>
 
           {/* 7. FAQs */}

@@ -40,7 +40,7 @@ export default async function SiteFooter() {
   return (
     <footer className="band-ink">
       <div className="mx-auto w-full max-w-6xl px-5 py-14">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_1.2fr]">
           {columns.map((group) => (
             <nav key={group.label} aria-label={group.label}>
               <h2 className="t-eyebrow text-on-brand opacity-70">
@@ -128,7 +128,7 @@ export default async function SiteFooter() {
             bordered box that was the visual anchor of the footer; the honesty is
             unchanged, the volume is not.
           */}
-          <p className="max-w-[68ch] font-ui text-xs text-on-brand opacity-60">
+          <p className="max-w-[68ch] font-ui text-xs text-on-brand opacity-60 sm:text-right">
             General information, not legal advice. Final disclaimer wording is
             not yet agreed with the client (MOD-11).
           </p>
