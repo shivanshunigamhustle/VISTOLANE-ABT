@@ -301,7 +301,7 @@ export default async function IntentHubPage({ params }) {
         <div className="band-inset">
           <div className="mx-auto w-full max-w-6xl px-5 py-12">
             <SectionHeading eyebrow="Start here">
-              What usually goes wrong
+              Something already gone wrong?
             </SectionHeading>
             <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {problems.map((guide) => (

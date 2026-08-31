@@ -36,13 +36,47 @@ const ALIGN = {
  *   columns: DataTableColumn[],
  *   rows: Array<Record<string, React.ReactNode> & { rowAccent?: string }>,
  *   caption?: string,
+ *   viewport?: boolean,
+ *   capClass?: string,
  * }} props
  * @returns {JSX.Element}
  */
-export default function DataTable({ columns, rows, caption }) {
+export default function DataTable({
+  columns,
+  rows,
+  caption,
+  viewport = false,
+  capClass = "sm:max-h-[70vh]",
+}) {
+  // The height cap is added at `sm` and up rather than removed below it. On a
+  // phone the whole viewport is already the scroll container, and a second one
+  // nested inside it traps the thumb — a reader swiping to leave the table
+  // scrolls the table instead. Desktop has a cursor, a visible scrollbar and
+  // room for the page around it, so there the cap is what makes the table
+  // readable rather than what makes it a trap.
+  // capClass sets how tall the scroll region is allowed to get. A tool page
+  // gives the table most of the screen; a landing-page section wants a much
+  // shorter window, because there the table is evidence that the data exists
+  // rather than the thing the reader came to read.
+  const frame = viewport
+    ? `w-full overflow-x-auto overflow-y-auto overscroll-contain border-y border-rule ${capClass}`
+    : "w-full overflow-x-auto border-y border-rule";
+
+  // border-separate, not border-collapse: a collapsed border belongs to the
+  // table rather than to the cell, so it does not travel with a sticky header
+  // and the heading row would scroll over the body with no rule beneath it.
+  // Every cell already draws its own bottom border, so this looks identical.
+  const grid = viewport
+    ? "w-full min-w-[720px] border-separate border-spacing-0 text-sm"
+    : "w-full min-w-[720px] border-collapse text-sm";
+
+  const headCell = `border-b border-rule px-4 py-2.5 font-ui text-[0.6875rem] font-semibold uppercase tracking-[0.09em] text-label-2 ${
+    viewport ? "sticky top-0 z-10 bg-surface" : ""
+  }`;
+
   return (
-    <div className="w-full overflow-x-auto border-y border-rule">
-      <table className="w-full min-w-[720px] border-collapse text-sm">
+    <div className={frame}>
+      <table className={grid}>
         {caption ? (
           <caption className="caption-top px-4 pb-3 pt-4 text-left text-label-2">
             {caption}
@@ -55,7 +89,7 @@ export default function DataTable({ columns, rows, caption }) {
                 key={column.key}
                 scope="col"
                 style={column.width ? { width: column.width } : undefined}
-                className={`border-b border-rule px-4 py-2.5 font-ui text-[0.6875rem] font-semibold uppercase tracking-[0.09em] text-label-2 ${
+                className={`${headCell} ${
                   ALIGN[column.align] ?? ALIGN.left
                 } ${column.nowrap ? "whitespace-nowrap" : ""}`}
               >

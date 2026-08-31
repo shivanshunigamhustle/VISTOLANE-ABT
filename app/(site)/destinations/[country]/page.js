@@ -274,7 +274,7 @@ export default async function CountryPage({ params }) {
           className="mx-auto w-full max-w-6xl px-5 pt-16"
         >
           <SectionHeading id="problems" eyebrow="Start here">
-            What usually goes wrong
+            Something already gone wrong?
           </SectionHeading>
           <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {problems.map((guide) => (

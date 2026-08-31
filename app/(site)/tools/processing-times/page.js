@@ -231,6 +231,7 @@ export default async function ProcessingTimesPage({ searchParams }) {
             </div>
           ) : (
             <DataTable
+              viewport
               caption={`${rows.length} of ${programs.length} route${programs.length === 1 ? "" : "s"}`}
               columns={[
                 { key: "program", label: "Route", width: "28%" },

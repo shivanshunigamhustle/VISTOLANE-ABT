@@ -395,17 +395,17 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 2. What usually goes wrong — eight real problems, above the intents,
+      {/* 2. Something already gone wrong? — eight real problems, above the intents,
           so a reader meets their own situation before the product. */}
       <section aria-labelledby="problems-heading" className="bg-bg">
         <div className="mx-auto w-full max-w-6xl px-5 py-16">
           <SectionHeading id="problems-heading" eyebrow="Start here">
-            What usually goes wrong
+            Something already gone wrong?
           </SectionHeading>
           <p className="t-body mt-4 max-w-[65ch] text-label-2">
-            Drawn from the recorded pitfalls across every route this site
-            covers. Read the one that matches your situation before you read
-            anything else.
+            Applications fail at a small number of specific points. Find the one
+            that matches your situation — each answer cites the official rule
+            behind it.
           </p>
           <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {problems.map((guide) => (
@@ -432,8 +432,8 @@ export default async function HomePage() {
                   <span className="font-ui text-[0.9375rem] font-semibold leading-snug text-label">
                     {guide.title}
                   </span>
-                  <span className="font-ui text-[0.8125rem] leading-snug text-label-2 [display:-webkit-box] [-webkit-box-orient:vertical] [-webkit-line-clamp:4] overflow-hidden">
-                    {guide.standfirst}
+                  <span className="font-ui text-[0.8125rem] leading-snug text-label-2">
+                    {guide.cardSummary ?? guide.standfirst}
                   </span>
                 </Link>
               </li>
@@ -475,6 +475,8 @@ export default async function HomePage() {
           </p>
           <div className="mt-8">
             <DataTable
+              viewport
+              capClass="sm:max-h-[26rem]"
               caption={`Confirmed fee totals for ${costRows.length} routes across ${countries.length} countries.`}
               columns={[
                 { key: "route", label: "Route", width: "26%" },
@@ -529,6 +531,10 @@ export default async function HomePage() {
                 })
               )}
             />
+            <p className="mt-3 font-ui text-[0.8125rem] text-label-2">
+              Scroll the table to see every route, or open the full comparison
+              for filtering and sorting.
+            </p>
           </div>
         </div>
       </section>
@@ -569,6 +575,8 @@ export default async function HomePage() {
           </p>
           <div className="mt-8">
             <DataTable
+              viewport
+              capClass="sm:max-h-[26rem]"
               caption={`Published processing times for ${timingRows.length} routes; ${timingUnverifiedCount} not yet confirmed against an official source.`}
               columns={[
                 { key: "route", label: "Route", width: "26%" },
@@ -591,6 +599,10 @@ export default async function HomePage() {
                 key: `${program.countrySlug}-${program.slug}`,
               }))}
             />
+            <p className="mt-3 font-ui text-[0.8125rem] text-label-2">
+              Scroll the table to see every route, or open the full comparison
+              for filtering and sorting.
+            </p>
           </div>
         </div>
       </section>

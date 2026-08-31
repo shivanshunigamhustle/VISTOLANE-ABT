@@ -145,7 +145,7 @@ export default async function CountryIntentPage({ params }) {
         {problems.length > 0 ? (
           <section aria-labelledby="problems" className="mt-14">
             <SectionMarker id="problems" eyebrow="Start here" hue={hue}>
-              What usually goes wrong
+              Something already gone wrong?
             </SectionMarker>
             <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {problems.map((guide) => (
