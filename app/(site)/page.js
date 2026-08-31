@@ -454,7 +454,7 @@ export default async function HomePage() {
         <div className="mx-auto w-full max-w-6xl px-5 py-16">
           <SectionHeading
             id="costs-heading"
-            eyebrow="From fees[] across 30 guides"
+            eyebrow="Every route, compared"
             trailing={
               <Link
                 href="/tools/cost-estimator"
@@ -477,10 +477,15 @@ export default async function HomePage() {
             <DataTable
               caption={`Confirmed fee totals for ${costRows.length} routes across ${countries.length} countries.`}
               columns={[
-                { key: "route", label: "Route", width: "28%" },
+                { key: "route", label: "Route", width: "26%" },
                 { key: "country", label: "Country", width: "16%" },
-                { key: "total", label: "Confirmed total", mono: true },
-                { key: "gap", label: "Not yet confirmed" },
+                {
+                  key: "total",
+                  label: "Confirmed total",
+                  mono: true,
+                  align: "right",
+                },
+                { key: "gap", label: "Not yet confirmed", align: "right" },
               ]}
               rows={costRows.map(
                 ({ key, program, totalText, unconfirmed }) => ({
@@ -495,12 +500,26 @@ export default async function HomePage() {
                   ),
                   country:
                     countryName.get(program.countrySlug) ?? program.countrySlug,
-                  total: totalText ?? (
-                    <span className="text-label-2">No confirmed fee yet</span>
+                  total: totalText ? (
+                    <span className="font-semibold text-label">
+                      {totalText}
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center gap-1.5 text-label-2">
+                      <Icon name="alert" size={14} />
+                      Not yet confirmed
+                    </span>
                   ),
                   gap:
                     unconfirmed > 0 ? (
-                      <span className="text-label-2">
+                      <span
+                        className="inline-flex items-center gap-1 rounded-pill px-2 py-0.5 text-xs font-medium"
+                        style={{
+                          backgroundColor:
+                            "color-mix(in srgb, var(--color-warning) 14%, transparent)",
+                          color: "var(--color-warning)",
+                        }}
+                      >
                         {unconfirmed} item{unconfirmed === 1 ? "" : "s"}
                       </span>
                     ) : (
@@ -524,7 +543,7 @@ export default async function HomePage() {
         <div className="mx-auto w-full max-w-6xl px-5 py-16">
           <SectionHeading
             id="timing-heading"
-            eyebrow="From processingTime across 30 guides"
+            eyebrow="Every route, compared"
             trailing={
               <Link
                 href="/tools/processing-times"
@@ -663,7 +682,7 @@ export default async function HomePage() {
         <div className="mx-auto w-full max-w-6xl px-5 py-16">
           <SectionHeading
             id="requirements-heading"
-            eyebrow="From documents[] across 30 guides"
+            eyebrow="Every route, compared"
             trailing={
               <Link
                 href="/tools/document-checklist"
