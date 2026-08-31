@@ -21,6 +21,7 @@ import SoftBridge from "@/components/site/SoftBridge";
 import { INTENTS } from "@/lib/content/intents";
 import {
   getAllCountries,
+  getAllGuides,
   getAllPrograms,
   getCountry,
   getNewsUpdatesFor,
@@ -73,12 +74,18 @@ export default async function CountryPage({ params }) {
   const country = await getCountry(slug);
   if (!country) notFound();
 
-  const [programs, allCountries, allPrograms, newsUpdates] = await Promise.all([
-    getPrograms({ country: country.slug }),
-    getAllCountries(),
-    getAllPrograms(),
-    getNewsUpdatesFor({ country: country.slug }),
-  ]);
+  const [programs, allCountries, allPrograms, newsUpdates, allGuides] =
+    await Promise.all([
+      getPrograms({ country: country.slug }),
+      getAllCountries(),
+      getAllPrograms(),
+      getNewsUpdatesFor({ country: country.slug }),
+      getAllGuides(),
+    ]);
+  const programSlugs = new Set(programs.map((p) => p.slug));
+  const problems = allGuides
+    .filter((g) => (g.relatedPrograms ?? []).some((s) => programSlugs.has(s)))
+    .slice(0, 4);
 
   /** Guide counts per country, so a related card never claims a count it does not have. */
   const programCounts = allPrograms.reduce((counts, program) => {
@@ -260,6 +267,36 @@ export default async function CountryPage({ params }) {
       <div className="mx-auto w-full max-w-6xl px-5 pt-20">
         <SoftBridge country={country.slug} />
       </div>
+
+      {problems.length > 0 ? (
+        <section
+          aria-labelledby="problems"
+          className="mx-auto w-full max-w-6xl px-5 pt-16"
+        >
+          <SectionHeading id="problems" eyebrow="Start here">
+            What usually goes wrong
+          </SectionHeading>
+          <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {problems.map((guide) => (
+              <li key={guide.slug}>
+                <Link
+                  href={`/resources/${guide.slug}`}
+                  className="lift-card surface-raised flex h-full flex-col gap-2 border-t-2 p-4 no-underline
+                    focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                  style={{ borderTopColor: "var(--color-warning)" }}
+                >
+                  <span className="font-ui text-[0.9375rem] font-semibold leading-snug text-label">
+                    {guide.title}
+                  </span>
+                  <span className="font-ui text-[0.8125rem] leading-snug text-label-2">
+                    {guide.standfirst}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       {/* 3. All programs — the six intent hues do real navigational work here. */}
       <section

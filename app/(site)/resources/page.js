@@ -14,6 +14,18 @@ const TITLE = "Guides";
 const DESCRIPTION =
   "Explainers that sit alongside the route guides: how to compare routes across countries, and how to read the figures on them.";
 
+/** The six reference/comparison guides that predate the problem library —
+ *  everything else is a symptom-first problem guide. Sorted first and
+ *  visually marked, so a reader meets a problem before a reference page. */
+const REFERENCE_SLUGS = new Set([
+  "educational-credential-assessment-when-you-need-one",
+  "family-sponsorship-compared-across-countries",
+  "how-to-read-a-processing-time",
+  "investor-routes-compared-across-countries",
+  "police-certificates-and-medical-exams-explained",
+  "study-permit-or-work-permit",
+]);
+
 export const metadata = pageMetadata({
   title: `${TITLE} | Vistolane`,
   description: DESCRIPTION,
@@ -33,9 +45,14 @@ export default async function ResourcesIndexPage({ searchParams }) {
     getAllGuides(),
     getAllCountries(),
   ]);
-  const matches = activeIntent
-    ? guides.filter((g) => g.intent === activeIntent)
-    : guides;
+  const matches = (
+    activeIntent ? guides.filter((g) => g.intent === activeIntent) : guides
+  ).sort((a, b) => {
+    const aProblem = !REFERENCE_SLUGS.has(a.slug);
+    const bProblem = !REFERENCE_SLUGS.has(b.slug);
+    if (aProblem !== bProblem) return aProblem ? -1 : 1;
+    return a.title.localeCompare(b.title);
+  });
 
   const countryLookup = new Map(countries.map((c) => [c.slug, c.name]));
   const crossCountryCount = guides.filter((g) => g.countries.length > 1).length;
@@ -106,6 +123,7 @@ export default async function ResourcesIndexPage({ searchParams }) {
             <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {matches.map((guide) => {
                 const intent = guide.intent ? getIntent(guide.intent) : null;
+                const isProblem = !REFERENCE_SLUGS.has(guide.slug);
                 const countryNames = guide.countries
                   .map((slug) => countryLookup.get(slug))
                   .filter(Boolean);
@@ -113,7 +131,14 @@ export default async function ResourcesIndexPage({ searchParams }) {
                   <li key={guide.slug}>
                     <Link
                       href={`/resources/${guide.slug}`}
-                      className="lift-card surface-raised flex h-full flex-col p-6 no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                      className={`lift-card surface-raised flex h-full flex-col p-6 no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint ${
+                        isProblem ? "border-t-2" : ""
+                      }`}
+                      style={
+                        isProblem
+                          ? { borderTopColor: "var(--color-warning)" }
+                          : undefined
+                      }
                     >
                       <div className="flex items-center justify-between gap-3">
                         {intent ? (

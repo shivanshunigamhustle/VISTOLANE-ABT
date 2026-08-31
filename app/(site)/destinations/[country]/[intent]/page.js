@@ -15,6 +15,7 @@ import SoftBridge from "@/components/site/SoftBridge";
 import { INTENTS, INTENT_SLUGS } from "@/lib/content/intents";
 import {
   getAllCountries,
+  getAllGuides,
   getCountry,
   getIntent,
   getPrograms,
@@ -74,10 +75,14 @@ export default async function CountryIntentPage({ params }) {
 
   const hue = `var(${intent.token})`;
 
-  const programs = await getPrograms({
-    country: country.slug,
-    intent: intent.slug,
-  });
+  const [programs, allGuides] = await Promise.all([
+    getPrograms({ country: country.slug, intent: intent.slug }),
+    getAllGuides(),
+  ]);
+  const programSlugs = new Set(programs.map((p) => p.slug));
+  const problems = allGuides
+    .filter((g) => (g.relatedPrograms ?? []).some((s) => programSlugs.has(s)))
+    .slice(0, 4);
 
   const otherIntents = await Promise.all(
     INTENTS.filter((candidate) => candidate.slug !== intent.slug).map(
@@ -137,6 +142,33 @@ export default async function CountryIntentPage({ params }) {
       </div>
 
       <div className="mx-auto w-full max-w-6xl px-5 pb-16">
+        {problems.length > 0 ? (
+          <section aria-labelledby="problems" className="mt-14">
+            <SectionMarker id="problems" eyebrow="Start here" hue={hue}>
+              What usually goes wrong
+            </SectionMarker>
+            <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {problems.map((guide) => (
+                <li key={guide.slug}>
+                  <Link
+                    href={`/resources/${guide.slug}`}
+                    className="lift-card surface-raised flex h-full flex-col gap-2 border-t-2 p-4 no-underline
+                      focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                    style={{ borderTopColor: "var(--color-warning)" }}
+                  >
+                    <span className="font-ui text-[0.9375rem] font-semibold leading-snug text-label">
+                      {guide.title}
+                    </span>
+                    <span className="font-ui text-[0.8125rem] leading-snug text-label-2">
+                      {guide.standfirst}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
+
         {programs.length > 0 ? (
           <>
             <section aria-labelledby="compare" className="mt-14">

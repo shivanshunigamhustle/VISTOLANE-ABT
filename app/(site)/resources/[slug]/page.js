@@ -6,6 +6,7 @@ import rehypeSlug from "rehype-slug";
 import Prose from "@/components/primitives/Prose";
 import JsonLd from "@/components/site/JsonLd";
 import PageMasthead from "@/components/site/PageMasthead";
+import SoftBridge from "@/components/site/SoftBridge";
 import { getIntent } from "@/lib/content/intents";
 import { getAllGuides, getAllPrograms, getGuide } from "@/lib/content/loader";
 import { pageMetadata } from "@/lib/seo/metadata";
@@ -143,6 +144,12 @@ export default async function GuidePage({ params }) {
             </Link>
           </p>
         </aside>
+      </div>
+
+      <div className="band-inset">
+        <div className="mx-auto w-full max-w-6xl px-5 py-16">
+          <SoftBridge intent={guide.intent} intentLabel={intentLabel} />
+        </div>
       </div>
     </main>
   );
