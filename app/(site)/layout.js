@@ -50,7 +50,10 @@ export default async function SiteLayout({ children }) {
 
   return (
     <html lang="en">
-      <body className="flex min-h-screen flex-col bg-bg font-ui text-label antialiased">
+      <body
+        className="flex min-h-screen flex-col bg-bg font-ui text-label antialiased"
+        suppressHydrationWarning
+      >
         {/*
           Skip link. It is parked just above the viewport rather than clipped,
           so it keeps its real box and slides into place on focus. Only the

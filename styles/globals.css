@@ -424,6 +424,68 @@
 }
 
 /*
+ * Homepage hero — "classic" visual direction.
+ *
+ * Scoped entirely to `.hero-mockup` (the hero <section> in app/(site)/page.js)
+ * by shadowing a handful of tokens for that subtree only. Every other section
+ * and page keeps the values in tokens.css untouched — this block never
+ * touches :root. The font variables it references (--font-hero-serif,
+ * --font-hero-ui, --font-hero-mono) come from next/font/google, applied as
+ * classNames on the same hero <section>.
+ */
+.hero-mockup {
+  --font-read: var(--font-hero-serif), ui-serif, Georgia, serif;
+  --font-ui: var(--font-hero-ui), system-ui, -apple-system, sans-serif;
+  --font-data: var(--font-hero-mono), ui-monospace, Menlo, monospace;
+
+  --color-bg: #f6f7fa;
+  --color-label: #15181f;
+  --color-label-2: #5b6472;
+  --color-rule: #e5e7ec;
+  --color-separator: #e5e7ec;
+  --color-accent: #f2b93b;
+  --color-on-accent: #3d2e05;
+  --color-tint: #3e7fe0;
+
+  --intent-visitor: #3e7fe0;
+  --intent-work: #7c5ce0;
+  --intent-study: #2aa98c;
+  --intent-family: #e24e86;
+  --intent-investor: #9a6b33;
+  --intent-residence: #9b5ce0;
+
+  --card-pad: clamp(18px, 2.6vw, 22px);
+}
+
+.hero-mockup .hero-kicker {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: var(--color-label-2);
+}
+
+.hero-mockup .hero-headline {
+  font-size: clamp(34px, 4.5vw, 54px);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+}
+
+.hero-mockup .hero-sub {
+  font-family: var(--font-ui);
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--color-label-2);
+}
+
+.hero-mockup .hero-trust-icon {
+  background: #eaf1fc;
+  color: var(--color-tint);
+}
+
+/*
  * Print. Chrome (header, footer, forms, buttons) drops out; content stays.
  * header and footer are tag selectors on purpose — the site has exactly one
  * of each, in the root layout, so this is a genuine site-wide rule, not

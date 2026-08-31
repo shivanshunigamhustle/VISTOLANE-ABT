@@ -1,10 +1,12 @@
 import Link from "next/link";
+import { IBM_Plex_Mono, Inter, Source_Serif_4 } from "next/font/google";
 
 import Badge from "@/components/primitives/Badge";
 import Button from "@/components/primitives/Button";
+import Select from "@/components/primitives/Select";
 import AttributedLink from "@/components/site/AttributedLink";
 import DestinationPhotoCard from "@/components/site/DestinationPhotoCard";
-import Icon from "@/components/site/IconSet";
+import EligibilityPreviewCard from "@/components/site/EligibilityPreviewCard";
 import JsonLd from "@/components/site/JsonLd";
 import Media from "@/components/site/Media";
 import SectionHeading from "@/components/site/SectionHeading";
@@ -32,6 +34,29 @@ import { breadcrumbList, webSite } from "@/lib/seo/schema";
  * other section is static until a reader presses or hovers something.
  */
 
+/**
+ * Fonts for the homepage hero's "classic" visual direction only — everything
+ * else on the site keeps the system-font tokens in styles/tokens.css. Each
+ * font is exposed as a CSS variable and only takes effect inside the
+ * `.hero-mockup` scope declared in styles/globals.css, which shadows
+ * --font-read/--font-ui/--font-data for that subtree.
+ */
+const heroSerif = Source_Serif_4({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  variable: "--font-hero-serif",
+});
+const heroSans = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-hero-ui",
+});
+const heroMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["500"],
+  variable: "--font-hero-mono",
+});
+
 const TAGLINE = "A clear path to your next move abroad";
 
 export const metadata = pageMetadata({
@@ -42,12 +67,27 @@ export const metadata = pageMetadata({
 
 /** One plain-language line per intent. Structural copy, not a claim. */
 const INTENT_BLURB = {
-  visitor: "Short stays, tourism and family visits.",
-  work: "Employer-sponsored routes and work permits.",
-  study: "Student permits and what follows graduation.",
-  family: "Joining a partner, parent or child.",
-  investor: "Investment, start-up and business routes.",
-  residence: "Permanent residence and citizenship.",
+  visitor: "Tourist and short-stay entry rules by destination.",
+  work: "Employer sponsorship, skilled-worker and remote-work routes.",
+  study: "Student visas, sponsorship and post-study stay-back.",
+  family: "Spouse, partner and dependent sponsorship routes.",
+  investor: "Founder, investor and self-employment permits.",
+  residence: "Permanent residence, naturalisation and dual citizenship.",
+};
+
+/**
+ * Sentence-case card titles for the hero's intent grid only. INTENTS' own
+ * `label` stays Title Case for the nav, badges and everywhere else it's
+ * reused — this map exists purely so "Invest & Start Up" doesn't wrap onto a
+ * third line in the two-up hero cards the way the Title Case version does.
+ */
+const HERO_CARD_LABEL = {
+  visitor: "Visit or travel",
+  work: "Work abroad",
+  study: "Study abroad",
+  family: "Join family",
+  investor: "Invest & start up",
+  residence: "Settle & citizenship",
 };
 
 /**
@@ -175,7 +215,10 @@ export default async function HomePage() {
       <JsonLd schema={breadcrumbList([{ name: "Home", path: "/" }])} />
 
       {/* 2. Hero */}
-      <section aria-labelledby="hero-heading" className="relative bg-bg">
+      <section
+        aria-labelledby="hero-heading"
+        className={`hero-mockup relative bg-bg ${heroSerif.variable} ${heroSans.variable} ${heroMono.variable}`}
+      >
         {heroHasImage ? (
           <Media
             slot="hero"
@@ -198,23 +241,23 @@ export default async function HomePage() {
             with the right 45% blank for the whole first screen. Below lg it
             stacks in DOM order: headline, lede, search, intents, trust.
           */}
-          <div className="grid gap-10 lg:grid-cols-[55fr_45fr] lg:items-stretch lg:gap-12">
-            <div>
-              <p className="hero-enter hero-enter-1 t-eyebrow">
+          <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-stretch lg:gap-12">
+            <div className="flex flex-col">
+              <p className="hero-enter hero-enter-1 hero-kicker">
                 Immigration and global mobility
               </p>
               <h1
                 id="hero-heading"
-                className="hero-enter hero-enter-2 t-display mt-5 text-label"
+                className="hero-enter hero-enter-2 t-display hero-headline mt-5 text-label"
               >
                 Immigration routes, explained in full
               </h1>
-              <p className="hero-enter hero-enter-3 t-lede mt-6 max-w-[46ch]">
+              <p className="hero-enter hero-enter-3 t-lede hero-sub mt-6 max-w-[46ch]">
                 {TAGLINE}.
               </p>
 
               {/* Tabs are links. The active one is this page. */}
-              <div className="hero-enter hero-enter-4 mt-10">
+              <div className="hero-enter hero-enter-4 mt-10 flex flex-1 flex-col">
                 <nav aria-label="Search" className="flex flex-wrap gap-1">
                   <span
                     aria-current="page"
@@ -235,65 +278,43 @@ export default async function HomePage() {
                 <form
                   action="/destinations"
                   method="get"
-                  className="surface-raised flex flex-col gap-4 p-5 sm:flex-row sm:items-end"
+                  className="surface-raised mt-5 flex flex-1 flex-col justify-center p-5"
                 >
-                  <div className="flex flex-1 flex-col gap-2">
-                    <label htmlFor="home-intent" className="t-eyebrow">
-                      What do you want to do?
-                    </label>
-                    <div className="relative">
-                      <select
+                  <div className="flex flex-col gap-4 sm:flex-row sm:items-end">
+                    <div className="flex flex-1 flex-col gap-2">
+                      <label htmlFor="home-intent" className="t-eyebrow">
+                        What do you want to do?
+                      </label>
+                      <Select
                         id="home-intent"
                         name="intent"
-                        defaultValue=""
-                        className="w-full appearance-none rounded-control border border-rule bg-surface px-3 py-2.5 pr-9 text-sm text-label
-                      focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
-                      >
-                        <option value="">Any intent</option>
-                        {INTENTS.map((intent) => (
-                          <option key={intent.slug} value={intent.slug}>
-                            {intent.label}
-                          </option>
-                        ))}
-                      </select>
-                      <Icon
-                        name="chevronDown"
-                        size={18}
-                        className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-label-2"
+                        placeholder="Any intent"
+                        options={INTENTS.map((intent) => ({
+                          value: intent.slug,
+                          label: intent.label,
+                        }))}
                       />
                     </div>
-                  </div>
 
-                  <div className="flex flex-1 flex-col gap-2">
-                    <label htmlFor="home-region" className="t-eyebrow">
-                      Where?
-                    </label>
-                    <div className="relative">
-                      <select
+                    <div className="flex flex-1 flex-col gap-2">
+                      <label htmlFor="home-region" className="t-eyebrow">
+                        Where?
+                      </label>
+                      <Select
                         id="home-region"
                         name="region"
-                        defaultValue=""
-                        className="w-full appearance-none rounded-control border border-rule bg-surface px-3 py-2.5 pr-9 text-sm text-label
-                      focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
-                      >
-                        <option value="">Anywhere</option>
-                        {regions.map((region) => (
-                          <option key={region} value={region}>
-                            {region}
-                          </option>
-                        ))}
-                      </select>
-                      <Icon
-                        name="chevronDown"
-                        size={18}
-                        className="pointer-events-none absolute right-2.5 top-1/2 -translate-y-1/2 text-label-2"
+                        placeholder="Anywhere"
+                        options={regions.map((region) => ({
+                          value: region,
+                          label: region,
+                        }))}
                       />
                     </div>
-                  </div>
 
-                  <Button type="submit" variant="primary">
-                    Find destinations
-                  </Button>
+                    <Button type="submit" variant="primary">
+                      Find destinations
+                    </Button>
+                  </div>
                 </form>
               </div>
             </div>
@@ -301,28 +322,31 @@ export default async function HomePage() {
             {/* RIGHT COLUMN — the six intents, 2x3. */}
             <nav
               aria-label="Browse by intent"
-              className="mt-2 grid auto-rows-fr grid-cols-2 gap-3 lg:mt-0 lg:h-full"
+              className="mt-2 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:auto-rows-fr lg:mt-0"
             >
               {INTENTS.map((intent) => (
                 <Link
                   key={intent.slug}
                   href={`/${intent.path}`}
-                  className="lift-card surface-raised flex items-center justify-between gap-3 p-4 no-underline
+                  className="lift-card surface-raised relative flex h-full flex-col gap-2 p-[var(--card-pad)] no-underline
                     focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
                 >
-                  <span className="flex items-center gap-2.5">
-                    <span
-                      aria-hidden="true"
-                      className="size-2 shrink-0 rounded-full"
-                      style={{ backgroundColor: `var(${intent.token})` }}
-                    />
-                    <span className="font-ui text-sm font-medium text-label">
-                      {intent.label}
-                    </span>
-                  </span>
-                  <span className="t-data shrink-0 text-xs text-label-2">
+                  <span className="t-data absolute right-[var(--card-pad)] top-[var(--card-pad)] shrink-0 text-xs leading-5 text-label-2">
                     {countFor(intent.slug)}{" "}
                     {countFor(intent.slug) === 1 ? "guide" : "guides"}
+                  </span>
+                  <span className="flex items-start gap-2 pr-[58px]">
+                    <span
+                      aria-hidden="true"
+                      className="mt-[5px] size-2 shrink-0 rounded-full"
+                      style={{ backgroundColor: `var(${intent.token})` }}
+                    />
+                    <span className="font-ui text-[15.5px] font-semibold leading-5 text-label">
+                      {HERO_CARD_LABEL[intent.slug] ?? intent.label}
+                    </span>
+                  </span>
+                  <span className="font-ui text-[0.8125rem] leading-snug text-label-2">
+                    {INTENT_BLURB[intent.slug]}
                   </span>
                 </Link>
               ))}
@@ -338,22 +362,23 @@ export default async function HomePage() {
             className="mt-8 grid gap-6 border-t border-rule pt-6 sm:grid-cols-3"
           >
             {TRUST.map((item) => (
-              <li key={item.title} className="flex gap-2.5">
-                <svg
-                  aria-hidden="true"
-                  focusable="false"
-                  viewBox="0 0 24 24"
-                  width="20"
-                  height="20"
-                  fill="none"
-                  stroke="var(--color-tint)"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="mt-0.5 shrink-0"
-                >
-                  {item.icon}
-                </svg>
+              <li key={item.title} className="flex gap-3">
+                <span className="hero-trust-icon flex size-8 shrink-0 items-center justify-center rounded-control">
+                  <svg
+                    aria-hidden="true"
+                    focusable="false"
+                    viewBox="0 0 24 24"
+                    width="16"
+                    height="16"
+                    fill="none"
+                    stroke="var(--color-tint)"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    {item.icon}
+                  </svg>
+                </span>
                 <div>
                   <p className="font-ui text-[0.8125rem] font-semibold text-label">
                     {item.title}
@@ -611,9 +636,10 @@ export default async function HomePage() {
       </section>
 
       {/* 9. Closing bridge */}
-      <section className="band-ink">
-        <div className="mx-auto w-full max-w-6xl px-5 py-12">
-          <SoftBridge tone="ink" />
+      <section className="border-t border-rule bg-bg">
+        <div className="mx-auto grid w-full max-w-6xl gap-10 px-5 py-16 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-14">
+          <SoftBridge tone="flat" />
+          <EligibilityPreviewCard />
         </div>
       </section>
     </main>
