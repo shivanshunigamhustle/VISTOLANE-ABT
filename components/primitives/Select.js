@@ -161,7 +161,7 @@ export default function Select({
           role="listbox"
           aria-labelledby={id}
           tabIndex={-1}
-          className="surface-raised absolute z-20 mt-1.5 max-h-64 w-full overflow-auto p-1"
+          className="surface-raised absolute z-20 mt-1.5 max-h-[22rem] w-full overflow-auto p-1"
         >
           {items.map((item, index) => {
             const isSelected = item.value === value;
