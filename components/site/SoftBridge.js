@@ -18,11 +18,16 @@ import { buildPortalUrl, eligibilityPath } from "@/lib/bridge";
  * configured the link degrades to the application's default entry path rather
  * than to a guessed checker URL (OPN-07).
  *
+ * `tone="flat"` is the same light colours as "plain" without the
+ * surface-raised card — for a layout that already gives this its own visual
+ * (a preview card, an illustration) beside it, where a second card would be
+ * redundant. Every other call site stands alone and keeps the card.
+ *
  * @param {{
  *   country?: string,
  *   intent?: string,
  *   intentLabel?: string,
- *   tone?: "ink" | "plain",
+ *   tone?: "ink" | "plain" | "flat",
  * }} props
  * @returns {JSX.Element}
  */
@@ -48,12 +53,13 @@ export default function SoftBridge({
   });
 
   const onInk = tone === "ink";
+  const boxed = tone === "plain";
   const heading = intentLabel
     ? `Check if you qualify to ${intentLabel.toLowerCase()}`
     : "Check if you qualify";
 
   return (
-    <aside className={onInk ? "" : "surface-raised p-8 sm:p-10"}>
+    <aside className={boxed ? "surface-raised p-8 sm:p-10" : ""}>
       <p className={`t-eyebrow ${onInk ? "text-on-brand opacity-70" : ""}`}>
         Before you commit
       </p>
