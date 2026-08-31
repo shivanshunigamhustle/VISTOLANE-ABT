@@ -77,11 +77,17 @@ export default function Select({
     switch (event.key) {
       case "ArrowDown":
         event.preventDefault();
-        openAt(open ? Math.min(activeIndex + 1, items.length - 1) : Math.max(selectedIndex, 0));
+        openAt(
+          open
+            ? Math.min(activeIndex + 1, items.length - 1)
+            : Math.max(selectedIndex, 0)
+        );
         break;
       case "ArrowUp":
         event.preventDefault();
-        openAt(open ? Math.max(activeIndex - 1, 0) : Math.max(selectedIndex, 0));
+        openAt(
+          open ? Math.max(activeIndex - 1, 0) : Math.max(selectedIndex, 0)
+        );
         break;
       case "Home":
         if (open) {
@@ -123,7 +129,9 @@ export default function Select({
         aria-expanded={open}
         aria-controls={`${id}-listbox`}
         aria-activedescendant={open ? optionId(activeIndex) : undefined}
-        onClick={() => (open ? setOpen(false) : openAt(Math.max(selectedIndex, 0)))}
+        onClick={() =>
+          open ? setOpen(false) : openAt(Math.max(selectedIndex, 0))
+        }
         onKeyDown={onButtonKeyDown}
         className="flex w-full items-center justify-between gap-2 rounded-control border border-rule bg-surface py-2.5 pl-3 pr-2.5 text-left text-sm text-label
           focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
@@ -172,7 +180,10 @@ export default function Select({
                 }`}
                 style={
                   isActive
-                    ? { backgroundColor: "color-mix(in srgb, var(--color-tint) 12%, transparent)" }
+                    ? {
+                        backgroundColor:
+                          "color-mix(in srgb, var(--color-tint) 12%, transparent)",
+                      }
                     : undefined
                 }
               >

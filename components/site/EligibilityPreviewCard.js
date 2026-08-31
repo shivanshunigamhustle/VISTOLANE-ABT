@@ -30,7 +30,9 @@ export default function EligibilityPreviewCard({ tone = "plain" } = {}) {
       }
     >
       <div className="flex items-center justify-between">
-        <span className={`t-data ${onInk ? "text-on-brand/50" : "text-label-2"}`}>
+        <span
+          className={`t-data ${onInk ? "text-on-brand/50" : "text-label-2"}`}
+        >
           Eligibility checker
         </span>
         <span className="t-data font-semibold text-accent">Step 2 of 5</span>
@@ -45,7 +47,9 @@ export default function EligibilityPreviewCard({ tone = "plain" } = {}) {
       <div className="mt-4 flex flex-col gap-2.5">
         {options.map((option) => {
           const isSelected = option === selected;
-          const restColor = onInk ? "border-on-brand/20 text-on-brand/70" : "border-rule text-label-2";
+          const restColor = onInk
+            ? "border-on-brand/20 text-on-brand/70"
+            : "border-rule text-label-2";
           const selectedColor = onInk
             ? "border-success text-on-brand"
             : "border-success text-label";

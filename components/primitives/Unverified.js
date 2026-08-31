@@ -69,7 +69,7 @@ export function SummaryValue({ value }) {
   if (text) return <>{text}</>;
   return (
     <span title={reason || undefined} className="text-label-2">
-      —<span className="sr-only"> not yet verified</span>
+      N/A<span className="sr-only"> not yet verified</span>
     </span>
   );
 }
