@@ -203,6 +203,15 @@ export default async function IntentHubPage({ params }) {
 
   const guides = allGuides.filter((g) => g.intent === intent.slug);
 
+  // Problem-library guides matched to this intent by relatedPrograms, the
+  // same way the individual programme page's "wider pattern" panel matches —
+  // most problem guides carry intent: null since they deliberately cross
+  // intents, so matching on intent.slug alone (as `guides` above does) would
+  // miss almost all of them.
+  const problems = allGuides
+    .filter((g) => (g.relatedPrograms ?? []).some((s) => programSlugs.has(s)))
+    .slice(0, 4);
+
   return (
     <main id="main-content">
       <JsonLd
@@ -287,6 +296,35 @@ export default async function IntentHubPage({ params }) {
           </div>
         )}
       </div>
+
+      {problems.length > 0 ? (
+        <div className="band-inset">
+          <div className="mx-auto w-full max-w-6xl px-5 py-12">
+            <SectionHeading eyebrow="Start here">
+              What usually goes wrong
+            </SectionHeading>
+            <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {problems.map((guide) => (
+                <li key={guide.slug}>
+                  <Link
+                    href={`/resources/${guide.slug}`}
+                    className="lift-card surface-raised flex h-full flex-col gap-2 border-t-2 p-4 no-underline
+                      focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-tint"
+                    style={{ borderTopColor: "var(--color-warning)" }}
+                  >
+                    <span className="font-ui text-[0.9375rem] font-semibold leading-snug text-label">
+                      {guide.title}
+                    </span>
+                    <span className="font-ui text-[0.8125rem] leading-snug text-label-2">
+                      {guide.standfirst}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      ) : null}
 
       {programs.length > 0 &&
       (recurring.length > 0 || differences.length > 0) ? (
